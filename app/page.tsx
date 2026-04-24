@@ -7,6 +7,7 @@ import { KitchenSection } from "@/components/kitchen-section"
 import { RestaurantSection } from "@/components/restaurant-section"
 import { RecommendationsSection } from "@/components/recommendations-section"
 import { MenuPdfSection } from "@/components/menu-pdf-section"
+import { ParallaxStorytellingSection } from "@/components/parallax-storytelling-section"
 import { CuisineSection } from "@/components/cuisine-section"
 import { InteriorSection } from "@/components/interior-section"
 import { DishesSection } from "@/components/dishes-section"
@@ -31,6 +32,7 @@ export default function Home() {
       <RestaurantSection />
       <RecommendationsSection />
       <MenuPdfSection />
+      <ParallaxStorytellingSection />
       <CuisineSection />
       <InteriorSection />
       <DishesSection />
