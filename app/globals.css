@@ -874,3 +874,285 @@ section {
   transition: transform 0.1s linear;
   will-change: transform;
 }
+
+/* ================================
+   SECTION TRANSITIONS
+   ================================ */
+
+/* Section base styling for smooth transitions */
+.section-transition {
+  position: relative;
+  z-index: 1;
+}
+
+/* Fade-through overlay for section blending */
+.section-fade-top {
+  position: relative;
+}
+
+.section-fade-top::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(
+    to bottom,
+    var(--smoke) 0%,
+    transparent 100%
+  );
+  z-index: 10;
+  pointer-events: none;
+}
+
+.section-fade-bottom {
+  position: relative;
+}
+
+.section-fade-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(
+    to top,
+    var(--smoke) 0%,
+    transparent 100%
+  );
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Dark section variants */
+.section-fade-top-dark::before {
+  background: linear-gradient(
+    to bottom,
+    var(--carbon) 0%,
+    transparent 100%
+  );
+}
+
+.section-fade-bottom-dark::after {
+  background: linear-gradient(
+    to top,
+    var(--carbon) 0%,
+    transparent 100%
+  );
+}
+
+/* Cream section variants */
+.section-fade-top-cream::before {
+  background: linear-gradient(
+    to bottom,
+    var(--cream) 0%,
+    transparent 100%
+  );
+}
+
+.section-fade-bottom-cream::after {
+  background: linear-gradient(
+    to top,
+    var(--cream) 0%,
+    transparent 100%
+  );
+}
+
+/* White section variants */
+.section-fade-top-white::before {
+  background: linear-gradient(
+    to bottom,
+    #ffffff 0%,
+    transparent 100%
+  );
+}
+
+.section-fade-bottom-white::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(
+    to top,
+    #ffffff 0%,
+    transparent 100%
+  );
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Section overlap - negative margin for vertical overlap */
+.section-overlap {
+  margin-top: -80px;
+  padding-top: 80px;
+}
+
+.section-overlap-lg {
+  margin-top: -120px;
+  padding-top: 120px;
+}
+
+.section-overlap-sm {
+  margin-top: -40px;
+  padding-top: 40px;
+}
+
+/* Background color blending with gradient transitions */
+.bg-blend-to-smoke {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--smoke) 15%,
+    var(--smoke) 100%
+  );
+}
+
+.bg-blend-to-cream {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--cream) 15%,
+    var(--cream) 100%
+  );
+}
+
+.bg-blend-to-carbon {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--carbon) 15%,
+    var(--carbon) 100%
+  );
+}
+
+.bg-blend-from-smoke {
+  background: linear-gradient(
+    to bottom,
+    var(--smoke) 0%,
+    var(--smoke) 85%,
+    transparent 100%
+  );
+}
+
+.bg-blend-from-cream {
+  background: linear-gradient(
+    to bottom,
+    var(--cream) 0%,
+    var(--cream) 85%,
+    transparent 100%
+  );
+}
+
+.bg-blend-from-carbon {
+  background: linear-gradient(
+    to bottom,
+    var(--carbon) 0%,
+    var(--carbon) 85%,
+    transparent 100%
+  );
+}
+
+/* Cross-fade opacity based on scroll */
+.section-crossfade {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section-crossfade.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Continuous flow connector lines */
+.flow-connector {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--silver) 30%,
+    var(--silver) 70%,
+    transparent 100%
+  );
+  z-index: 5;
+}
+
+.flow-connector-top {
+  top: -40px;
+}
+
+.flow-connector-bottom {
+  bottom: -40px;
+}
+
+/* Decorative section dividers */
+.section-divider {
+  position: relative;
+  height: 1px;
+  width: 100%;
+  background: transparent;
+  overflow: visible;
+}
+
+.section-divider::before {
+  content: '';
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--silver) 20%,
+    var(--silver) 80%,
+    transparent 100%
+  );
+}
+
+.section-divider-burgundy::before {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--mahogany) 20%,
+    var(--garnet) 50%,
+    var(--mahogany) 80%,
+    transparent 100%
+  );
+}
+
+/* Smooth entry animations for sections */
+.section-enter {
+  opacity: 0;
+  transform: translateY(60px) scale(0.98);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section-enter.in-view {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Staggered section content reveal */
+.section-content-reveal > * {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section-content-reveal.in-view > *:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0ms; }
+.section-content-reveal.in-view > *:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 100ms; }
+.section-content-reveal.in-view > *:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 200ms; }
+.section-content-reveal.in-view > *:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 300ms; }
+.section-content-reveal.in-view > *:nth-child(5) { opacity: 1; transform: translateY(0); transition-delay: 400ms; }
+.section-content-reveal.in-view > *:nth-child(6) { opacity: 1; transform: translateY(0); transition-delay: 500ms; }
