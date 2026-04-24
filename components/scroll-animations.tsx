@@ -3,6 +3,269 @@
 import React, { useEffect, useRef, useState, ReactNode } from "react"
 import { cn } from "@/lib/utils"
 
+// ================================
+// ANIMATED HEADING COMPONENT
+// Words appear progressively with upward movement
+// ================================
+
+interface AnimatedHeadingProps {
+  children: string
+  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span"
+  className?: string
+  wordDelay?: number // Delay between words in ms
+  animationType?: "words" | "letters" | "lines"
+  threshold?: number
+  once?: boolean
+}
+
+export function AnimatedHeading({
+  children,
+  as: Component = "h2",
+  className,
+  wordDelay = 80,
+  animationType = "words",
+  threshold = 0.2,
+  once = true,
+}: AnimatedHeadingProps) {
+  const ref = useRef<HTMLElement>(null)
+  const [isInView, setIsInView] = useState(false)
+
+  useEffect(() => {
+    const element = ref.current
+    if (!element) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true)
+          if (once) observer.unobserve(element)
+        } else if (!once) {
+          setIsInView(false)
+        }
+      },
+      { threshold, rootMargin: "0px 0px -30px 0px" }
+    )
+
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [threshold, once])
+
+  const renderContent = () => {
+    if (animationType === "letters") {
+      // Split into letters
+      return children.split("").map((letter, index) => (
+        <span
+          key={index}
+          className={cn(
+            "inline-block transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
+            isInView
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-[0.5em]"
+          )}
+          style={{
+            transitionDelay: isInView ? `${index * (wordDelay / 2)}ms` : "0ms",
+          }}
+        >
+          {letter === " " ? "\u00A0" : letter}
+        </span>
+      ))
+    }
+
+    if (animationType === "lines") {
+      // Split by line breaks or treat whole string as one line
+      const lines = children.split("\n")
+      return lines.map((line, lineIndex) => (
+        <span key={lineIndex} className="block overflow-hidden">
+          <span
+            className={cn(
+              "block transition-all duration-800 ease-[cubic-bezier(0.16,1,0.3,1)]",
+              isInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-full"
+            )}
+            style={{
+              transitionDelay: isInView ? `${lineIndex * wordDelay * 2}ms` : "0ms",
+            }}
+          >
+            {line}
+          </span>
+        </span>
+      ))
+    }
+
+    // Default: words
+    const words = children.split(" ")
+    return words.map((word, index) => (
+      <span key={index} className="inline-block overflow-hidden mr-[0.25em]">
+        <span
+          className={cn(
+            "inline-block transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
+            isInView
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-[1.2em]"
+          )}
+          style={{
+            transitionDelay: isInView ? `${index * wordDelay}ms` : "0ms",
+          }}
+        >
+          {word}
+        </span>
+      </span>
+    ))
+  }
+
+  return (
+    <Component
+      ref={ref as React.RefObject<HTMLHeadingElement>}
+      className={cn("relative", className)}
+    >
+      {renderContent()}
+    </Component>
+  )
+}
+
+// Animated Heading with highlight word
+interface AnimatedHeadingHighlightProps {
+  children: string
+  highlightWords?: string[]
+  highlightClassName?: string
+  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
+  className?: string
+  wordDelay?: number
+  threshold?: number
+}
+
+export function AnimatedHeadingHighlight({
+  children,
+  highlightWords = [],
+  highlightClassName = "text-mahogany",
+  as: Component = "h2",
+  className,
+  wordDelay = 80,
+  threshold = 0.2,
+}: AnimatedHeadingHighlightProps) {
+  const ref = useRef<HTMLElement>(null)
+  const [isInView, setIsInView] = useState(false)
+
+  useEffect(() => {
+    const element = ref.current
+    if (!element) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true)
+          observer.unobserve(element)
+        }
+      },
+      { threshold, rootMargin: "0px 0px -30px 0px" }
+    )
+
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [threshold])
+
+  const words = children.split(" ")
+
+  return (
+    <Component
+      ref={ref as React.RefObject<HTMLHeadingElement>}
+      className={cn("relative", className)}
+    >
+      {words.map((word, index) => {
+        const isHighlight = highlightWords.some(
+          (hw) => word.toLowerCase().includes(hw.toLowerCase())
+        )
+        return (
+          <span key={index} className="inline-block overflow-hidden mr-[0.25em]">
+            <span
+              className={cn(
+                "inline-block transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                isInView
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-[1.2em]",
+                isHighlight && highlightClassName
+              )}
+              style={{
+                transitionDelay: isInView ? `${index * wordDelay}ms` : "0ms",
+              }}
+            >
+              {word}
+            </span>
+          </span>
+        )
+      })}
+    </Component>
+  )
+}
+
+// Split text reveal - each line reveals with a mask
+interface SplitTextRevealProps {
+  children: string
+  as?: "h1" | "h2" | "h3" | "h4" | "p"
+  className?: string
+  lineDelay?: number
+  threshold?: number
+}
+
+export function SplitTextReveal({
+  children,
+  as: Component = "h2",
+  className,
+  lineDelay = 150,
+  threshold = 0.2,
+}: SplitTextRevealProps) {
+  const ref = useRef<HTMLElement>(null)
+  const [isInView, setIsInView] = useState(false)
+
+  useEffect(() => {
+    const element = ref.current
+    if (!element) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true)
+          observer.unobserve(element)
+        }
+      },
+      { threshold }
+    )
+
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [threshold])
+
+  // Split by manual line breaks or create single line
+  const lines = children.includes("\n") ? children.split("\n") : [children]
+
+  return (
+    <Component
+      ref={ref as React.RefObject<HTMLHeadingElement>}
+      className={cn("relative", className)}
+    >
+      {lines.map((line, index) => (
+        <span key={index} className="block overflow-hidden">
+          <span
+            className={cn(
+              "block transition-all duration-800 ease-[cubic-bezier(0.16,1,0.3,1)]",
+              isInView
+                ? "opacity-100 translate-y-0 rotate-0"
+                : "opacity-0 translate-y-[110%] rotate-[2deg]"
+            )}
+            style={{
+              transitionDelay: isInView ? `${index * lineDelay}ms` : "0ms",
+              transformOrigin: "left bottom",
+            }}
+          >
+            {line}
+          </span>
+        </span>
+      ))}
+    </Component>
+  )
+}
+
 interface ScrollRevealProps {
   children: ReactNode
   className?: string

@@ -3,7 +3,7 @@
 import { useRef, useEffect, useState } from "react"
 import Image from "next/image"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import { ScrollReveal, HeadlineScroll } from "@/components/scroll-animations"
+import { ScrollReveal, HeadlineScroll, AnimatedHeading } from "@/components/scroll-animations"
 import { cn } from "@/lib/utils"
 
 const recommendations = [
@@ -179,11 +179,13 @@ export function RecommendationsSection() {
           </ScrollReveal>
 
           <HeadlineScroll speed={0.05}>
-            <ScrollReveal direction="up" delay={100}>
-              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-carbon mb-4">
-                Empfehlungen
-              </h2>
-            </ScrollReveal>
+            <AnimatedHeading
+              as="h2"
+              className="font-serif text-4xl md:text-5xl lg:text-6xl text-carbon mb-4"
+              wordDelay={100}
+            >
+              Empfehlungen
+            </AnimatedHeading>
           </HeadlineScroll>
           
           <ScrollReveal direction="up" delay={200}>
