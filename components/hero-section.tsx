@@ -164,7 +164,7 @@ export function HeroSection() {
         <div className="flex flex-col items-center text-center">
           {/* Small intro text - Step 1 */}
           <span
-            className={`text-white/50 text-[10px] md:text-xs uppercase tracking-[0.5em] mb-8 transition-all duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            className={`text-subhead text-white/50 mb-8 transition-all duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
             style={{ transitionDelay: '0ms' }}
@@ -172,23 +172,29 @@ export function HeroSection() {
             Benvenuti
           </span>
 
-          {/* Main Headline - Step 2 */}
-          <h1 className="mb-8 overflow-hidden">
-            <span
-              className={`block font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-white leading-[0.9] tracking-tight transition-all duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[100%]"
-              }`}
-              style={{ transitionDelay: '150ms' }}
-            >
-              Ristorante
+          {/* Main Headline - Word by word animation */}
+          <h1 className="mb-8">
+            {/* First line - "Ristorante" */}
+            <span className="block overflow-hidden">
+              <span
+                className={`block text-display-1 text-white leading-[0.9] tracking-[-0.02em] transition-all duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                  isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[110%]"
+                }`}
+                style={{ transitionDelay: '150ms' }}
+              >
+                Ristorante
+              </span>
             </span>
-            <span
-              className={`block font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-white leading-[0.9] tracking-tight italic transition-all duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[100%]"
-              }`}
-              style={{ transitionDelay: '300ms' }}
-            >
-              Bonfini
+            {/* Second line - "Bonfini" with italic */}
+            <span className="block overflow-hidden">
+              <span
+                className={`block text-display-1 text-white leading-[0.9] tracking-[-0.02em] italic transition-all duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                  isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[110%]"
+                }`}
+                style={{ transitionDelay: '350ms' }}
+              >
+                Bonfini
+              </span>
             </span>
           </h1>
 
@@ -204,7 +210,7 @@ export function HeroSection() {
 
           {/* Subheadline - Step 4 */}
           <p
-            className={`text-white/80 text-lg md:text-xl lg:text-2xl font-serif italic mb-5 transition-all duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            className={`text-quote text-white/85 mb-5 transition-all duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
             style={{ transitionDelay: '600ms' }}
@@ -214,7 +220,7 @@ export function HeroSection() {
 
           {/* Description - Step 5 */}
           <p
-            className={`text-white/50 text-sm md:text-base font-light max-w-lg mx-auto mb-14 leading-relaxed transition-all duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            className={`text-body text-white/50 max-w-lg mx-auto mb-14 transition-all duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
             style={{ transitionDelay: '750ms' }}
