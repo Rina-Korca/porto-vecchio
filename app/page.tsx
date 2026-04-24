@@ -13,6 +13,7 @@ import { InteriorSection } from "@/components/interior-section"
 import { DishesSection } from "@/components/dishes-section"
 import { MenuSection } from "@/components/menu-section"
 import { ParallaxSection } from "@/components/parallax-section"
+import { PremiumGallerySection } from "@/components/premium-gallery-section"
 import { GallerySection } from "@/components/gallery-section"
 import { ReservationSection } from "@/components/reservation-section"
 import { EventsSection } from "@/components/events-section"
@@ -38,6 +39,7 @@ export default function Home() {
       <DishesSection />
       <MenuSection />
       <ParallaxSection />
+      <PremiumGallerySection />
       <GallerySection />
       <ReservationSection />
       <EventsSection />
