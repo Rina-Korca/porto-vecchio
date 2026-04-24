@@ -1,6 +1,7 @@
 import { Navigation } from "@/components/navigation"
 import { HeroSection } from "@/components/hero-section"
 import { StorytellingSection } from "@/components/storytelling-section"
+import { TripadvisorSection } from "@/components/tripadvisor-section"
 import { AwardsSection } from "@/components/awards-section"
 import { CuisineSection } from "@/components/cuisine-section"
 import { InteriorSection } from "@/components/interior-section"
@@ -20,6 +21,7 @@ export default function Home() {
       <Navigation />
       <HeroSection />
       <StorytellingSection />
+      <TripadvisorSection />
       <AwardsSection />
       <CuisineSection />
       <InteriorSection />
