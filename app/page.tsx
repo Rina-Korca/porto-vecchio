@@ -18,6 +18,7 @@ import { GallerySection } from "@/components/gallery-section"
 import { ReservationSection } from "@/components/reservation-section"
 import { PrivateEventsSection } from "@/components/private-events-section"
 import { EventsSection } from "@/components/events-section"
+import { HoursContactSection } from "@/components/hours-contact-section"
 import { ContactSection } from "@/components/contact-section"
 import { MapSection } from "@/components/map-section"
 import { Footer } from "@/components/footer"
@@ -45,6 +46,7 @@ export default function Home() {
       <ReservationSection />
       <PrivateEventsSection />
       <EventsSection />
+      <HoursContactSection />
       <ContactSection />
       <MapSection />
       <Footer />
