@@ -44,7 +44,7 @@ const features = [
 ]
 
 export function KitchenSection() {
-  const [sectionRef, isInView] = useInView({ threshold: 0.1 })
+  const { ref: sectionRef, isInView } = useInView({ threshold: 0.1 })
   const [parallaxOffset, setParallaxOffset] = useState(0)
   const imageContainerRef = useRef<HTMLDivElement>(null)
 
@@ -64,7 +64,7 @@ export function KitchenSection() {
 
   return (
     <section
-      ref={sectionRef}
+      ref={sectionRef as React.RefObject<HTMLElement>}
       id="kitchen"
       className="relative py-24 md:py-32 bg-[#f5f3f4] overflow-hidden"
     >
