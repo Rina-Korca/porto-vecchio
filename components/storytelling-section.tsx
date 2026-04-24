@@ -1,6 +1,6 @@
 "use client"
 
-import { ScrollReveal, ScrollImage, ParallaxElement, HeadlineScroll } from "@/components/scroll-animations"
+import { ScrollReveal, ImageReveal, ParallaxElement, HeadlineScroll } from "@/components/scroll-animations"
 
 export function StorytellingSection() {
   return (
@@ -60,64 +60,48 @@ export function StorytellingSection() {
           
           {/* Right side - Overlapping images with parallax */}
           <div className="relative h-[500px] md:h-[600px] lg:h-[700px]">
-            {/* Image 1 - Large main image */}
+            {/* Image 1 - Large main image with curtain reveal */}
             <ParallaxElement speed={0.15} className="absolute top-0 right-0 w-[75%] h-[55%] z-0">
-              <ScrollReveal direction="right" delay={200} className="h-full">
-                <ScrollImage
-                  src="/images/interior-detail.jpg"
-                  alt="Restaurant Ambiente"
-                  className="object-cover"
-                  containerClassName="w-full h-full shadow-premium-lg overflow-hidden"
-                  zoomAmount={1.12}
-                  parallaxSpeed={0.12}
-                  reveal="left"
-                />
-              </ScrollReveal>
+              <ImageReveal
+                src="/images/interior-detail.jpg"
+                alt="Restaurant Ambiente"
+                reveal="curtain"
+                delay={200}
+                containerClassName="w-full h-full shadow-premium-lg"
+              />
             </ParallaxElement>
             
-            {/* Image 2 - Fresh ingredients */}
+            {/* Image 2 - Fresh ingredients with left mask reveal */}
             <ParallaxElement speed={0.25} className="absolute top-[18%] left-0 w-[45%] h-[38%] z-10">
-              <ScrollReveal direction="left" delay={400} className="h-full">
-                <ScrollImage
-                  src="/images/gallery-dish-1.jpg"
-                  alt="Frische Zutaten"
-                  className="object-cover"
-                  containerClassName="w-full h-full shadow-premium overflow-hidden"
-                  zoomAmount={1.15}
-                  parallaxSpeed={0.18}
-                  reveal="left"
-                />
-              </ScrollReveal>
+              <ImageReveal
+                src="/images/gallery-dish-1.jpg"
+                alt="Frische Zutaten"
+                reveal="left"
+                delay={400}
+                containerClassName="w-full h-full shadow-premium"
+              />
             </ParallaxElement>
             
-            {/* Image 3 - Pasta dish */}
+            {/* Image 3 - Pasta dish with bottom reveal */}
             <ParallaxElement speed={0.35} className="absolute bottom-[12%] left-[8%] w-[48%] h-[35%] z-20">
-              <ScrollReveal direction="up" delay={600} className="h-full">
-                <ScrollImage
-                  src="/images/dish-pasta.jpg"
-                  alt="Hausgemachte Pasta"
-                  className="object-cover"
-                  containerClassName="w-full h-full shadow-premium overflow-hidden"
-                  zoomAmount={1.1}
-                  parallaxSpeed={0.22}
-                  reveal="up"
-                />
-              </ScrollReveal>
+              <ImageReveal
+                src="/images/dish-pasta.jpg"
+                alt="Hausgemachte Pasta"
+                reveal="up"
+                delay={600}
+                containerClassName="w-full h-full shadow-premium"
+              />
             </ParallaxElement>
             
-            {/* Image 4 - Wine */}
+            {/* Image 4 - Wine with split reveal */}
             <ParallaxElement speed={0.2} className="absolute bottom-[2%] right-[3%] w-[38%] h-[32%] z-10">
-              <ScrollReveal direction="right" delay={800} className="h-full">
-                <ScrollImage
-                  src="/images/gallery-wine.jpg"
-                  alt="Erlesene Weine"
-                  className="object-cover"
-                  containerClassName="w-full h-full shadow-premium overflow-hidden"
-                  zoomAmount={1.08}
-                  parallaxSpeed={0.15}
-                  reveal="left"
-                />
-              </ScrollReveal>
+              <ImageReveal
+                src="/images/gallery-wine.jpg"
+                alt="Erlesene Weine"
+                reveal="split"
+                delay={800}
+                containerClassName="w-full h-full shadow-premium"
+              />
             </ParallaxElement>
             
             {/* Decorative elements */}
