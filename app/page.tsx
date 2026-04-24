@@ -8,7 +8,7 @@ import { RestaurantSection } from "@/components/restaurant-section"
 import { RecommendationsSection } from "@/components/recommendations-section"
 import { MenuPdfSection } from "@/components/menu-pdf-section"
 import { ParallaxStorytellingSection } from "@/components/parallax-storytelling-section"
-import { PremiumGallerySection } from "@/components/premium-gallery-section"
+import { HorizontalGallerySection } from "@/components/horizontal-gallery-section"
 import { ReservationSection } from "@/components/reservation-section"
 import { PrivateEventsSection } from "@/components/private-events-section"
 import { HoursContactSection } from "@/components/hours-contact-section"
@@ -28,7 +28,7 @@ export default function Home() {
       <RecommendationsSection />
       <MenuPdfSection />
       <ParallaxStorytellingSection />
-      <PremiumGallerySection />
+      <HorizontalGallerySection />
       <ReservationSection />
       <PrivateEventsSection />
       <HoursContactSection />
