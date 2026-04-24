@@ -287,3 +287,42 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* Hero zoom animation */
+@keyframes hero-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+.hero-zoom {
+  animation: hero-zoom 20s ease-out forwards;
+}
+
+/* Scroll indicator animation */
+@keyframes scroll-indicator {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(6px);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-scroll-indicator {
+  animation: scroll-indicator 1.5s ease-in-out infinite;
+}
+
+/* Duration utilities */
+.duration-1200 {
+  transition-duration: 1200ms;
+}
