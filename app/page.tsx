@@ -16,6 +16,7 @@ import { ParallaxSection } from "@/components/parallax-section"
 import { PremiumGallerySection } from "@/components/premium-gallery-section"
 import { GallerySection } from "@/components/gallery-section"
 import { ReservationSection } from "@/components/reservation-section"
+import { PrivateEventsSection } from "@/components/private-events-section"
 import { EventsSection } from "@/components/events-section"
 import { ContactSection } from "@/components/contact-section"
 import { MapSection } from "@/components/map-section"
@@ -42,6 +43,7 @@ export default function Home() {
       <PremiumGallerySection />
       <GallerySection />
       <ReservationSection />
+      <PrivateEventsSection />
       <EventsSection />
       <ContactSection />
       <MapSection />
