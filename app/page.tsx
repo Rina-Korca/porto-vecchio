@@ -5,6 +5,7 @@ import { TripadvisorSection } from "@/components/tripadvisor-section"
 import { AwardsSection } from "@/components/awards-section"
 import { KitchenSection } from "@/components/kitchen-section"
 import { RestaurantSection } from "@/components/restaurant-section"
+import { RecommendationsSection } from "@/components/recommendations-section"
 import { CuisineSection } from "@/components/cuisine-section"
 import { InteriorSection } from "@/components/interior-section"
 import { DishesSection } from "@/components/dishes-section"
@@ -27,6 +28,7 @@ export default function Home() {
       <AwardsSection />
       <KitchenSection />
       <RestaurantSection />
+      <RecommendationsSection />
       <CuisineSection />
       <InteriorSection />
       <DishesSection />
