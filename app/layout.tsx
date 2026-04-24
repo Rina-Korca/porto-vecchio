@@ -1,15 +1,26 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Playfair_Display, Lato } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const playfair = Playfair_Display({ 
+  subsets: ['latin'],
+  variable: '--font-serif',
+  display: 'swap',
+})
+
+const lato = Lato({ 
+  subsets: ['latin'],
+  weight: ['300', '400', '700'],
+  variable: '--font-sans',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
+  title: 'Ristorante Bonfini | Fine Italian Dining in Berlin',
+  description: 'Erleben Sie authentische italienische Küche im Herzen von Berlin. Ristorante Bonfini bietet exquisite Gerichte, erlesene Weine und ein unvergessliches Ambiente.',
   generator: 'v0.app',
+  keywords: ['Restaurant', 'Berlin', 'Italienisch', 'Fine Dining', 'Pasta', 'Pizza', 'Wein'],
   icons: {
     icon: [
       {
@@ -35,7 +46,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="de" className={`${playfair.variable} ${lato.variable} bg-smoke`}>
       <body className="font-sans antialiased">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}

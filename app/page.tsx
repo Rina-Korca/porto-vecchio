@@ -1,16 +1,37 @@
+import { Navigation } from "@/components/navigation"
+import { HeroSection } from "@/components/hero-section"
+import { IntroSection } from "@/components/intro-section"
+import { AwardsSection } from "@/components/awards-section"
+import { CuisineSection } from "@/components/cuisine-section"
+import { InteriorSection } from "@/components/interior-section"
+import { DishesSection } from "@/components/dishes-section"
+import { MenuSection } from "@/components/menu-section"
+import { ParallaxSection } from "@/components/parallax-section"
+import { GallerySection } from "@/components/gallery-section"
+import { ReservationSection } from "@/components/reservation-section"
+import { EventsSection } from "@/components/events-section"
+import { ContactSection } from "@/components/contact-section"
+import { MapSection } from "@/components/map-section"
+import { Footer } from "@/components/footer"
+
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center font-sans">
-      <main className="flex w-full max-w-3xl flex-col items-center gap-8 px-6 py-16 text-center sm:items-start sm:text-left">
-        <div className="flex flex-col gap-4">
-          <h1 className="text-4xl font-bold tracking-tight">
-            Bonfini
-          </h1>
-          <p className="max-w-md text-lg text-muted-foreground">
-            To get started, send a prompt or modify this page directly.
-          </p>
-        </div>
-      </main>
-    </div>
-  );
+    <main>
+      <Navigation />
+      <HeroSection />
+      <IntroSection />
+      <AwardsSection />
+      <CuisineSection />
+      <InteriorSection />
+      <DishesSection />
+      <MenuSection />
+      <ParallaxSection />
+      <GallerySection />
+      <ReservationSection />
+      <EventsSection />
+      <ContactSection />
+      <MapSection />
+      <Footer />
+    </main>
+  )
 }
