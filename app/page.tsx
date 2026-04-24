@@ -20,6 +20,7 @@ import { PrivateEventsSection } from "@/components/private-events-section"
 import { EventsSection } from "@/components/events-section"
 import { HoursContactSection } from "@/components/hours-contact-section"
 import { ContactSection } from "@/components/contact-section"
+import { LocationSection } from "@/components/location-section"
 import { MapSection } from "@/components/map-section"
 import { Footer } from "@/components/footer"
 
@@ -48,6 +49,7 @@ export default function Home() {
       <EventsSection />
       <HoursContactSection />
       <ContactSection />
+      <LocationSection />
       <MapSection />
       <Footer />
     </main>
