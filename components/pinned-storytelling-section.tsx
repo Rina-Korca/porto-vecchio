@@ -91,10 +91,11 @@ export function PinnedStorytellingSection() {
 
           setScrollProgress(progress)
 
-          // Determine active step based on progress
+          // Determine active step based on progress (scale to fit steps properly)
+          const adjustedProgress = progress * 0.95 // Leave room at end to see last step fully
           const stepIndex = Math.min(
             storySteps.length - 1,
-            Math.floor(progress * storySteps.length)
+            Math.floor(adjustedProgress * storySteps.length)
           )
           setActiveStep(stepIndex)
 
@@ -164,7 +165,7 @@ export function PinnedStorytellingSection() {
     <section
       ref={sectionRef}
       className="relative bg-smoke"
-      style={{ height: `${storySteps.length * 100}vh` }}
+      style={{ height: `${(storySteps.length + 0.5) * 100}vh` }}
     >
       {/* Sticky Container */}
       <div className="sticky top-0 h-screen overflow-hidden">

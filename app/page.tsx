@@ -61,7 +61,8 @@ export default function Home() {
       <ParallaxStorytellingSection />
       
       {/* Gallery - Overlaps parallax */}
-      <div className="relative -mt-24 pt-24 bg-gradient-to-b from-transparent via-smoke/80 to-smoke">
+      <div className="relative bg-smoke">
+        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-carbon/20 to-transparent pointer-events-none" />
         <HorizontalGallerySection />
       </div>
       
