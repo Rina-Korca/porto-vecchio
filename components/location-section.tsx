@@ -2,6 +2,7 @@
 
 import { useInView } from "@/hooks/use-in-view"
 import { MapPin, Navigation, Phone, Clock } from "lucide-react"
+import { companyInfo, openingHours } from "@/lib/company-info"
 
 export function LocationSection() {
   const { ref: sectionRef, isInView } = useInView({ threshold: 0.1 })
@@ -16,7 +17,7 @@ export function LocationSection() {
       <div className="relative h-[500px] md:h-[600px] w-full">
         {/* Google Maps Iframe */}
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2427.2076890518387!2d13.382185076892!3d52.52898097981082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47a851e3c3f4d5d7%3A0x1234567890abcdef!2sChausseestr.%2015%2C%2010115%20Berlin!5e0!3m2!1sde!2sde!4v1234567890"
+          src="https://www.google.com/maps?q=Chausseestra%C3%9Fe%2015%2C%2010115%20Berlin%2C%20Germany&output=embed"
           width="100%"
           height="100%"
           style={{ border: 0 }}
@@ -45,6 +46,13 @@ export function LocationSection() {
             <div className="absolute bottom-4 left-4 w-8 h-8 border-b border-l border-[var(--garnet)]/30" />
 
             {/* Heading */}
+            <img
+              src="/images/logo/logo-red.png"
+              alt="Bonfini"
+              className="mb-5 h-auto w-40 object-contain"
+              loading="lazy"
+              decoding="async"
+            />
             <p className="text-[var(--garnet)] text-sm tracking-[0.2em] uppercase mb-2">
               Im Herzen Berlins
             </p>
@@ -63,10 +71,16 @@ export function LocationSection() {
                 </div>
                 <div>
                   <p className="text-[var(--onyx)] font-medium">Adresse</p>
-                  <p className="text-[var(--carbon)]/70 text-sm leading-relaxed">
-                    Chausseestr. 15<br />
-                    10115 Berlin
-                  </p>
+                  <a
+                    href={companyInfo.mapsHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[var(--carbon)]/70 text-sm leading-relaxed transition-colors hover:text-[var(--garnet)]"
+                  >
+                    {companyInfo.addressLine1}<br />
+                    {companyInfo.addressLine2}<br />
+                    {companyInfo.country}
+                  </a>
                 </div>
               </div>
 
@@ -77,10 +91,10 @@ export function LocationSection() {
                 <div>
                   <p className="text-[var(--onyx)] font-medium">Telefon</p>
                   <a 
-                    href="tel:+493028389288" 
+                    href={companyInfo.phoneHref}
                     className="text-[var(--carbon)]/70 text-sm hover:text-[var(--garnet)] transition-colors"
                   >
-                    +49 30 2838 9288
+                    {companyInfo.phoneDisplay}
                   </a>
                 </div>
               </div>
@@ -91,16 +105,21 @@ export function LocationSection() {
                 </div>
                 <div>
                   <p className="text-[var(--onyx)] font-medium">Öffnungszeiten</p>
-                  <p className="text-[var(--carbon)]/70 text-sm">
-                    Mo–Sa: 12:00–23:00 Uhr
-                  </p>
+                  <div className="space-y-1 text-[var(--carbon)]/70 text-xs">
+                    {openingHours.map((item) => (
+                      <div key={item.day} className="flex justify-between gap-3">
+                        <span>{item.day}</span>
+                        <span className="text-right">{item.hours}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* CTA Button */}
             <a
-              href="https://www.google.com/maps/dir//Chausseestr.+15,+10115+Berlin"
+              href={companyInfo.mapsDirectionsHref}
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex items-center gap-3 bg-[var(--garnet)] text-white px-6 py-3.5 text-sm tracking-wider uppercase hover:bg-[var(--mahogany)] transition-all duration-300 w-full justify-center"
@@ -111,7 +130,7 @@ export function LocationSection() {
 
             {/* Secondary Link */}
             <a
-              href="tel:+493028389288"
+              href={companyInfo.phoneHref}
               className="block text-center mt-4 text-sm text-[var(--carbon)]/60 hover:text-[var(--garnet)] transition-colors"
             >
               oder rufen Sie uns an
@@ -129,12 +148,25 @@ export function LocationSection() {
             <div className="flex items-center gap-3">
               <MapPin className="w-5 h-5 text-[var(--garnet)]" />
               <div>
-                <p className="text-white text-sm font-medium">Ristorante Bonfini</p>
-                <p className="text-white/70 text-xs">Chausseestr. 15, 10115 Berlin</p>
+                <img
+                  src="/images/logo/logo.png"
+                  alt="Bonfini"
+                  className="mb-1 h-auto w-24 object-contain"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <a
+                  href={companyInfo.mapsHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/70 text-xs transition-colors hover:text-white"
+                >
+                  {companyInfo.addressDisplay}
+                </a>
               </div>
             </div>
             <a
-              href="https://www.google.com/maps/dir//Chausseestr.+15,+10115+Berlin"
+              href={companyInfo.mapsDirectionsHref}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-[var(--garnet)] text-white px-4 py-2 text-xs tracking-wider uppercase"

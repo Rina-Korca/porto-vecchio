@@ -2,6 +2,7 @@
 
 import { useInView } from "@/hooks/use-in-view"
 import { Phone, Mail, MapPin, Clock, Navigation, ExternalLink } from "lucide-react"
+import { companyInfo, openingHours } from "@/lib/company-info"
 
 export function HoursContactSection() {
   const { ref: sectionRef, isInView } = useInView({ threshold: 0.1 })
@@ -82,24 +83,24 @@ export function HoursContactSection() {
               {/* Weekdays */}
               <div>
                 <p className="text-sm tracking-wider uppercase mb-2" style={{ color: "#722f37" }}>
-                  Montag bis Freitag
+                  Heute und die Woche
                 </p>
-                <p className="font-serif text-xl" style={{ color: "#1a1a1a" }}>
-                  11:30 – 23:00 Uhr
-                </p>
-              </div>
-
-              {/* Divider */}
-              <div className="w-full h-px" style={{ backgroundColor: "rgba(114, 47, 55, 0.2)" }} />
-
-              {/* Weekend */}
-              <div>
-                <p className="text-sm tracking-wider uppercase mb-2" style={{ color: "#722f37" }}>
-                  Samstag & Sonntag
-                </p>
-                <p className="font-serif text-xl" style={{ color: "#1a1a1a" }}>
-                  12:00 – 24:00 Uhr
-                </p>
+                <div className="space-y-3">
+                  {openingHours.map((item) => (
+                    <div
+                      key={item.day}
+                      className="flex justify-between gap-5 border-b pb-2 last:border-0 last:pb-0"
+                      style={{ borderColor: "rgba(114, 47, 55, 0.14)" }}
+                    >
+                      <span className="font-medium" style={{ color: "#1a1a1a" }}>
+                        {item.day}
+                      </span>
+                      <span className="text-right" style={{ color: "#666" }}>
+                        {item.hours}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -136,13 +137,24 @@ export function HoursContactSection() {
             </div>
 
             <div className="mb-8">
-              <p className="font-serif text-xl mb-1" style={{ color: "#1a1a1a" }}>
-                Ristorante Bonfini
-              </p>
-              <p className="text-base leading-relaxed" style={{ color: "#666" }}>
-                Chausseestr. 15<br />
-                10115 Berlin
-              </p>
+              <img
+                src="/images/logo/logo-red.png"
+                alt="Bonfini"
+                className="mb-3 h-auto w-36 object-contain"
+                loading="lazy"
+                decoding="async"
+              />
+              <a
+                href={companyInfo.mapsHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-base leading-relaxed transition-colors hover:opacity-80"
+                style={{ color: "#666" }}
+              >
+                {companyInfo.addressLine1}<br />
+                {companyInfo.addressLine2}<br />
+                {companyInfo.country}
+              </a>
             </div>
 
             {/* Divider */}
@@ -150,7 +162,7 @@ export function HoursContactSection() {
 
             {/* Route Button */}
             <a
-              href="https://www.google.com/maps/search/?api=1&query=Chausseestr.+15+10115+Berlin"
+              href={companyInfo.mapsHref}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 px-6 py-3 rounded-sm text-white text-sm tracking-wider uppercase transition-all duration-300 hover:shadow-lg group"
@@ -200,11 +212,11 @@ export function HoursContactSection() {
                   Telefon
                 </p>
                 <a 
-                  href="tel:+493095614848"
+                  href={companyInfo.phoneHref}
                   className="font-serif text-xl transition-colors hover:opacity-70"
                   style={{ color: "#1a1a1a" }}
                 >
-                  030 95 61 48 48
+                  {companyInfo.phoneDisplay}
                 </a>
               </div>
 
@@ -217,11 +229,11 @@ export function HoursContactSection() {
                   E-Mail
                 </p>
                 <a 
-                  href="mailto:reservierung@bonfini.de"
+                  href={`mailto:${companyInfo.email}`}
                   className="font-serif text-lg transition-colors hover:opacity-70 break-all"
                   style={{ color: "#1a1a1a" }}
                 >
-                  reservierung@bonfini.de
+                  {companyInfo.email}
                 </a>
               </div>
             </div>
@@ -232,7 +244,7 @@ export function HoursContactSection() {
             {/* Contact Buttons */}
             <div className="flex flex-col sm:flex-row gap-3">
               <a
-                href="tel:+493095614848"
+                href={companyInfo.phoneHref}
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-sm text-white text-sm tracking-wider uppercase transition-all duration-300 hover:shadow-lg"
                 style={{ backgroundColor: "#722f37" }}
               >
@@ -240,7 +252,7 @@ export function HoursContactSection() {
                 <span>Anrufen</span>
               </a>
               <a
-                href="mailto:reservierung@bonfini.de"
+                href={`mailto:${companyInfo.email}`}
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-sm text-sm tracking-wider uppercase transition-all duration-300 hover:shadow-md border"
                 style={{ 
                   color: "#722f37",

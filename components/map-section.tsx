@@ -2,6 +2,7 @@
 
 import { useInView } from "@/hooks/use-in-view"
 import { cn } from "@/lib/utils"
+import { companyInfo } from "@/lib/company-info"
 
 export function MapSection() {
   const { ref, isInView } = useInView({ threshold: 0.1 })
@@ -15,7 +16,7 @@ export function MapSection() {
         )}
       >
         <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2427.9046892749364!2d13.388860076882775!3d52.51763467981162!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47a851c655f20989%3A0x26bbfb4e84674c63!2sUnter%20den%20Linden%2042%2C%2010117%20Berlin%2C%20Germany!5e0!3m2!1sen!2sus!4v1699999999999!5m2!1sen!2sus"
+          src="https://www.google.com/maps?q=Chausseestra%C3%9Fe%2015%2C%2010115%20Berlin%2C%20Germany&output=embed"
           width="100%"
           height="100%"
           style={{ border: 0, filter: "grayscale(100%) contrast(1.1)" }}
@@ -27,16 +28,22 @@ export function MapSection() {
       </div>
       {/* Overlay with info */}
       <div className="absolute left-6 md:left-12 top-1/2 -translate-y-1/2 bg-white rounded-xl p-6 md:p-8 shadow-2xl max-w-sm z-10">
-        <h3 className="font-serif text-2xl text-carbon mb-4">
-          Ristorante Bonfini
-        </h3>
+        <img
+          src="/images/logo/logo-red.png"
+          alt="Bonfini"
+          className="mb-4 h-auto w-40 object-contain"
+          loading="lazy"
+          decoding="async"
+        />
         <p className="text-muted-foreground mb-4">
-          Unter den Linden 42
+          {companyInfo.addressLine1}
           <br />
-          10117 Berlin-Mitte
+          {companyInfo.addressLine2}
+          <br />
+          {companyInfo.country}
         </p>
         <a
-          href="https://maps.google.com/?q=Unter+den+Linden+42,+10117+Berlin"
+          href={companyInfo.mapsHref}
           target="_blank"
           rel="noopener noreferrer"
           className="magnetic-btn inline-block bg-mahogany text-white px-6 py-3 text-sm uppercase tracking-widest font-medium hover:bg-garnet transition-colors rounded"

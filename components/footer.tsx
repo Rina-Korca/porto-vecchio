@@ -1,6 +1,7 @@
 "use client"
 
-import { Instagram, Facebook, MapPin, Phone, Mail } from "lucide-react"
+import { Instagram, Facebook, MapPin, Phone, Mail, Clock } from "lucide-react"
+import { companyInfo, openingHours } from "@/lib/company-info"
 
 const navigationLinks = [
   { href: "#willkommen", label: "Start" },
@@ -31,48 +32,44 @@ export function Footer() {
           
           {/* Brand Column */}
           <div className="lg:col-span-5">
-            {/* Logo/Text Mark */}
+            {/* Logo */}
             <div className="mb-8">
-              <a href="#" className="inline-block group">
-                <div className="flex items-center gap-3">
-                  {/* Decorative mark */}
-                  <div className="w-12 h-12 border border-garnet/50 flex items-center justify-center group-hover:border-garnet transition-colors duration-300">
-                    <span className="font-serif text-2xl text-garnet">B</span>
-                  </div>
-                  <div>
-                    <span className="font-serif text-2xl text-white tracking-wide">
-                      Ristorante Bonfini
-                    </span>
-                    <div className="h-px w-0 group-hover:w-full bg-garnet transition-all duration-500" />
-                  </div>
-                </div>
+              <a href="#" className="inline-block group" aria-label="Bonfini Startseite">
+                <img
+                  src="/images/logo/logo.png"
+                  alt="Bonfini"
+                  className="h-auto w-44 object-contain transition-opacity duration-300 group-hover:opacity-85"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div className="mt-3 h-px w-0 bg-garnet transition-all duration-500 group-hover:w-full" />
               </a>
             </div>
 
             {/* Contact Info */}
             <div className="space-y-4 mb-8">
               <a 
-                href="https://maps.google.com/?q=Chausseestr.+15,+10115+Berlin" 
+                href={companyInfo.mapsHref}
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-start gap-3 text-smoke/70 hover:text-strawberry transition-colors duration-300 group"
               >
                 <MapPin className="w-5 h-5 mt-0.5 text-garnet/70 group-hover:text-garnet transition-colors duration-300 flex-shrink-0" />
-                <span>Chausseestr. 15, 10115 Berlin</span>
+                <span>{companyInfo.addressDisplay}</span>
               </a>
               <a 
-                href="tel:+493095614848"
+                href={companyInfo.phoneHref}
                 className="flex items-center gap-3 text-smoke/70 hover:text-strawberry transition-colors duration-300 group"
               >
                 <Phone className="w-5 h-5 text-garnet/70 group-hover:text-garnet transition-colors duration-300 flex-shrink-0" />
-                <span>030 95 61 48 48</span>
+                <span>{companyInfo.phoneDisplay}</span>
               </a>
               <a 
-                href="mailto:reservierung@bonfini.de"
+                href={`mailto:${companyInfo.email}`}
                 className="flex items-center gap-3 text-smoke/70 hover:text-strawberry transition-colors duration-300 group"
               >
                 <Mail className="w-5 h-5 text-garnet/70 group-hover:text-garnet transition-colors duration-300 flex-shrink-0" />
-                <span>reservierung@bonfini.de</span>
+                <span>{companyInfo.email}</span>
               </a>
             </div>
 
@@ -140,9 +137,18 @@ export function Footer() {
 
             {/* Opening indicator */}
             <div className="mt-8 pt-6 border-t border-white/10">
-              <p className="text-xs text-smoke/50 uppercase tracking-wider mb-2">Öffnungszeiten</p>
-              <p className="text-smoke/70 text-sm">Mo–Fr: 11:30–23:00</p>
-              <p className="text-smoke/70 text-sm">Sa–So: 12:00–23:00</p>
+              <p className="mb-3 flex items-center gap-2 text-xs uppercase tracking-wider text-smoke/50">
+                <Clock className="h-4 w-4 text-garnet/70" />
+                <span>Öffnungszeiten</span>
+              </p>
+              <div className="space-y-1.5">
+                {openingHours.map((item) => (
+                  <div key={item.day} className="flex justify-between gap-4 text-sm text-smoke/70">
+                    <span>{item.day}</span>
+                    <span className="text-right">{item.hours}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

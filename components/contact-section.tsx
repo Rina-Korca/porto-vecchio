@@ -3,13 +3,7 @@
 import { useInView } from "@/hooks/use-in-view"
 import { cn } from "@/lib/utils"
 import { MapPin, Phone, Mail, Clock } from "lucide-react"
-
-const openingHours = [
-  { day: "Montag", hours: "Ruhetag" },
-  { day: "Dienstag - Freitag", hours: "12:00 - 14:30 | 18:00 - 23:00" },
-  { day: "Samstag", hours: "18:00 - 23:30" },
-  { day: "Sonntag", hours: "12:00 - 15:00 | 18:00 - 22:00" },
-]
+import { companyInfo, openingHours } from "@/lib/company-info"
 
 export function ContactSection() {
   const { ref, isInView } = useInView({ threshold: 0.2 })
@@ -43,11 +37,18 @@ export function ContactSection() {
                 </div>
                 <div>
                   <h3 className="font-medium text-carbon mb-1">Adresse</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Unter den Linden 42
+                  <a
+                    href={companyInfo.mapsHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground leading-relaxed transition-colors hover:text-mahogany"
+                  >
+                    {companyInfo.addressLine1}
                     <br />
-                    10117 Berlin-Mitte
-                  </p>
+                    {companyInfo.addressLine2}
+                    <br />
+                    {companyInfo.country}
+                  </a>
                 </div>
               </div>
 
@@ -59,10 +60,10 @@ export function ContactSection() {
                   <h3 className="font-medium text-carbon mb-1">Telefon</h3>
                   <p className="text-muted-foreground">
                     <a
-                      href="tel:+493012345678"
+                      href={companyInfo.phoneHref}
                       className="hover:text-mahogany transition-colors"
                     >
-                      +49 30 1234 5678
+                      {companyInfo.phoneDisplay}
                     </a>
                   </p>
                 </div>
@@ -76,10 +77,10 @@ export function ContactSection() {
                   <h3 className="font-medium text-carbon mb-1">E-Mail</h3>
                   <p className="text-muted-foreground">
                     <a
-                      href="mailto:info@bonfini.de"
+                      href={`mailto:${companyInfo.email}`}
                       className="hover:text-mahogany transition-colors"
                     >
-                      info@bonfini.de
+                      {companyInfo.email}
                     </a>
                   </p>
                 </div>
@@ -113,14 +114,7 @@ export function ContactSection() {
                     className="flex justify-between items-center py-3 border-b border-smoke last:border-0"
                   >
                     <span className="text-carbon font-medium">{item.day}</span>
-                    <span
-                      className={cn(
-                        "text-right",
-                        item.hours === "Ruhetag"
-                          ? "text-mahogany"
-                          : "text-muted-foreground"
-                      )}
-                    >
+                    <span className="text-right text-muted-foreground">
                       {item.hours}
                     </span>
                   </div>

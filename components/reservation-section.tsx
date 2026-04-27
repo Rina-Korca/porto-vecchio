@@ -5,6 +5,7 @@ import { useInView } from "@/hooks/use-in-view"
 import { cn } from "@/lib/utils"
 import { Calendar, Clock, Users, Mail, Phone, User, MessageSquare, MapPin } from "lucide-react"
 import Image from "next/image"
+import { companyInfo, openingHours } from "@/lib/company-info"
 
 export function ReservationSection() {
   const { ref, isInView } = useInView({ threshold: 0.1 })
@@ -294,22 +295,22 @@ export function ReservationSection() {
                 <p className="text-sm text-muted-foreground mb-4">Oder kontaktieren Sie uns direkt:</p>
                 <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
                   <a 
-                    href="tel:+4930956148 48" 
+                    href={companyInfo.phoneHref}
                     className="flex items-center gap-3 text-carbon hover:text-mahogany transition-colors group"
                   >
                     <div className="w-10 h-10 bg-smoke rounded-full flex items-center justify-center group-hover:bg-mahogany/10 transition-colors">
                       <Phone className="w-4 h-4 text-mahogany" />
                     </div>
-                    <span className="font-medium">030 95 61 48 48</span>
+                    <span className="font-medium">{companyInfo.phoneDisplay}</span>
                   </a>
                   <a 
-                    href="mailto:reservierung@bonfini.de" 
+                    href={`mailto:${companyInfo.email}`}
                     className="flex items-center gap-3 text-carbon hover:text-mahogany transition-colors group"
                   >
                     <div className="w-10 h-10 bg-smoke rounded-full flex items-center justify-center group-hover:bg-mahogany/10 transition-colors">
                       <Mail className="w-4 h-4 text-mahogany" />
                     </div>
-                    <span className="font-medium">reservierung@bonfini.de</span>
+                    <span className="font-medium">{companyInfo.email}</span>
                   </a>
                 </div>
               </div>
@@ -340,18 +341,15 @@ export function ReservationSection() {
                 <div className="bg-white/95 backdrop-blur-sm rounded-xl p-6 md:p-8 shadow-lg">
                   <h3 className="font-serif text-2xl text-carbon mb-6">Öffnungszeiten</h3>
                   <div className="space-y-4">
-                    <div className="flex justify-between items-center pb-3 border-b border-dust">
-                      <span className="text-carbon font-medium">Montag - Freitag</span>
-                      <span className="text-muted-foreground">12:00 - 15:00 | 18:00 - 23:00</span>
-                    </div>
-                    <div className="flex justify-between items-center pb-3 border-b border-dust">
-                      <span className="text-carbon font-medium">Samstag</span>
-                      <span className="text-muted-foreground">18:00 - 23:30</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-carbon font-medium">Sonntag</span>
-                      <span className="text-muted-foreground">12:00 - 22:00</span>
-                    </div>
+                    {openingHours.map((item) => (
+                      <div
+                        key={item.day}
+                        className="flex justify-between gap-4 pb-3 border-b border-dust last:border-0 last:pb-0"
+                      >
+                        <span className="text-carbon font-medium">{item.day}</span>
+                        <span className="text-right text-muted-foreground">{item.hours}</span>
+                      </div>
+                    ))}
                   </div>
                   <p className="mt-6 text-sm text-muted-foreground">
                     Küchenschluss 30 Minuten vor Schließung

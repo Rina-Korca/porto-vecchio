@@ -5,6 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useInView } from "@/hooks/use-in-view"
 import { Building2, Users, MessageCircle, Sparkles, ArrowRight } from "lucide-react"
+import { companyInfo } from "@/lib/company-info"
 
 const features = [
   {
@@ -219,11 +220,11 @@ export function PrivateEventsSection() {
               >
                 Oder rufen Sie uns direkt an:{" "}
                 <a 
-                  href="tel:+493012345678" 
+                  href={companyInfo.phoneHref}
                   className="underline underline-offset-2 transition-colors hover:no-underline"
                   style={{ color: "#800020" }}
                 >
-                  +49 30 1234 5678
+                  {companyInfo.phoneDisplay}
                 </a>
               </p>
             </div>

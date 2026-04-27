@@ -1,8 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Menu, X, Phone } from "lucide-react"
+import { Menu, X, Phone, MapPin } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { companyInfo } from "@/lib/company-info"
 
 const navLinks = [
   { href: "#willkommen", label: "Willkommen" },
@@ -66,11 +67,16 @@ export function Navigation() {
         <a
           href="#"
           className={cn(
-            "font-serif text-2xl md:text-3xl tracking-wide transition-all duration-500 hover:opacity-80",
-            isScrolled ? "text-garnet" : "text-white"
+            "block transition-all duration-500 hover:opacity-85",
+            isScrolled ? "w-28 md:w-32" : "w-32 md:w-36"
           )}
+          aria-label="Bonfini Startseite"
         >
-          <span className="font-medium">Bonfini</span>
+          <img
+            src={isScrolled ? "/images/logo/logo-red.png" : "/images/logo/logo.png"}
+            alt="Bonfini"
+            className="h-auto w-full object-contain"
+          />
         </a>
 
         {/* Desktop Navigation */}
@@ -98,7 +104,7 @@ export function Navigation() {
 
         {/* Desktop CTA */}
         <a
-          href="tel:+493095614848"
+          href={companyInfo.phoneHref}
           className={cn(
             "hidden lg:flex items-center gap-2 text-sm transition-all duration-300",
             isScrolled
@@ -107,7 +113,7 @@ export function Navigation() {
           )}
         >
           <Phone className="w-4 h-4" />
-          <span className="font-medium">030 95 61 48 48</span>
+          <span className="font-medium">{companyInfo.phoneDisplay}</span>
         </a>
 
         {/* Mobile Menu Button */}
@@ -171,7 +177,11 @@ export function Navigation() {
         {/* Mobile menu content */}
         <div className="flex flex-col items-center justify-center h-full px-6">
           {/* Logo */}
-          <span className="font-serif text-3xl text-mahogany mb-12">Bonfini</span>
+          <img
+            src="/images/logo/logo.png"
+            alt="Bonfini"
+            className="mb-12 h-auto w-40 object-contain"
+          />
           
           {/* Navigation links */}
           <ul className="flex flex-col items-center gap-6">
@@ -205,15 +215,21 @@ export function Navigation() {
             )}
           >
             <a
-              href="tel:+493095614848"
+              href={companyInfo.phoneHref}
               className="flex items-center justify-center gap-3 text-white/70 hover:text-white transition-colors"
             >
               <Phone className="w-5 h-5 text-mahogany" />
-              <span className="text-lg">030 95 61 48 48</span>
+              <span className="text-lg">{companyInfo.phoneDisplay}</span>
             </a>
-            <p className="mt-4 text-sm text-white/40">
-              Chausseestr. 15, 10115 Berlin
-            </p>
+            <a
+              href={companyInfo.mapsHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 flex items-center justify-center gap-2 text-sm text-white/40 transition-colors hover:text-white/70"
+            >
+              <MapPin className="h-4 w-4 text-mahogany" />
+              <span>{companyInfo.addressDisplay}</span>
+            </a>
           </div>
         </div>
       </div>
