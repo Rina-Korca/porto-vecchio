@@ -1,22 +1,64 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { MapPin, Phone } from "lucide-react"
 import Image from "next/image"
 
 export function HeroSection() {
   const [isVisible, setIsVisible] = useState(false)
+  const [scrollProgress, setScrollProgress] = useState(0)
+  const sectionRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
-    // Small delay for smoother initial load
     const timer = setTimeout(() => setIsVisible(true), 100)
     return () => clearTimeout(timer)
   }, [])
 
+  // Scroll-driven animation for headline movement
+  useEffect(() => {
+    let ticking = false
+
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (!sectionRef.current) {
+            ticking = false
+            return
+          }
+          
+          const scrollY = window.scrollY
+          const sectionHeight = sectionRef.current.offsetHeight
+          const progress = Math.min(1, scrollY / (sectionHeight * 0.8))
+          setScrollProgress(progress)
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  // Calculate scroll-based transforms
+  const headlineOffset = scrollProgress * -60
+  const headlineScale = 1 - scrollProgress * 0.1
+  const bgScale = 1 + scrollProgress * 0.15
+  const contentOpacity = 1 - scrollProgress * 1.5
+
   return (
-    <section className="relative h-screen min-h-[700px] max-h-[1200px] flex items-center justify-center overflow-hidden">
-      {/* Background Image with Slow Zoom */}
-      <div className="absolute inset-0 hero-zoom">
+    <section 
+      ref={sectionRef}
+      className="relative h-screen min-h-[700px] max-h-[1200px] flex items-center justify-center overflow-hidden"
+    >
+      {/* Background Image with Scroll Zoom */}
+      <div 
+        className="absolute inset-0 hero-zoom"
+        style={{
+          transform: `scale(${bgScale})`,
+          transition: "transform 0.1s linear"
+        }}
+      >
         <Image
           src="/images/hero-restaurant.jpg"
           alt="Ristorante Bonfini Interieur"
@@ -31,8 +73,15 @@ export function HeroSection() {
       <div className="absolute inset-0 bg-gradient-to-b from-carbon/60 via-carbon/30 to-carbon/70" />
       <div className="absolute inset-0 bg-gradient-to-r from-carbon/30 via-transparent to-carbon/30" />
 
-      {/* Content - Editorial Layout */}
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-6 lg:px-12">
+      {/* Content - Editorial Layout with scroll-driven movement */}
+      <div 
+        className="relative z-10 w-full max-w-6xl mx-auto px-6 lg:px-12"
+        style={{
+          transform: `translateY(${headlineOffset}px) scale(${headlineScale})`,
+          opacity: Math.max(0, contentOpacity),
+          transition: "transform 0.1s linear, opacity 0.1s linear"
+        }}
+      >
         <div className="flex flex-col items-center text-center">
           {/* Small intro text */}
           <span
@@ -43,7 +92,7 @@ export function HeroSection() {
             Benvenuti
           </span>
 
-          {/* Main Headline */}
+          {/* Main Headline - moves up faster on scroll */}
           <h1
             className={`font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl text-white mb-6 leading-[0.95] tracking-tight transition-all duration-1000 delay-150 ease-luxury ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
@@ -88,7 +137,7 @@ export function HeroSection() {
           >
             <a
               href="#reservierung"
-              className="group relative inline-flex items-center justify-center bg-mahogany text-white px-8 md:px-10 py-3.5 md:py-4 text-xs md:text-sm uppercase tracking-[0.2em] font-medium overflow-hidden transition-all duration-500 hover:shadow-[0_10px_40px_rgba(164,22,26,0.4)]"
+              className="group relative inline-flex items-center justify-center bg-mahogany text-white px-8 md:px-10 py-3.5 md:py-4 text-xs md:text-sm uppercase tracking-[0.2em] font-medium overflow-hidden transition-all duration-500 hover:shadow-[0_10px_40px_rgba(164,22,26,0.4)] magnetic-btn"
             >
               <span className="relative z-10">Tisch reservieren</span>
               <div className="absolute inset-0 bg-garnet transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
@@ -128,11 +177,12 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
+      {/* Scroll Indicator - fades out on scroll */}
       <div 
         className={`absolute bottom-8 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 transition-all duration-1000 delay-1000 ease-luxury ${
           isVisible ? "opacity-100" : "opacity-0"
         }`}
+        style={{ opacity: Math.max(0, 1 - scrollProgress * 3) }}
       >
         <span className="text-white/30 text-[10px] uppercase tracking-[0.3em]">Entdecken</span>
         <a 
@@ -145,7 +195,10 @@ export function HeroSection() {
       </div>
 
       {/* Side decorative elements */}
-      <div className="absolute left-6 md:left-12 top-1/2 -translate-y-1/2 hidden lg:block">
+      <div 
+        className="absolute left-6 md:left-12 top-1/2 -translate-y-1/2 hidden lg:block"
+        style={{ opacity: Math.max(0, 1 - scrollProgress * 2) }}
+      >
         <div className="flex flex-col items-center gap-4">
           <div className="w-px h-20 bg-gradient-to-b from-transparent via-white/20 to-transparent" />
           <span className="text-white/30 text-[10px] uppercase tracking-widest transform -rotate-90 origin-center whitespace-nowrap">

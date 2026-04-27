@@ -1,9 +1,7 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
-import { useInView } from "@/hooks/use-in-view"
-import { cn } from "@/lib/utils"
+import { ScrollReveal, ParallaxElement, HeadlineScroll, ScrollImage, StaggeredGrid } from "@/components/scroll-animations"
 
 const features = [
   {
@@ -45,27 +43,8 @@ const features = [
 ]
 
 export function KitchenSection() {
-  const { ref: sectionRef, isInView } = useInView({ threshold: 0.1 })
-  const [parallaxOffset, setParallaxOffset] = useState(0)
-  const imageContainerRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (imageContainerRef.current) {
-        const rect = imageContainerRef.current.getBoundingClientRect()
-        const scrollProgress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height)
-        const clampedProgress = Math.max(0, Math.min(1, scrollProgress))
-        setParallaxOffset(clampedProgress * 40 - 20)
-      }
-    }
-
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
-
   return (
     <section
-      ref={sectionRef as React.RefObject<HTMLElement>}
       id="kueche"
       className="relative py-24 md:py-32 lg:py-40 bg-smoke overflow-hidden"
     >
@@ -74,128 +53,107 @@ export function KitchenSection() {
       
       <div className="container mx-auto px-6 lg:px-12 relative">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-          {/* Left - Sticky Image */}
-          <div
-            ref={imageContainerRef}
-            className="lg:sticky lg:top-32 h-fit"
-          >
-            <div className="relative">
-              {/* Main Image */}
-              <div
-                className={cn(
-                  "relative aspect-[4/5] overflow-hidden shadow-premium-lg transition-all duration-1000 ease-luxury",
-                  isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                )}
-              >
-                <Image
-                  src="/images/chef-cooking.jpg"
-                  alt="Koch bei der Zubereitung eines italienischen Gerichts"
-                  fill
-                  className="object-cover transition-transform duration-1000 ease-out"
-                  style={{ transform: `translateY(${parallaxOffset}px) scale(1.1)` }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-carbon/25 via-transparent to-transparent" />
-              </div>
+          {/* Left - Sticky Image with Parallax */}
+          <div className="lg:sticky lg:top-32 h-fit">
+            <ParallaxElement speed={0.12}>
+              <div className="relative">
+                {/* Main Image with scroll zoom */}
+                <ScrollReveal direction="left" delay={0}>
+                  <div className="relative aspect-[4/5] overflow-hidden shadow-premium-lg">
+                    <ScrollImage
+                      src="/images/chef-cooking.jpg"
+                      alt="Koch bei der Zubereitung eines italienischen Gerichts"
+                      className="object-cover"
+                      containerClassName="w-full h-full"
+                      zoomAmount={1.15}
+                      parallaxSpeed={0.2}
+                      reveal="left"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-carbon/25 via-transparent to-transparent pointer-events-none" />
+                  </div>
+                </ScrollReveal>
 
-              {/* Decorative frame */}
-              <div
-                className={cn(
-                  "absolute -bottom-4 -right-4 w-full h-full border-2 border-mahogany/20 -z-10 transition-all duration-1000 delay-300 ease-luxury",
-                  isInView ? "opacity-100" : "opacity-0"
-                )}
-              />
+                {/* Decorative frame */}
+                <ScrollReveal direction="scale" delay={300}>
+                  <div className="absolute -bottom-4 -right-4 w-full h-full border-2 border-mahogany/20 -z-10" />
+                </ScrollReveal>
 
-              {/* Floating accent card */}
-              <div
-                className={cn(
-                  "absolute -bottom-6 -left-6 bg-white p-5 shadow-premium transition-all duration-700 delay-500 ease-luxury",
-                  isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                )}
-              >
-                <p className="text-mahogany font-serif text-lg italic">
-                  &ldquo;La cucina è arte&rdquo;
-                </p>
-                <p className="text-carbon/60 text-sm mt-1">
-                  Die Küche ist Kunst
-                </p>
+                {/* Floating accent card */}
+                <ScrollReveal direction="up" delay={500}>
+                  <div className="absolute -bottom-6 -left-6 bg-white p-5 shadow-premium z-10">
+                    <p className="text-mahogany font-serif text-lg italic">
+                      &ldquo;La cucina è arte&rdquo;
+                    </p>
+                    <p className="text-carbon/60 text-sm mt-1">
+                      Die Küche ist Kunst
+                    </p>
+                  </div>
+                </ScrollReveal>
               </div>
-            </div>
+            </ParallaxElement>
           </div>
 
-          {/* Right - Text Content */}
+          {/* Right - Text Content with scroll reveals */}
           <div className="lg:py-8">
             {/* Section Label */}
-            <div
-              className={cn(
-                "flex items-center gap-4 mb-8 transition-all duration-700 ease-luxury",
-                isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-              )}
-            >
-              <div className="decorative-line" />
-              <span className="text-mahogany text-xs tracking-[0.2em] uppercase font-medium">
-                Kulinarische Exzellenz
-              </span>
-            </div>
+            <ScrollReveal direction="up" delay={0}>
+              <div className="flex items-center gap-4 mb-8">
+                <div className="decorative-line" />
+                <span className="text-mahogany text-xs tracking-[0.2em] uppercase font-medium">
+                  Kulinarische Exzellenz
+                </span>
+              </div>
+            </ScrollReveal>
 
-            {/* Heading */}
-            <h2
-              className={cn(
-                "font-serif text-4xl md:text-5xl lg:text-6xl text-carbon mb-6 transition-all duration-700 delay-100 ease-luxury",
-                isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-              )}
-            >
-              Unsere Küche
-            </h2>
+            {/* Heading with parallax */}
+            <HeadlineScroll speed={0.06}>
+              <ScrollReveal direction="up" delay={100}>
+                <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-carbon mb-6">
+                  Unsere Küche
+                </h2>
+              </ScrollReveal>
+            </HeadlineScroll>
 
             {/* Italian Subtitle */}
-            <p
-              className={cn(
-                "font-serif text-xl md:text-2xl text-mahogany italic mb-8 transition-all duration-700 delay-200 ease-luxury",
-                isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-              )}
-            >
-              l&apos;anima della nostra ospitalità
-            </p>
+            <ScrollReveal direction="up" delay={200}>
+              <p className="font-serif text-xl md:text-2xl text-mahogany italic mb-8">
+                l&apos;anima della nostra ospitalità
+              </p>
+            </ScrollReveal>
 
             {/* Main Text */}
-            <div
-              className={cn(
-                "space-y-5 mb-12 transition-all duration-700 delay-300 ease-luxury",
-                isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-              )}
-            >
-              <p className="text-carbon/70 text-base md:text-lg leading-relaxed font-light">
-                Die Seele unserer Gastfreundschaft. Ursprung eines leidenschaftlichen 
-                Schaffensprozesses, der <span className="text-mahogany">Kunst</span> und <span className="text-mahogany">Erfahrung</span> verbindet. Zwei Begrifflichkeiten, 
-                die sofort aufhorchen lassen und in Bonfini&apos;s Küche raffiniert umgesetzt werden.
-              </p>
-              <p className="text-carbon text-lg md:text-xl font-medium">
-                Unser Anspruch: dass Sie mehr bekommen, als Sie erwarten.
-              </p>
-            </div>
+            <ScrollReveal direction="up" delay={300}>
+              <div className="space-y-5 mb-12">
+                <p className="text-carbon/70 text-base md:text-lg leading-relaxed font-light">
+                  Die Seele unserer Gastfreundschaft. Ursprung eines leidenschaftlichen 
+                  Schaffensprozesses, der <span className="text-mahogany">Kunst</span> und <span className="text-mahogany">Erfahrung</span> verbindet. Zwei Begrifflichkeiten, 
+                  die sofort aufhorchen lassen und in Bonfini&apos;s Küche raffiniert umgesetzt werden.
+                </p>
+                <p className="text-carbon text-lg md:text-xl font-medium">
+                  Unser Anspruch: dass Sie mehr bekommen, als Sie erwarten.
+                </p>
+              </div>
+            </ScrollReveal>
 
             {/* Decorative Divider */}
-            <div
-              className={cn(
-                "flex items-center gap-4 mb-12 transition-all duration-700 delay-400 ease-luxury",
-                isInView ? "opacity-100" : "opacity-0"
-              )}
-            >
-              <div className="flex-1 h-px bg-gradient-to-r from-mahogany/30 to-transparent" />
-              <div className="w-1.5 h-1.5 rotate-45 bg-mahogany/40" />
-              <div className="flex-1 h-px bg-gradient-to-l from-mahogany/30 to-transparent" />
-            </div>
+            <ScrollReveal direction="scale" delay={400}>
+              <div className="flex items-center gap-4 mb-12">
+                <div className="flex-1 h-px bg-gradient-to-r from-mahogany/30 to-transparent" />
+                <div className="w-1.5 h-1.5 rotate-45 bg-mahogany/40" />
+                <div className="flex-1 h-px bg-gradient-to-l from-mahogany/30 to-transparent" />
+              </div>
+            </ScrollReveal>
 
-            {/* Feature Cards */}
-            <div className="grid sm:grid-cols-2 gap-4">
-              {features.map((feature, index) => (
+            {/* Feature Cards with staggered animation */}
+            <StaggeredGrid 
+              className="grid sm:grid-cols-2 gap-4"
+              staggerDelay={120}
+              threshold={0.15}
+            >
+              {features.map((feature) => (
                 <div
                   key={feature.title}
-                  className={cn(
-                    "group p-5 bg-white/90 backdrop-blur-sm border border-silver/30 hover:border-mahogany/30 hover:shadow-premium transition-all duration-500 ease-luxury card-hover",
-                    isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-                  )}
-                  style={{ transitionDelay: `${500 + index * 100}ms` }}
+                  className="group p-5 bg-white/90 backdrop-blur-sm border border-silver/30 hover:border-mahogany/30 hover:shadow-premium transition-all duration-500 ease-luxury card-hover"
                 >
                   <div className="flex items-start gap-4">
                     <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-mahogany/10 text-mahogany group-hover:bg-mahogany group-hover:text-white transition-all duration-300">
@@ -212,7 +170,7 @@ export function KitchenSection() {
                   </div>
                 </div>
               ))}
-            </div>
+            </StaggeredGrid>
           </div>
         </div>
       </div>
