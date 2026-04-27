@@ -294,14 +294,16 @@ export function HorizontalGallerySection() {
   const [parallaxOffset, setParallaxOffset] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
   const [isInView, setIsInView] = useState(false)
+  const [windowWidth, setWindowWidth] = useState(1)
 
   const sectionRef = useRef<HTMLElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
-  // Check for mobile
+  // Check for mobile and track window width
   useEffect(() => {
     const checkMobile = () => {
+      setWindowWidth(window.innerWidth)
       setIsMobile(
         window.innerWidth < 768 || window.matchMedia("(prefers-reduced-motion: reduce)").matches
       )
@@ -489,7 +491,7 @@ export function HorizontalGallerySection() {
               <div className="h-1 w-32 overflow-hidden rounded-full bg-carbon/10">
                 <div
                   className="h-full rounded-full bg-mahogany transition-all duration-150"
-                  style={{ width: `${(horizontalScroll / ((trackRef.current?.scrollWidth || 1) - window.innerWidth)) * 100}%` }}
+                  style={{ width: `${(horizontalScroll / ((trackRef.current?.scrollWidth || 1) - windowWidth)) * 100}%` }}
                 />
               </div>
               <span className="text-sm text-carbon/50">
