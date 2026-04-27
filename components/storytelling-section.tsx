@@ -1,6 +1,6 @@
 "use client"
 
-import { ScrollReveal, ImageReveal, ParallaxElement, HeadlineScroll, AnimatedHeading } from "@/components/scroll-animations"
+import { ScrollReveal, ImageReveal, ParallaxElement, HeadlineScroll } from "@/components/scroll-animations"
 
 export function StorytellingSection() {
   return (
@@ -21,16 +21,13 @@ export function StorytellingSection() {
               <div className="decorative-line mb-8" />
             </ScrollReveal>
             
-            {/* Main heading with letter animation for dramatic effect */}
+            {/* Main heading with parallax */}
             <HeadlineScroll speed={0.08}>
-              <AnimatedHeading
-                as="h2"
-                className="font-serif text-6xl md:text-7xl lg:text-8xl text-carbon mb-8 italic"
-                animationType="letters"
-                wordDelay={60}
-              >
-                Bravo!
-              </AnimatedHeading>
+              <ScrollReveal direction="up" delay={100}>
+                <h2 className="font-serif text-6xl md:text-7xl lg:text-8xl text-carbon mb-8 italic">
+                  Bravo!
+                </h2>
+              </ScrollReveal>
             </HeadlineScroll>
             
             {/* Storytelling paragraphs with staggered reveal */}

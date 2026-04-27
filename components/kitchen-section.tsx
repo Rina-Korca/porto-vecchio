@@ -1,6 +1,6 @@
 "use client"
 
-import { ScrollReveal, ParallaxElement, HeadlineScroll, ImageReveal, StaggeredGrid, AnimatedHeading } from "@/components/scroll-animations"
+import { ScrollReveal, ParallaxElement, HeadlineScroll, ImageReveal, StaggeredGrid } from "@/components/scroll-animations"
 
 const features = [
   {
@@ -100,15 +100,13 @@ export function KitchenSection() {
               </div>
             </ScrollReveal>
 
-            {/* Heading with progressive word animation */}
+            {/* Heading with parallax */}
             <HeadlineScroll speed={0.06}>
-              <AnimatedHeading
-                as="h2"
-                className="font-serif text-4xl md:text-5xl lg:text-6xl text-carbon mb-6"
-                wordDelay={120}
-              >
-                Unsere Küche
-              </AnimatedHeading>
+              <ScrollReveal direction="up" delay={100}>
+                <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-carbon mb-6">
+                  Unsere Küche
+                </h2>
+              </ScrollReveal>
             </HeadlineScroll>
 
             {/* Italian Subtitle */}

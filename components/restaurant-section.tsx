@@ -1,7 +1,7 @@
 "use client"
 
 import { ArrowRight } from "lucide-react"
-import { ScrollReveal, ImageReveal, ParallaxElement, HeadlineScroll, AnimatedHeading } from "@/components/scroll-animations"
+import { ScrollReveal, ImageReveal, ParallaxElement, HeadlineScroll } from "@/components/scroll-animations"
 
 export function RestaurantSection() {
   return (
@@ -86,15 +86,13 @@ export function RestaurantSection() {
                   </div>
                 </ScrollReveal>
 
-                {/* Heading with progressive word animation */}
+                {/* Heading with parallax */}
                 <HeadlineScroll speed={0.04}>
-                  <AnimatedHeading
-                    as="h2"
-                    className="font-serif text-4xl lg:text-5xl text-smoke mb-4"
-                    wordDelay={100}
-                  >
-                    Das Restaurant
-                  </AnimatedHeading>
+                  <ScrollReveal direction="up" delay={700}>
+                    <h2 className="font-serif text-4xl lg:text-5xl text-smoke mb-4">
+                      Das Restaurant
+                    </h2>
+                  </ScrollReveal>
                 </HeadlineScroll>
 
                 {/* Italian subtitle */}
