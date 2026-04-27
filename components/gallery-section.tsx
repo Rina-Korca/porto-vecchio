@@ -36,7 +36,7 @@ export function GallerySection() {
       : galleryImages.filter((img) => img.category === activeCategory)
 
   return (
-    <section id="galerie" ref={ref} className="py-24 md:py-32 bg-white">
+    <section id="galerie" ref={ref} className="py-16 md:py-20 bg-white">
       <div className="container mx-auto px-6">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
