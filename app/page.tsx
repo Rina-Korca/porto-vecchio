@@ -2,7 +2,7 @@ import { Navigation } from "@/components/navigation"
 import { HeroSection } from "@/components/hero-section"
 import { StorytellingSection } from "@/components/storytelling-section"
 import { TripadvisorSection } from "@/components/tripadvisor-section"
-import { PinnedStorytellingSection } from "@/components/pinned-storytelling-section"
+import { CinematicStorytellingSection } from "@/components/cinematic-storytelling-section"
 import { KitchenSection } from "@/components/kitchen-section"
 import { RestaurantSection } from "@/components/restaurant-section"
 import { RecommendationsSection } from "@/components/recommendations-section"
@@ -33,8 +33,8 @@ export default function Home() {
         <TripadvisorSection />
       </div>
       
-      {/* Pinned Storytelling - Creates visual break */}
-      <PinnedStorytellingSection />
+      {/* Cinematic Storytelling - Smooth scroll experience */}
+      <CinematicStorytellingSection />
       
       {/* Kitchen - Overlaps with blend */}
       <div className="relative -mt-16 pt-16 bg-gradient-to-b from-transparent to-smoke">
