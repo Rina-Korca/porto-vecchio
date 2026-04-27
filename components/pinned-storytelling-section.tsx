@@ -49,6 +49,10 @@ export function PinnedStorytellingSection() {
   const [isInView, setIsInView] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
 
+  // Total height = 100vh per slide = 300vh for 3 slides
+  const totalSlides = storySteps.length
+  const sectionHeightVh = totalSlides * 100
+
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 1024)
@@ -83,18 +87,19 @@ export function PinnedStorytellingSection() {
           }
 
           // Calculate progress through the section (0 to 1)
-          const scrollStart = rect.top
-          const scrollEnd = rect.bottom - windowHeight
-          const totalScroll = sectionHeight - windowHeight
-          const currentScroll = -scrollStart
-          const progress = Math.max(0, Math.min(1, currentScroll / totalScroll))
+          // Progress starts when section top reaches viewport top (rect.top <= 0)
+          // Progress ends when section bottom reaches viewport bottom
+          const scrollableDistance = sectionHeight - windowHeight
+          const scrolled = Math.max(0, -rect.top)
+          const progress = Math.min(1, scrolled / scrollableDistance)
 
           setScrollProgress(progress)
 
           // Determine active step based on progress
+          // Each step gets equal portion of the scroll
           const stepIndex = Math.min(
-            storySteps.length - 1,
-            Math.floor(progress * storySteps.length)
+            totalSlides - 1,
+            Math.floor(progress * totalSlides)
           )
           setActiveStep(stepIndex)
 
@@ -108,7 +113,7 @@ export function PinnedStorytellingSection() {
     handleScroll()
 
     return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+  }, [totalSlides])
 
   // Calculate individual step progress for smoother transitions
   const getStepProgress = (index: number) => {
@@ -164,10 +169,10 @@ export function PinnedStorytellingSection() {
     <section
       ref={sectionRef}
       className="relative bg-smoke"
-      style={{ height: "250vh" }}
+      style={{ height: `${sectionHeightVh}vh` }}
     >
-      {/* Sticky Container */}
-      <div className="sticky top-0 h-screen overflow-hidden">
+      {/* Sticky Container - stays fixed while scrolling through section */}
+      <div className="sticky top-0 h-screen w-full overflow-hidden">
         <div className="h-full flex">
           {/* Left Side - Sticky Image */}
           <div className="w-1/2 h-full relative overflow-hidden">
