@@ -1,7 +1,6 @@
 "use client"
 
-import Image from "next/image"
-import { ScrollReveal, ParallaxElement, HeadlineScroll, ScrollImage, StaggeredGrid } from "@/components/scroll-animations"
+import { ScrollReveal, ParallaxElement, HeadlineScroll, ImageReveal, StaggeredGrid } from "@/components/scroll-animations"
 
 const features = [
   {
@@ -57,21 +56,17 @@ export function KitchenSection() {
           <div className="lg:sticky lg:top-32 h-fit">
             <ParallaxElement speed={0.12}>
               <div className="relative">
-                {/* Main Image with scroll zoom */}
-                <ScrollReveal direction="left" delay={0}>
-                  <div className="relative aspect-[4/5] overflow-hidden shadow-premium-lg">
-                    <ScrollImage
-                      src="/images/chef-cooking.jpg"
-                      alt="Koch bei der Zubereitung eines italienischen Gerichts"
-                      className="object-cover"
-                      containerClassName="w-full h-full"
-                      zoomAmount={1.15}
-                      parallaxSpeed={0.2}
-                      reveal="left"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-carbon/25 via-transparent to-transparent pointer-events-none" />
-                  </div>
-                </ScrollReveal>
+                {/* Main Image with center expand reveal */}
+                <div className="relative aspect-[4/5] shadow-premium-lg overflow-hidden">
+                  <ImageReveal
+                    src="/images/chef-cooking.jpg"
+                    alt="Koch bei der Zubereitung eines italienischen Gerichts"
+                    reveal="center"
+                    delay={0}
+                    containerClassName="w-full h-full"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-carbon/25 via-transparent to-transparent pointer-events-none z-10" />
+                </div>
 
                 {/* Decorative frame */}
                 <ScrollReveal direction="scale" delay={300}>

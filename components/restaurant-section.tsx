@@ -1,7 +1,7 @@
 "use client"
 
 import { ArrowRight } from "lucide-react"
-import { ScrollReveal, ScrollImage, ParallaxElement, HeadlineScroll } from "@/components/scroll-animations"
+import { ScrollReveal, ImageReveal, ParallaxElement, HeadlineScroll } from "@/components/scroll-animations"
 
 export function RestaurantSection() {
   return (
@@ -18,23 +18,19 @@ export function RestaurantSection() {
           {/* Layered Image Grid */}
           <div className="relative lg:grid lg:grid-cols-12 lg:gap-6 lg:items-start">
             
-            {/* Large Main Image with scroll zoom */}
+            {/* Large Main Image with diagonal mask reveal */}
             <ParallaxElement speed={0.1} className="lg:col-span-7 relative z-10">
-              <ScrollReveal direction="left" delay={0}>
-                <div className="relative aspect-[4/3] lg:aspect-[4/5] overflow-hidden rounded-sm shadow-2xl">
-                  <ScrollImage
-                    src="/images/gallery-interior-1.jpg"
-                    alt="Bonfini Restaurant Interior"
-                    className="object-cover"
-                    containerClassName="w-full h-full"
-                    zoomAmount={1.12}
-                    parallaxSpeed={0.15}
-                    reveal="left"
-                  />
-                  {/* Subtle overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
-                </div>
-              </ScrollReveal>
+              <div className="relative aspect-[4/3] lg:aspect-[4/5] rounded-sm shadow-2xl overflow-hidden">
+                <ImageReveal
+                  src="/images/gallery-interior-1.jpg"
+                  alt="Bonfini Restaurant Interior"
+                  reveal="diagonal"
+                  delay={0}
+                  containerClassName="w-full h-full"
+                />
+                {/* Subtle overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none z-10" />
+              </div>
               
               {/* Decorative frame accent */}
               <ScrollReveal direction="scale" delay={400}>
@@ -44,38 +40,30 @@ export function RestaurantSection() {
 
             {/* Two Smaller Images - Stacked on Right with parallax */}
             <div className="lg:col-span-5 mt-8 lg:mt-24 space-y-6">
-              {/* Upper small image */}
+              {/* Upper small image with right mask reveal */}
               <ParallaxElement speed={0.2}>
-                <ScrollReveal direction="right" delay={200}>
-                  <div className="relative aspect-[3/2] overflow-hidden rounded-sm shadow-xl">
-                    <ScrollImage
-                      src="/images/interior-detail.jpg"
-                      alt="Restaurant Ambiance Detail"
-                      className="object-cover"
-                      containerClassName="w-full h-full"
-                      zoomAmount={1.1}
-                      parallaxSpeed={0.12}
-                      reveal="left"
-                    />
-                  </div>
-                </ScrollReveal>
+                <div className="relative aspect-[3/2] rounded-sm shadow-xl overflow-hidden">
+                  <ImageReveal
+                    src="/images/interior-detail.jpg"
+                    alt="Restaurant Ambiance Detail"
+                    reveal="right"
+                    delay={200}
+                    containerClassName="w-full h-full"
+                  />
+                </div>
               </ParallaxElement>
 
-              {/* Lower small image */}
+              {/* Lower small image with vertical curtain reveal */}
               <ParallaxElement speed={0.25}>
-                <ScrollReveal direction="right" delay={400}>
-                  <div className="relative aspect-[3/2] overflow-hidden rounded-sm shadow-xl">
-                    <ScrollImage
-                      src="/images/gallery-interior-2.jpg"
-                      alt="Restaurant Bar Area"
-                      className="object-cover"
-                      containerClassName="w-full h-full"
-                      zoomAmount={1.08}
-                      parallaxSpeed={0.1}
-                      reveal="up"
-                    />
-                  </div>
-                </ScrollReveal>
+                <div className="relative aspect-[3/2] rounded-sm shadow-xl overflow-hidden">
+                  <ImageReveal
+                    src="/images/gallery-interior-2.jpg"
+                    alt="Restaurant Bar Area"
+                    reveal="curtain-vertical"
+                    delay={400}
+                    containerClassName="w-full h-full"
+                  />
+                </div>
               </ParallaxElement>
             </div>
           </div>
