@@ -1,6 +1,7 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
+import { motion, useScroll, useTransform } from "framer-motion"
 import { cn } from "@/lib/utils"
 
 interface StoryStep {
@@ -43,15 +44,42 @@ const storySteps: StoryStep[] = [
 ]
 
 export function PinnedStorytellingSection() {
-  const sectionRef = useRef<HTMLElement>(null)
-  const [activeStep, setActiveStep] = useState(0)
-  const [scrollProgress, setScrollProgress] = useState(0)
-  const [isInView, setIsInView] = useState(false)
+  // Ref for the outer 300vh wrapper (this is the scroll target)
+  const targetRef = useRef<HTMLElement>(null)
   const [isMobile, setIsMobile] = useState(false)
 
-  // Total height = 100vh per slide = 300vh for 3 slides
-  const totalSlides = storySteps.length
-  const sectionHeightVh = totalSlides * 100
+  // Framer Motion useScroll - tracks scroll progress through the target element
+  // offset: ["start start", "end end"] means:
+  // - progress = 0 when top of target hits top of viewport
+  // - progress = 1 when bottom of target hits bottom of viewport
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    offset: ["start start", "end end"],
+  })
+
+  // Convert scrollYProgress (0-1) to active slide index (0, 1, or 2)
+  // 0.00 - 0.33 = slide 0
+  // 0.33 - 0.66 = slide 1
+  // 0.66 - 1.00 = slide 2
+  const [activeStep, setActiveStep] = useState(0)
+  const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    const unsubscribe = scrollYProgress.on("change", (latest) => {
+      setProgress(latest)
+      
+      // Calculate which slide we're on
+      // 0.00-0.33 = slide 0, 0.33-0.66 = slide 1, 0.66-1.00 = slide 2
+      const totalSlides = storySteps.length
+      const slideIndex = Math.min(
+        totalSlides - 1,
+        Math.floor(latest * totalSlides)
+      )
+      setActiveStep(slideIndex)
+    })
+
+    return () => unsubscribe()
+  }, [scrollYProgress])
 
   useEffect(() => {
     const checkMobile = () => {
@@ -61,68 +89,6 @@ export function PinnedStorytellingSection() {
     window.addEventListener("resize", checkMobile)
     return () => window.removeEventListener("resize", checkMobile)
   }, [])
-
-  useEffect(() => {
-    let ticking = false
-
-    const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          if (!sectionRef.current) {
-            ticking = false
-            return
-          }
-
-          const rect = sectionRef.current.getBoundingClientRect()
-          const sectionHeight = sectionRef.current.offsetHeight
-          const windowHeight = window.innerHeight
-
-          // Check if section is in view
-          const inView = rect.top < windowHeight && rect.bottom > 0
-          setIsInView(inView)
-
-          if (!inView) {
-            ticking = false
-            return
-          }
-
-          // Calculate progress through the section (0 to 1)
-          // Progress starts when section top reaches viewport top (rect.top <= 0)
-          // Progress ends when section bottom reaches viewport bottom
-          const scrollableDistance = sectionHeight - windowHeight
-          const scrolled = Math.max(0, -rect.top)
-          const progress = Math.min(1, scrolled / scrollableDistance)
-
-          setScrollProgress(progress)
-
-          // Determine active step based on progress
-          // Each step gets equal portion of the scroll
-          const stepIndex = Math.min(
-            totalSlides - 1,
-            Math.floor(progress * totalSlides)
-          )
-          setActiveStep(stepIndex)
-
-          ticking = false
-        })
-        ticking = true
-      }
-    }
-
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    handleScroll()
-
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [totalSlides])
-
-  // Calculate individual step progress for smoother transitions
-  const getStepProgress = (index: number) => {
-    const stepSize = 1 / storySteps.length
-    const stepStart = index * stepSize
-    const stepEnd = (index + 1) * stepSize
-    const relativeProgress = (scrollProgress - stepStart) / stepSize
-    return Math.max(0, Math.min(1, relativeProgress))
-  }
 
   if (isMobile) {
     // Simplified mobile layout without sticky behavior
@@ -140,7 +106,7 @@ export function PinnedStorytellingSection() {
 
           {/* Mobile Steps */}
           <div className="space-y-16">
-            {storySteps.map((step, index) => (
+            {storySteps.map((step) => (
               <div key={step.id} className="space-y-6">
                 <div className="relative aspect-[4/3] overflow-hidden rounded-sm">
                   <img
@@ -166,44 +132,55 @@ export function PinnedStorytellingSection() {
   }
 
   return (
+    // OUTER WRAPPER: 300vh tall, position relative
+    // This creates the scrollable area that triggers the pinned effect
     <section
-      ref={sectionRef}
+      ref={targetRef}
       className="relative bg-smoke"
-      style={{ height: `${sectionHeightVh}vh` }}
+      style={{ 
+        height: "300vh",
+        // DEBUG: Uncomment to see the outer wrapper bounds
+        // outline: "4px solid red",
+      }}
     >
-      {/* Sticky Container - stays fixed while scrolling through section */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
+      {/* STICKY VIEWPORT: position sticky, top 0, height 100vh */}
+      {/* This stays fixed in the viewport while user scrolls through the 300vh wrapper */}
+      <div 
+        className="sticky top-0 h-screen w-full overflow-hidden"
+        style={{
+          // DEBUG: Uncomment to see the sticky viewport bounds
+          // outline: "4px solid blue",
+        }}
+      >
         <div className="h-full flex">
-          {/* Left Side - Sticky Image */}
+          {/* Left Side - Image */}
           <div className="w-1/2 h-full relative overflow-hidden">
             {/* All images stacked, with opacity transitions */}
             {storySteps.map((step, index) => {
               const isActive = index === activeStep
-              const stepProgress = getStepProgress(index)
               
               return (
-                <div
+                <motion.div
                   key={step.id}
-                  className={cn(
-                    "absolute inset-0 transition-opacity duration-700",
-                    isActive ? "opacity-100" : "opacity-0"
-                  )}
-                  style={{
-                    transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
+                  className="absolute inset-0"
+                  initial={false}
+                  animate={{
+                    opacity: isActive ? 1 : 0,
+                    scale: isActive ? 1.02 : 1,
+                  }}
+                  transition={{
+                    opacity: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+                    scale: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
                   }}
                 >
                   <img
                     src={step.image}
                     alt={step.title}
                     className="w-full h-full object-cover"
-                    style={{
-                      transform: `scale(${1 + stepProgress * 0.08})`,
-                      transition: "transform 0.3s cubic-bezier(0.33, 1, 0.68, 1)",
-                    }}
                   />
                   {/* Image overlay gradient */}
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-smoke/30" />
-                </div>
+                </motion.div>
               )
             })}
 
@@ -228,13 +205,19 @@ export function PinnedStorytellingSection() {
 
             {/* Current step number overlay */}
             <div className="absolute top-12 left-12 z-10">
-              <div className="text-white/90 font-serif text-sm tracking-widest">
+              <motion.div 
+                key={activeStep}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+                className="text-white/90 font-serif text-sm tracking-widest"
+              >
                 {storySteps[activeStep].label} / 0{storySteps.length}
-              </div>
+              </motion.div>
             </div>
           </div>
 
-          {/* Right Side - Scrolling Text Content */}
+          {/* Right Side - Text Content */}
           <div className="w-1/2 h-full flex items-center justify-center relative">
             {/* Background pattern */}
             <div className="absolute inset-0 opacity-30">
@@ -247,24 +230,26 @@ export function PinnedStorytellingSection() {
               <span className="text-garnet font-serif italic text-sm">La nostra storia</span>
             </div>
 
-            {/* Text steps */}
-            <div className="relative w-full max-w-lg px-12">
+            {/* Text steps - using AnimatePresence for smooth transitions */}
+            <div className="relative w-full max-w-lg px-12 h-[60vh] flex items-center">
               {storySteps.map((step, index) => {
                 const isActive = index === activeStep
-                const isPast = index < activeStep
-                const isFuture = index > activeStep
                 
                 return (
-                  <div
+                  <motion.div
                     key={step.id}
-                    className={cn(
-                      "absolute inset-0 flex flex-col justify-center transition-all duration-700",
-                      isActive && "opacity-100 translate-y-0",
-                      isPast && "opacity-0 -translate-y-16 pointer-events-none",
-                      isFuture && "opacity-0 translate-y-16 pointer-events-none"
-                    )}
+                    className="absolute inset-0 flex flex-col justify-center px-12"
+                    initial={false}
+                    animate={{
+                      opacity: isActive ? 1 : 0,
+                      y: isActive ? 0 : index < activeStep ? -40 : 40,
+                    }}
+                    transition={{
+                      duration: 0.6,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
                     style={{
-                      transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
+                      pointerEvents: isActive ? "auto" : "none",
                     }}
                   >
                     {/* Step label */}
@@ -299,39 +284,42 @@ export function PinnedStorytellingSection() {
                         <div
                           key={dotIndex}
                           className={cn(
-                            "w-2 h-2 rounded-full transition-all duration-300",
+                            "h-2 rounded-full transition-all duration-300",
                             dotIndex === index
                               ? "bg-garnet w-8"
-                              : "bg-silver/50"
+                              : "bg-silver/50 w-2"
                           )}
                         />
                       ))}
                     </div>
-                  </div>
+                  </motion.div>
                 )
               })}
             </div>
 
             {/* Scroll hint at bottom */}
-            <div 
-              className={cn(
-                "absolute bottom-12 left-1/2 -translate-x-1/2 transition-opacity duration-500",
-                scrollProgress > 0.9 ? "opacity-0" : "opacity-100"
-              )}
+            <motion.div 
+              className="absolute bottom-12 left-1/2 -translate-x-1/2"
+              animate={{ opacity: progress > 0.9 ? 0 : 1 }}
+              transition={{ duration: 0.3 }}
             >
               <div className="flex flex-col items-center gap-2 text-carbon/40">
                 <span className="text-xs uppercase tracking-widest">Weiter scrollen</span>
-                <div className="w-px h-8 bg-gradient-to-b from-carbon/20 to-transparent" />
+                <motion.div 
+                  className="w-px h-8 bg-gradient-to-b from-carbon/20 to-transparent"
+                  animate={{ scaleY: [1, 1.2, 1] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                />
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
 
         {/* Progress bar at top */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-silver/20">
-          <div
-            className="h-full bg-garnet transition-all duration-150"
-            style={{ width: `${scrollProgress * 100}%` }}
+          <motion.div
+            className="h-full bg-garnet origin-left"
+            style={{ scaleX: scrollYProgress }}
           />
         </div>
       </div>
