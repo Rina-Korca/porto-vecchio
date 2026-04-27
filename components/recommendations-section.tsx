@@ -96,14 +96,14 @@ function CardWithScrollZoom({ item, index }: { item: typeof recommendations[0]; 
         transitionDelay: `${index * 100}ms`,
       }}
     >
-      <div className="group relative bg-white overflow-hidden shadow-premium hover:shadow-premium-lg transition-all duration-600 ease-luxury h-full card-hover">
+      <div className="group relative bg-white overflow-hidden shadow-premium hover:shadow-premium-lg transition-all duration-600 ease-luxury h-full hover:-translate-y-2">
         {/* Image container with scroll zoom */}
-        <div className="relative h-64 md:h-72 overflow-hidden">
+        <div className="relative h-64 md:h-72 overflow-hidden bg-smoke">
           <Image
             src={item.image}
             alt={item.title}
             fill
-            className="object-cover transition-transform duration-100 ease-out group-hover:scale-110"
+            className="object-cover transition-transform duration-100 ease-out group-hover:scale-110 absolute"
             style={{ transform: `scale(${scale})` }}
           />
           {/* Burgundy overlay on hover */}
