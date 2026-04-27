@@ -164,7 +164,7 @@ export function PinnedStorytellingSection() {
     <section
       ref={sectionRef}
       className="relative bg-smoke"
-      style={{ height: `${(storySteps.length - 0.5) * 100}vh` }}
+      style={{ height: `${storySteps.length * 60}vh` }}
     >
       {/* Sticky Container */}
       <div className="sticky top-0 h-screen overflow-hidden">

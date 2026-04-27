@@ -393,7 +393,7 @@ export function HorizontalGallerySection() {
     <section
       ref={sectionRef}
       id="galerie"
-      className={cn("relative bg-smoke", isMobile ? "py-16" : "h-[150vh]")}
+      className={cn("relative bg-smoke", isMobile ? "py-16" : "h-[100vh]")}
     >
       {/* Sticky container for desktop */}
       <div className={cn(isMobile ? "" : "sticky top-0 h-screen overflow-hidden")}>
