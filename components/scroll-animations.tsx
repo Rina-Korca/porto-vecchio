@@ -329,6 +329,196 @@ export function HeadlineScroll({
   )
 }
 
+// Multi-Layer Parallax Component for cinematic depth
+interface MultiLayerParallaxProps {
+  backgroundImage: string
+  backgroundAlt?: string
+  midLayerContent?: ReactNode
+  children: ReactNode
+  className?: string
+  minHeight?: string
+  overlayColor?: string
+  disableOnMobile?: boolean
+}
+
+export function MultiLayerParallax({
+  backgroundImage,
+  backgroundAlt = "Background",
+  midLayerContent,
+  children,
+  className,
+  minHeight = "90vh",
+  overlayColor = "rgba(11, 9, 10, 0.5)",
+  disableOnMobile = true,
+}: MultiLayerParallaxProps) {
+  const containerRef = useRef<HTMLElement>(null)
+  const [bgTransform, setBgTransform] = useState({ y: 0, scale: 1 })
+  const [midTransform, setMidTransform] = useState({ y: 0 })
+  const [fgTransform, setFgTransform] = useState({ y: 0 })
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    // Check for mobile/reduced motion
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+    }
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
+
+  useEffect(() => {
+    if (disableOnMobile && isMobile) return
+
+    let ticking = false
+
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (!containerRef.current) {
+            ticking = false
+            return
+          }
+
+          const rect = containerRef.current.getBoundingClientRect()
+          const windowHeight = window.innerHeight
+          const sectionHeight = containerRef.current.offsetHeight
+
+          // Calculate scroll progress through section (-0.5 to 1.5 range for smooth entry/exit)
+          const rawProgress = (windowHeight - rect.top) / (windowHeight + sectionHeight)
+          const progress = Math.max(-0.2, Math.min(1.2, rawProgress))
+          const normalizedProgress = (progress + 0.2) / 1.4 // Normalize to 0-1
+
+          // Background layer: slowest movement (0.3x), slight zoom
+          const bgY = (normalizedProgress - 0.5) * 80 * 0.3
+          const bgScale = 1 + normalizedProgress * 0.1
+
+          // Mid layer: medium movement (0.6x)
+          const midY = (normalizedProgress - 0.5) * 80 * 0.6
+
+          // Foreground: faster movement (creates depth)
+          const fgY = (normalizedProgress - 0.5) * 40
+
+          setBgTransform({ y: bgY, scale: bgScale })
+          setMidTransform({ y: midY })
+          setFgTransform({ y: fgY })
+
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    handleScroll()
+
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [isMobile, disableOnMobile])
+
+  const shouldAnimate = !disableOnMobile || !isMobile
+
+  return (
+    <section
+      ref={containerRef}
+      className={cn("relative overflow-hidden", className)}
+      style={{ minHeight }}
+    >
+      {/* Background Layer - Slowest (0.3x scroll speed), slight blur */}
+      <div
+        className="absolute inset-0 w-full h-[140%] -top-[20%]"
+        style={{
+          transform: shouldAnimate
+            ? `translateY(${bgTransform.y}px) scale(${bgTransform.scale})`
+            : "none",
+          willChange: shouldAnimate ? "transform" : "auto",
+          transition: "transform 0.15s cubic-bezier(0.33, 1, 0.68, 1)",
+        }}
+      >
+        <div
+          className={cn(
+            "absolute inset-0 bg-cover bg-center bg-no-repeat",
+            shouldAnimate && "blur-[2px]"
+          )}
+          style={{ backgroundImage: `url('${backgroundImage}')` }}
+          role="img"
+          aria-label={backgroundAlt}
+        />
+        {/* Cinematic gradient overlay */}
+        <div 
+          className="absolute inset-0"
+          style={{ 
+            background: `linear-gradient(to bottom, ${overlayColor} 0%, transparent 30%, transparent 70%, ${overlayColor} 100%)` 
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-carbon/30 via-transparent to-carbon/30" />
+      </div>
+
+      {/* Mid Layer - Medium speed (0.6x) */}
+      {midLayerContent && (
+        <div
+          className="absolute inset-0 z-10 pointer-events-none"
+          style={{
+            transform: shouldAnimate ? `translateY(${midTransform.y}px)` : "none",
+            willChange: shouldAnimate ? "transform" : "auto",
+            transition: "transform 0.1s cubic-bezier(0.33, 1, 0.68, 1)",
+          }}
+        >
+          {midLayerContent}
+        </div>
+      )}
+
+      {/* Foreground Layer - Normal/Fast speed, sharp content */}
+      <div
+        className="relative z-20 flex items-center justify-center"
+        style={{
+          minHeight,
+          transform: shouldAnimate ? `translateY(${fgTransform.y}px)` : "none",
+          willChange: shouldAnimate ? "transform" : "auto",
+          transition: "transform 0.08s cubic-bezier(0.33, 1, 0.68, 1)",
+        }}
+      >
+        {children}
+      </div>
+
+      {/* Top and bottom fade for smooth section transitions */}
+      <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-smoke to-transparent z-30 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-smoke to-transparent z-30 pointer-events-none" />
+    </section>
+  )
+}
+
+// Floating Card with depth shadow for use in parallax sections
+interface DepthCardProps {
+  children: ReactNode
+  className?: string
+  glassEffect?: boolean
+}
+
+export function DepthCard({
+  children,
+  className,
+  glassEffect = true,
+}: DepthCardProps) {
+  return (
+    <div
+      className={cn(
+        "relative",
+        glassEffect && "backdrop-blur-xl bg-white/95",
+        "rounded-sm shadow-2xl",
+        // Multi-layer shadow for depth
+        "shadow-[0_25px_50px_-12px_rgba(0,0,0,0.35),0_12px_24px_-8px_rgba(0,0,0,0.2),0_4px_8px_-4px_rgba(0,0,0,0.1)]",
+        className
+      )}
+    >
+      {/* Subtle inner highlight for glass effect */}
+      {glassEffect && (
+        <div className="absolute inset-0 rounded-sm border border-white/50 pointer-events-none" />
+      )}
+      {children}
+    </div>
+  )
+}
+
 interface StaggeredGridProps {
   children: ReactNode[]
   className?: string
