@@ -2,6 +2,7 @@ import { Navigation } from "@/components/navigation"
 import { HeroSection } from "@/components/hero-section"
 import { StorytellingSection } from "@/components/storytelling-section"
 import { TripadvisorSection } from "@/components/tripadvisor-section"
+import { PinnedStorytellingSection } from "@/components/pinned-storytelling-section"
 import { KitchenSection } from "@/components/kitchen-section"
 import { RestaurantSection } from "@/components/restaurant-section"
 import { RecommendationsSection } from "@/components/recommendations-section"
@@ -21,6 +22,7 @@ export default function Home() {
       <HeroSection />
       <StorytellingSection />
       <TripadvisorSection />
+      <PinnedStorytellingSection />
       <KitchenSection />
       <RestaurantSection />
       <RecommendationsSection />
