@@ -6,7 +6,7 @@ export const companyInfo = {
   addressDisplay: "Chausseestraße 15, 10115 Berlin, Germany",
   phoneDisplay: "+49 30 95614848",
   phoneHref: "tel:+493095614848",
-  email: "reservierung@bonfini.de",
+  email: "reservierung@ristorante-bonfini.de",
   mapsHref:
     "https://www.google.com/maps/search/?api=1&query=Chausseestra%C3%9Fe+15%2C+10115+Berlin%2C+Germany",
   mapsDirectionsHref:

@@ -1,314 +1,321 @@
 "use client"
 
-import { useState } from "react"
-import { useInView } from "@/hooks/use-in-view"
-import { cn } from "@/lib/utils"
-import { Calendar, Clock, Users, Mail, Phone, User, MessageSquare, MapPin } from "lucide-react"
+import { FormEvent, type ReactNode, useState } from "react"
 import Image from "next/image"
+import {
+  Calendar,
+  CheckCircle2,
+  Clock,
+  Mail,
+  MessageSquare,
+  Phone,
+  User,
+  Users,
+} from "lucide-react"
+import { useInView } from "@/hooks/use-in-view"
 import { companyInfo, openingHours } from "@/lib/company-info"
+import { getReservationClient, hasAmplifyOutputs } from "@/lib/amplify-client"
+import {
+  reservationTimeSlots,
+  todayDateValue,
+  validateReservationRequest,
+} from "@/lib/reservations"
+import { cn } from "@/lib/utils"
+
+const emptyForm = {
+  name: "",
+  email: "",
+  phone: "",
+  date: "",
+  time: "",
+  guests: "2",
+  message: "",
+}
 
 export function ReservationSection() {
   const { ref, isInView } = useInView({ threshold: 0.1 })
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    date: "",
-    time: "",
-    guests: "2",
-    area: "keine-praeferenz",
-    message: "",
-  })
+  const [formData, setFormData] = useState(emptyForm)
   const [focusedField, setFocusedField] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [submitError, setSubmitError] = useState("")
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    setSubmitError("")
+
+    const nextErrors = validateReservationRequest(formData)
+    setErrors(nextErrors)
+
+    if (Object.keys(nextErrors).length > 0) {
+      return
+    }
+
+    if (!hasAmplifyOutputs()) {
+      setSubmitError(
+        "Reservierungen sind noch nicht konfiguriert. Bitte versuchen Sie es spaeter erneut.",
+      )
+      return
+    }
+
     setIsSubmitting(true)
-    
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    setIsSubmitting(false)
-    setIsSubmitted(true)
-    
-    // Reset after showing success
-    setTimeout(() => {
-      setIsSubmitted(false)
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        date: "",
-        time: "",
-        guests: "2",
-        area: "keine-praeferenz",
-        message: "",
-      })
-    }, 3000)
+
+    try {
+      const client = getReservationClient()
+      const result = await client.mutations.createReservationRequest(
+        {
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim() || null,
+          date: formData.date,
+          time: formData.time,
+          guests: Number(formData.guests),
+          message: formData.message.trim() || null,
+        },
+        { authMode: "apiKey" },
+      )
+
+      if (result.errors?.length) {
+        throw new Error(result.errors.map((item) => item.message).join(", "))
+      }
+
+      setIsSubmitted(true)
+      setFormData(emptyForm)
+      setErrors({})
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "Ihre Anfrage konnte nicht gesendet werden.",
+      )
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
-  const inputClasses = (fieldName: string) => cn(
-    "w-full pl-12 pr-4 py-4 bg-smoke border-2 rounded-lg transition-all duration-300 text-carbon placeholder:text-silver",
-    focusedField === fieldName 
-      ? "border-mahogany shadow-[0_0_0_3px_rgba(164,22,26,0.1)]" 
-      : "border-transparent hover:border-silver/50"
-  )
-
-  const labelClasses = (fieldName: string) => cn(
-    "absolute left-12 transition-all duration-300 pointer-events-none",
-    focusedField === fieldName || formData[fieldName as keyof typeof formData]
-      ? "-top-2.5 text-xs bg-white px-2 text-mahogany font-medium"
-      : "top-1/2 -translate-y-1/2 text-silver"
-  )
+  const inputClasses = (fieldName: string) =>
+    cn(
+      "w-full rounded-lg border-2 bg-smoke py-4 pl-12 pr-4 text-carbon transition-all duration-300 placeholder:text-silver",
+      focusedField === fieldName
+        ? "border-mahogany shadow-[0_0_0_3px_rgba(164,22,26,0.1)]"
+        : "border-transparent hover:border-silver/50",
+      errors[fieldName] && "border-strawberry",
+    )
 
   return (
-    <section id="reservierung" ref={ref} className="py-24 md:py-32 bg-smoke">
+    <section id="reservierung" ref={ref} className="bg-smoke py-24 md:py-32">
       <div className="container mx-auto px-6">
-        {/* Section Header */}
-        <div 
+        <div
           className={cn(
-            "text-center mb-16 transition-all duration-1000",
-            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            "mb-16 text-center transition-all duration-1000",
+            isInView ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0",
           )}
         >
-          <span className="inline-block text-mahogany uppercase tracking-[0.3em] text-sm mb-4">
+          <span className="mb-4 inline-block text-sm uppercase tracking-[0.3em] text-mahogany">
             Reservierung
           </span>
-          <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-carbon mb-6 leading-tight text-balance">
+          <h2 className="text-balance font-serif text-4xl leading-tight text-carbon md:text-5xl lg:text-6xl">
             Reservieren Sie einen Tisch bei uns
           </h2>
-          <div className="thin-divider w-24 mx-auto" />
+          <div className="thin-divider mx-auto mt-6 w-24" />
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start max-w-7xl mx-auto">
-          {/* Left Side - Form */}
+        <div className="mx-auto grid max-w-7xl items-start gap-8 lg:grid-cols-2 lg:gap-12">
           <div
             className={cn(
-              "transition-all duration-1000 delay-200",
-              isInView
-                ? "opacity-100 translate-x-0"
-                : "opacity-0 -translate-x-12"
+              "transition-all delay-200 duration-1000",
+              isInView ? "translate-x-0 opacity-100" : "-translate-x-12 opacity-0",
             )}
           >
-            <div className="bg-white rounded-2xl p-8 md:p-10 shadow-xl shadow-carbon/5">
-              {/* Terrace Note */}
-              <div className="mb-8 p-4 bg-smoke rounded-xl border-l-4 border-mahogany">
-                <p className="text-sm text-carbon leading-relaxed">
-                  <span className="font-semibold">Hinweis:</span> Für die Terrasse können wir leider nur begrenzt Reservierungen annehmen.
+            <div className="rounded-2xl bg-white p-8 shadow-xl shadow-carbon/5 md:p-10">
+              <div className="mb-8 rounded-xl border-l-4 border-mahogany bg-smoke p-4">
+                <p className="text-sm leading-relaxed text-carbon">
+                  <span className="font-semibold">Hinweis:</span> Dies ist eine
+                  Reservierungsanfrage. Wir bestaetigen Ihren Tisch nach kurzer
+                  Pruefung per E-Mail.
                 </p>
               </div>
 
+              {isSubmitted ? (
+                <div className="mb-6 rounded-lg border border-emerald-600/30 bg-emerald-50 p-4 text-emerald-800">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="mt-0.5 h-5 w-5" />
+                    <p className="text-sm">
+                      Anfrage erhalten. Wir bestaetigen Ihre Reservierung in
+                      Kuerze.
+                    </p>
+                  </div>
+                </div>
+              ) : null}
+
+              {submitError ? (
+                <div className="mb-6 rounded-lg border border-strawberry/30 bg-strawberry/10 p-4 text-sm text-garnet">
+                  {submitError}
+                </div>
+              ) : null}
+
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid sm:grid-cols-2 gap-6">
-                  {/* Name */}
-                  <div className="relative">
-                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-silver z-10" />
+                <div className="grid gap-6 sm:grid-cols-2">
+                  <FieldError error={errors.name}>
+                    <User className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
                     <input
                       type="text"
                       required
+                      minLength={2}
                       value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      onChange={(event) =>
+                        setFormData({ ...formData, name: event.target.value })
+                      }
                       onFocus={() => setFocusedField("name")}
                       onBlur={() => setFocusedField(null)}
                       placeholder="Name"
                       className={inputClasses("name")}
                     />
-                  </div>
+                  </FieldError>
 
-                  {/* Email */}
-                  <div className="relative">
-                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-silver z-10" />
+                  <FieldError error={errors.email}>
+                    <Mail className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
                     <input
                       type="email"
                       required
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      onChange={(event) =>
+                        setFormData({ ...formData, email: event.target.value })
+                      }
                       onFocus={() => setFocusedField("email")}
                       onBlur={() => setFocusedField(null)}
                       placeholder="E-Mail"
                       className={inputClasses("email")}
                     />
-                  </div>
+                  </FieldError>
 
-                  {/* Phone */}
-                  <div className="relative">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-silver z-10" />
+                  <FieldError>
+                    <Phone className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
                     <input
                       type="tel"
-                      required
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      onChange={(event) =>
+                        setFormData({ ...formData, phone: event.target.value })
+                      }
                       onFocus={() => setFocusedField("phone")}
                       onBlur={() => setFocusedField(null)}
                       placeholder="Telefon"
                       className={inputClasses("phone")}
                     />
-                  </div>
+                  </FieldError>
 
-                  {/* Guests */}
-                  <div className="relative">
-                    <Users className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-silver z-10" />
-                    <select
+                  <FieldError error={errors.guests}>
+                    <Users className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
+                    <input
+                      type="number"
+                      min={1}
+                      step={1}
+                      required
                       value={formData.guests}
-                      onChange={(e) => setFormData({ ...formData, guests: e.target.value })}
+                      onChange={(event) =>
+                        setFormData({ ...formData, guests: event.target.value })
+                      }
                       onFocus={() => setFocusedField("guests")}
                       onBlur={() => setFocusedField(null)}
-                      className={cn(inputClasses("guests"), "appearance-none cursor-pointer pr-10")}
-                    >
-                      {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-                        <option key={num} value={num}>
-                          {num} {num === 1 ? "Person" : "Personen"}
-                        </option>
-                      ))}
-                      <option value="10+">Mehr als 10 Personen</option>
-                    </select>
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                      <svg className="w-4 h-4 text-silver" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </div>
-                  </div>
+                      placeholder="Gaeste"
+                      className={inputClasses("guests")}
+                    />
+                  </FieldError>
 
-                  {/* Date */}
-                  <div className="relative">
-                    <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-silver z-10" />
+                  <FieldError error={errors.date}>
+                    <Calendar className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
                     <input
                       type="date"
                       required
+                      min={todayDateValue()}
                       value={formData.date}
-                      onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                      onChange={(event) =>
+                        setFormData({ ...formData, date: event.target.value })
+                      }
                       onFocus={() => setFocusedField("date")}
                       onBlur={() => setFocusedField(null)}
-                      min={new Date().toISOString().split('T')[0]}
                       className={cn(inputClasses("date"), "cursor-pointer")}
                     />
-                  </div>
+                  </FieldError>
 
-                  {/* Time */}
-                  <div className="relative">
-                    <Clock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-silver z-10" />
+                  <FieldError error={errors.time}>
+                    <Clock className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
                     <select
+                      required
                       value={formData.time}
-                      onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                      onChange={(event) =>
+                        setFormData({ ...formData, time: event.target.value })
+                      }
                       onFocus={() => setFocusedField("time")}
                       onBlur={() => setFocusedField(null)}
-                      required
-                      className={cn(inputClasses("time"), "appearance-none cursor-pointer pr-10")}
+                      className={cn(
+                        inputClasses("time"),
+                        "cursor-pointer appearance-none",
+                      )}
                     >
-                      <option value="">Uhrzeit wählen</option>
-                      <optgroup label="Mittagessen">
-                        {["12:00", "12:30", "13:00", "13:30", "14:00", "14:30"].map((time) => (
-                          <option key={time} value={time}>{time} Uhr</option>
-                        ))}
-                      </optgroup>
-                      <optgroup label="Abendessen">
-                        {["18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00"].map((time) => (
-                          <option key={time} value={time}>{time} Uhr</option>
-                        ))}
-                      </optgroup>
+                      <option value="">Uhrzeit waehlen</option>
+                      {reservationTimeSlots.map((time) => (
+                        <option key={time} value={time}>
+                          {time} Uhr
+                        </option>
+                      ))}
                     </select>
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                      <svg className="w-4 h-4 text-silver" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </div>
-                  </div>
+                  </FieldError>
                 </div>
 
-                {/* Area Selection */}
-                <div className="relative">
-                  <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-silver z-10" />
-                  <select
-                    value={formData.area}
-                    onChange={(e) => setFormData({ ...formData, area: e.target.value })}
-                    onFocus={() => setFocusedField("area")}
-                    onBlur={() => setFocusedField(null)}
-                    className={cn(inputClasses("area"), "appearance-none cursor-pointer pr-10")}
-                  >
-                    <option value="keine-praeferenz">Keine Präferenz</option>
-                    <option value="innenbereich">Innenbereich</option>
-                    <option value="terrasse">Terrasse (begrenzt verfügbar)</option>
-                  </select>
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                    <svg className="w-4 h-4 text-silver" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
-                </div>
-
-                {/* Message */}
-                <div className="relative">
-                  <MessageSquare className="absolute left-4 top-4 w-5 h-5 text-silver z-10" />
+                <FieldError>
+                  <MessageSquare className="absolute left-4 top-4 z-10 h-5 w-5 text-silver" />
                   <textarea
-                    placeholder="Nachricht / besondere Wünsche"
                     rows={4}
                     value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    onChange={(event) =>
+                      setFormData({ ...formData, message: event.target.value })
+                    }
                     onFocus={() => setFocusedField("message")}
                     onBlur={() => setFocusedField(null)}
+                    placeholder="Nachricht / besondere Wuensche"
                     className={cn(
-                      "w-full pl-12 pr-4 py-4 bg-smoke border-2 rounded-lg transition-all duration-300 text-carbon placeholder:text-silver resize-none",
-                      focusedField === "message" 
-                        ? "border-mahogany shadow-[0_0_0_3px_rgba(164,22,26,0.1)]" 
-                        : "border-transparent hover:border-silver/50"
+                      "w-full resize-none rounded-lg border-2 bg-smoke py-4 pl-12 pr-4 text-carbon transition-all duration-300 placeholder:text-silver",
+                      focusedField === "message"
+                        ? "border-mahogany shadow-[0_0_0_3px_rgba(164,22,26,0.1)]"
+                        : "border-transparent hover:border-silver/50",
                     )}
                   />
-                </div>
+                </FieldError>
 
-                {/* Submit Button */}
                 <button
                   type="submit"
-                  disabled={isSubmitting || isSubmitted}
+                  disabled={isSubmitting}
                   className={cn(
-                    "magnetic-btn w-full py-4 text-sm uppercase tracking-widest font-medium rounded-lg transition-all duration-300",
-                    isSubmitted 
-                      ? "bg-green-600 text-white cursor-default"
-                      : "bg-mahogany text-white hover:bg-garnet active:scale-[0.98]",
-                    isSubmitting && "opacity-80 cursor-wait"
+                    "magnetic-btn w-full rounded-lg bg-mahogany py-4 text-sm font-medium uppercase tracking-widest text-white transition-all duration-300 hover:bg-garnet active:scale-[0.98]",
+                    isSubmitting && "cursor-wait opacity-80",
                   )}
                 >
-                  {isSubmitting ? (
-                    <span className="flex items-center justify-center gap-2">
-                      <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                      </svg>
-                      Wird gesendet...
-                    </span>
-                  ) : isSubmitted ? (
-                    <span className="flex items-center justify-center gap-2">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      Anfrage gesendet!
-                    </span>
-                  ) : (
-                    "Reservierung anfragen"
-                  )}
+                  {isSubmitting ? "Wird gesendet..." : "Reservierung anfragen"}
                 </button>
               </form>
 
-              {/* Contact Info */}
-              <div className="mt-8 pt-8 border-t border-dust">
-                <p className="text-sm text-muted-foreground mb-4">Oder kontaktieren Sie uns direkt:</p>
-                <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
-                  <a 
+              <div className="mt-8 border-t border-dust pt-8">
+                <p className="mb-4 text-sm text-muted-foreground">
+                  Oder kontaktieren Sie uns direkt:
+                </p>
+                <div className="flex flex-col gap-4 sm:flex-row sm:gap-8">
+                  <a
                     href={companyInfo.phoneHref}
-                    className="flex items-center gap-3 text-carbon hover:text-mahogany transition-colors group"
+                    className="group flex items-center gap-3 text-carbon transition-colors hover:text-mahogany"
                   >
-                    <div className="w-10 h-10 bg-smoke rounded-full flex items-center justify-center group-hover:bg-mahogany/10 transition-colors">
-                      <Phone className="w-4 h-4 text-mahogany" />
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-smoke transition-colors group-hover:bg-mahogany/10">
+                      <Phone className="h-4 w-4 text-mahogany" />
                     </div>
                     <span className="font-medium">{companyInfo.phoneDisplay}</span>
                   </a>
-                  <a 
+                  <a
                     href={`mailto:${companyInfo.email}`}
-                    className="flex items-center gap-3 text-carbon hover:text-mahogany transition-colors group"
+                    className="group flex items-center gap-3 text-carbon transition-colors hover:text-mahogany"
                   >
-                    <div className="w-10 h-10 bg-smoke rounded-full flex items-center justify-center group-hover:bg-mahogany/10 transition-colors">
-                      <Mail className="w-4 h-4 text-mahogany" />
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-smoke transition-colors group-hover:bg-mahogany/10">
+                      <Mail className="h-4 w-4 text-mahogany" />
                     </div>
                     <span className="font-medium">{companyInfo.email}</span>
                   </a>
@@ -317,42 +324,42 @@ export function ReservationSection() {
             </div>
           </div>
 
-          {/* Right Side - Image with Opening Hours Overlay */}
           <div
             className={cn(
-              "transition-all duration-1000 delay-400",
-              isInView
-                ? "opacity-100 translate-x-0"
-                : "opacity-0 translate-x-12"
+              "transition-all delay-400 duration-1000",
+              isInView ? "translate-x-0 opacity-100" : "translate-x-12 opacity-0",
             )}
           >
-            <div className="relative rounded-2xl overflow-hidden shadow-xl shadow-carbon/10 h-full min-h-[500px] lg:min-h-[700px]">
+            <div className="relative min-h-[500px] overflow-hidden rounded-2xl shadow-xl shadow-carbon/10 lg:min-h-[700px]">
               <Image
                 src="/images/interior.jpg"
                 alt="Elegantes Restaurant Interieur"
                 fill
                 className="object-cover"
               />
-              {/* Gradient Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-carbon/90 via-carbon/30 to-transparent" />
-              
-              {/* Opening Hours Card */}
               <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                <div className="bg-white/95 backdrop-blur-sm rounded-xl p-6 md:p-8 shadow-lg">
-                  <h3 className="font-serif text-2xl text-carbon mb-6">Öffnungszeiten</h3>
+                <div className="rounded-xl bg-white/95 p-6 shadow-lg backdrop-blur-sm md:p-8">
+                  <h3 className="mb-6 font-serif text-2xl text-carbon">
+                    Oeffnungszeiten
+                  </h3>
                   <div className="space-y-4">
                     {openingHours.map((item) => (
                       <div
                         key={item.day}
-                        className="flex justify-between gap-4 pb-3 border-b border-dust last:border-0 last:pb-0"
+                        className="flex justify-between gap-4 border-b border-dust pb-3 last:border-0 last:pb-0"
                       >
-                        <span className="text-carbon font-medium">{item.day}</span>
-                        <span className="text-right text-muted-foreground">{item.hours}</span>
+                        <span className="font-medium text-carbon">
+                          {item.day}
+                        </span>
+                        <span className="text-right text-muted-foreground">
+                          {item.hours}
+                        </span>
                       </div>
                     ))}
                   </div>
                   <p className="mt-6 text-sm text-muted-foreground">
-                    Küchenschluss 30 Minuten vor Schließung
+                    Kuechenschluss 30 Minuten vor Schliessung
                   </p>
                 </div>
               </div>
@@ -361,5 +368,20 @@ export function ReservationSection() {
         </div>
       </div>
     </section>
+  )
+}
+
+function FieldError({
+  children,
+  error,
+}: {
+  children: ReactNode
+  error?: string
+}) {
+  return (
+    <div>
+      <div className="relative">{children}</div>
+      {error ? <p className="mt-1 text-xs text-strawberry">{error}</p> : null}
+    </div>
   )
 }

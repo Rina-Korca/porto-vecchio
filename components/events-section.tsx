@@ -99,7 +99,7 @@ export function EventsSection() {
             </div>
 
             <a
-              href="mailto:events@bonfini.de"
+              href="mailto:reservierung@ristorante-bonfini.de"
               className="magnetic-btn inline-block mt-10 bg-mahogany text-white px-8 py-4 text-sm uppercase tracking-widest font-medium hover:bg-garnet transition-colors rounded"
             >
               Anfrage senden
