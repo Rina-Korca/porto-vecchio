@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { LockKeyhole, LogIn } from "lucide-react"
-import { confirmSignIn, fetchAuthSession, signIn } from "aws-amplify/auth"
+import { confirmSignIn, fetchAuthSession, signIn, signOut } from "aws-amplify/auth"
 import { Button } from "@/components/ui/button"
 import { getReservationClient, hasAmplifyOutputs } from "@/lib/amplify-client"
 
@@ -28,6 +28,12 @@ export function AdminLoginForm() {
       }
 
       getReservationClient()
+
+      try {
+        await signOut()
+      } catch {
+        // ignore if no session
+      }
 
       if (requiresNewPassword) {
         const result = await confirmSignIn({
