@@ -1,26 +1,43 @@
 "use client"
 
-import { FormEvent, type ReactNode, useState } from "react"
+import { FormEvent, type ReactNode, useState, useEffect } from "react"
 import Image from "next/image"
 import {
   Calendar,
   CheckCircle2,
   Clock,
+  Loader2,
   Mail,
   MessageSquare,
   Phone,
   User,
   Users,
+  XCircle,
 } from "lucide-react"
+import { Amplify } from "aws-amplify"
+import { generateClient } from "aws-amplify/data"
+import type { Schema } from "@/amplify/data/resource"
 import { useInView } from "@/hooks/use-in-view"
 import { companyInfo, openingHours } from "@/lib/company-info"
-import { getReservationClient, hasAmplifyOutputs } from "@/lib/amplify-client"
 import {
   reservationTimeSlots,
   todayDateValue,
   validateReservationRequest,
 } from "@/lib/reservations"
 import { cn } from "@/lib/utils"
+
+let configured = false
+function ensureAmplify() {
+  if (configured) return
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const outputs = require("@/amplify_outputs.json")
+    Amplify.configure(outputs, { ssr: true })
+    configured = true
+  } catch {
+    // outputs not yet generated
+  }
+}
 
 const emptyForm = {
   name: "",
@@ -36,58 +53,67 @@ export function ReservationSection() {
   const { ref, isInView } = useInView({ threshold: 0.1 })
   const [formData, setFormData] = useState(emptyForm)
   const [focusedField, setFocusedField] = useState<string | null>(null)
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
   const [errors, setErrors] = useState<Record<string, string>>({})
-  const [submitError, setSubmitError] = useState("")
+
+  useEffect(() => { ensureAmplify() }, [])
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    setSubmitError("")
+    if (isSubmitting) return
 
     const nextErrors = validateReservationRequest(formData)
     setErrors(nextErrors)
-
-    if (Object.keys(nextErrors).length > 0) {
-      return
-    }
-
-    if (!hasAmplifyOutputs()) {
-      setSubmitError(
-        "Reservierungen sind noch nicht konfiguriert. Bitte versuchen Sie es spaeter erneut.",
-      )
-      return
-    }
+    if (Object.keys(nextErrors).length > 0) return
 
     setIsSubmitting(true)
+    setSubmitError(null)
 
     try {
-      const client = getReservationClient()
-      const result = await client.mutations.createReservationRequest(
-        {
-          name: formData.name.trim(),
-          email: formData.email.trim(),
-          phone: formData.phone.trim() || null,
-          date: formData.date,
-          time: formData.time,
-          guests: Number(formData.guests),
-          message: formData.message.trim() || null,
-        },
-        { authMode: "apiKey" },
-      )
+      const client = generateClient<Schema>()
+      const { data: created, errors: gqlErrors } = await client.models.Reservation.create({
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim() || null,
+        reservationDate: formData.date,
+        reservationTime: formData.time,
+        guests: Number(formData.guests),
+        message: formData.message.trim() || null,
+        status: "PENDING",
+      })
 
-      if (result.errors?.length) {
-        throw new Error(result.errors.map((item) => item.message).join(", "))
+      if (gqlErrors?.length) {
+        throw new Error(gqlErrors[0].message)
+      }
+
+      // Send email notifications (best-effort, don't block success)
+      try {
+        if (created) {
+          await client.queries.sendReservationEmail({
+            id: created.id,
+            name: created.name,
+            email: created.email,
+            phone: created.phone ?? undefined,
+            reservationDate: created.reservationDate,
+            reservationTime: created.reservationTime,
+            guests: created.guests,
+            message: created.message ?? undefined,
+            status: "PENDING",
+          })
+        }
+      } catch (emailErr) {
+        console.error("Email notification failed:", emailErr)
       }
 
       setIsSubmitted(true)
       setFormData(emptyForm)
       setErrors({})
-    } catch (error) {
+    } catch (err) {
+      console.error("Reservation submit error:", err)
       setSubmitError(
-        error instanceof Error
-          ? error.message
-          : "Ihre Anfrage konnte nicht gesendet werden.",
+        "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt."
       )
     } finally {
       setIsSubmitting(false)
@@ -129,172 +155,182 @@ export function ReservationSection() {
             )}
           >
             <div className="rounded-2xl bg-white p-8 shadow-xl shadow-carbon/5 md:p-10">
-              <div className="mb-8 rounded-xl border-l-4 border-mahogany bg-smoke p-4">
-                <p className="text-sm leading-relaxed text-carbon">
-                  <span className="font-semibold">Hinweis:</span> Dies ist eine
-                  Reservierungsanfrage. Wir bestaetigen Ihren Tisch nach kurzer
-                  Pruefung per E-Mail.
-                </p>
-              </div>
-
               {isSubmitted ? (
-                <div className="mb-6 rounded-lg border border-emerald-600/30 bg-emerald-50 p-4 text-emerald-800">
-                  <div className="flex items-start gap-3">
-                    <CheckCircle2 className="mt-0.5 h-5 w-5" />
-                    <p className="text-sm">
-                      Anfrage erhalten. Wir bestaetigen Ihre Reservierung in
-                      Kuerze.
-                    </p>
-                  </div>
+                <div className="py-8 text-center">
+                  <CheckCircle2 className="mx-auto mb-4 h-16 w-16 text-emerald-600" />
+                  <h3 className="mb-2 font-serif text-2xl text-carbon">
+                    Vielen Dank!
+                  </h3>
+                  <p className="mb-6 text-muted-foreground">
+                    Ihre Reservierungsanfrage wurde erfolgreich gesendet. Wir
+                    werden uns in Kürze bei Ihnen melden, um die Reservierung zu
+                    bestätigen.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setIsSubmitted(false)}
+                    className="rounded-lg bg-mahogany px-8 py-3 text-sm font-medium uppercase tracking-widest text-white transition-all hover:bg-garnet"
+                  >
+                    Neue Reservierung
+                  </button>
                 </div>
-              ) : null}
-
-              {submitError ? (
-                <div className="mb-6 rounded-lg border border-strawberry/30 bg-strawberry/10 p-4 text-sm text-garnet">
-                  {submitError}
-                </div>
-              ) : null}
-
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid gap-6 sm:grid-cols-2">
-                  <FieldError error={errors.name}>
-                    <User className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
-                    <input
-                      type="text"
-                      required
-                      minLength={2}
-                      value={formData.name}
-                      onChange={(event) =>
-                        setFormData({ ...formData, name: event.target.value })
-                      }
-                      onFocus={() => setFocusedField("name")}
-                      onBlur={() => setFocusedField(null)}
-                      placeholder="Name"
-                      className={inputClasses("name")}
-                    />
-                  </FieldError>
-
-                  <FieldError error={errors.email}>
-                    <Mail className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
-                    <input
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={(event) =>
-                        setFormData({ ...formData, email: event.target.value })
-                      }
-                      onFocus={() => setFocusedField("email")}
-                      onBlur={() => setFocusedField(null)}
-                      placeholder="E-Mail"
-                      className={inputClasses("email")}
-                    />
-                  </FieldError>
-
-                  <FieldError>
-                    <Phone className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
-                    <input
-                      type="tel"
-                      value={formData.phone}
-                      onChange={(event) =>
-                        setFormData({ ...formData, phone: event.target.value })
-                      }
-                      onFocus={() => setFocusedField("phone")}
-                      onBlur={() => setFocusedField(null)}
-                      placeholder="Telefon"
-                      className={inputClasses("phone")}
-                    />
-                  </FieldError>
-
-                  <FieldError error={errors.guests}>
-                    <Users className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
-                    <input
-                      type="number"
-                      min={1}
-                      step={1}
-                      required
-                      value={formData.guests}
-                      onChange={(event) =>
-                        setFormData({ ...formData, guests: event.target.value })
-                      }
-                      onFocus={() => setFocusedField("guests")}
-                      onBlur={() => setFocusedField(null)}
-                      placeholder="Gaeste"
-                      className={inputClasses("guests")}
-                    />
-                  </FieldError>
-
-                  <FieldError error={errors.date}>
-                    <Calendar className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
-                    <input
-                      type="date"
-                      required
-                      min={todayDateValue()}
-                      value={formData.date}
-                      onChange={(event) =>
-                        setFormData({ ...formData, date: event.target.value })
-                      }
-                      onFocus={() => setFocusedField("date")}
-                      onBlur={() => setFocusedField(null)}
-                      className={cn(inputClasses("date"), "cursor-pointer")}
-                    />
-                  </FieldError>
-
-                  <FieldError error={errors.time}>
-                    <Clock className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
-                    <select
-                      required
-                      value={formData.time}
-                      onChange={(event) =>
-                        setFormData({ ...formData, time: event.target.value })
-                      }
-                      onFocus={() => setFocusedField("time")}
-                      onBlur={() => setFocusedField(null)}
-                      className={cn(
-                        inputClasses("time"),
-                        "cursor-pointer appearance-none",
-                      )}
-                    >
-                      <option value="">Uhrzeit waehlen</option>
-                      {reservationTimeSlots.map((time) => (
-                        <option key={time} value={time}>
-                          {time} Uhr
-                        </option>
-                      ))}
-                    </select>
-                  </FieldError>
-                </div>
-
-                <FieldError>
-                  <MessageSquare className="absolute left-4 top-4 z-10 h-5 w-5 text-silver" />
-                  <textarea
-                    rows={4}
-                    value={formData.message}
-                    onChange={(event) =>
-                      setFormData({ ...formData, message: event.target.value })
-                    }
-                    onFocus={() => setFocusedField("message")}
-                    onBlur={() => setFocusedField(null)}
-                    placeholder="Nachricht / besondere Wuensche"
-                    className={cn(
-                      "w-full resize-none rounded-lg border-2 bg-smoke py-4 pl-12 pr-4 text-carbon transition-all duration-300 placeholder:text-silver",
-                      focusedField === "message"
-                        ? "border-mahogany shadow-[0_0_0_3px_rgba(164,22,26,0.1)]"
-                        : "border-transparent hover:border-silver/50",
-                    )}
-                  />
-                </FieldError>
-
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={cn(
-                    "magnetic-btn w-full rounded-lg bg-mahogany py-4 text-sm font-medium uppercase tracking-widest text-white transition-all duration-300 hover:bg-garnet active:scale-[0.98]",
-                    isSubmitting && "cursor-wait opacity-80",
+              ) : (
+                <>
+                  {submitError && (
+                    <div className="mb-6 rounded-lg border border-strawberry/30 bg-red-50 p-4 text-strawberry">
+                      <div className="flex items-start gap-3">
+                        <XCircle className="mt-0.5 h-5 w-5 shrink-0" />
+                        <p className="text-sm">{submitError}</p>
+                      </div>
+                    </div>
                   )}
-                >
-                  {isSubmitting ? "Wird gesendet..." : "Reservierung anfragen"}
-                </button>
-              </form>
+
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="grid gap-6 sm:grid-cols-2">
+                      <FieldError error={errors.name}>
+                        <User className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
+                        <input
+                          type="text"
+                          required
+                          minLength={2}
+                          value={formData.name}
+                          onChange={(e) =>
+                            setFormData({ ...formData, name: e.target.value })
+                          }
+                          onFocus={() => setFocusedField("name")}
+                          onBlur={() => setFocusedField(null)}
+                          placeholder="Name"
+                          className={inputClasses("name")}
+                        />
+                      </FieldError>
+
+                      <FieldError error={errors.email}>
+                        <Mail className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
+                        <input
+                          type="email"
+                          required
+                          value={formData.email}
+                          onChange={(e) =>
+                            setFormData({ ...formData, email: e.target.value })
+                          }
+                          onFocus={() => setFocusedField("email")}
+                          onBlur={() => setFocusedField(null)}
+                          placeholder="E-Mail"
+                          className={inputClasses("email")}
+                        />
+                      </FieldError>
+
+                      <FieldError>
+                        <Phone className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
+                        <input
+                          type="tel"
+                          value={formData.phone}
+                          onChange={(e) =>
+                            setFormData({ ...formData, phone: e.target.value })
+                          }
+                          onFocus={() => setFocusedField("phone")}
+                          onBlur={() => setFocusedField(null)}
+                          placeholder="Telefon"
+                          className={inputClasses("phone")}
+                        />
+                      </FieldError>
+
+                      <FieldError error={errors.guests}>
+                        <Users className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
+                        <input
+                          type="number"
+                          min={1}
+                          step={1}
+                          required
+                          value={formData.guests}
+                          onChange={(e) =>
+                            setFormData({ ...formData, guests: e.target.value })
+                          }
+                          onFocus={() => setFocusedField("guests")}
+                          onBlur={() => setFocusedField(null)}
+                          placeholder="Gaeste"
+                          className={inputClasses("guests")}
+                        />
+                      </FieldError>
+
+                      <FieldError error={errors.date}>
+                        <Calendar className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
+                        <input
+                          type="date"
+                          required
+                          min={todayDateValue()}
+                          value={formData.date}
+                          onChange={(e) =>
+                            setFormData({ ...formData, date: e.target.value })
+                          }
+                          onFocus={() => setFocusedField("date")}
+                          onBlur={() => setFocusedField(null)}
+                          className={cn(inputClasses("date"), "cursor-pointer")}
+                        />
+                      </FieldError>
+
+                      <FieldError error={errors.time}>
+                        <Clock className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
+                        <select
+                          required
+                          value={formData.time}
+                          onChange={(e) =>
+                            setFormData({ ...formData, time: e.target.value })
+                          }
+                          onFocus={() => setFocusedField("time")}
+                          onBlur={() => setFocusedField(null)}
+                          className={cn(
+                            inputClasses("time"),
+                            "cursor-pointer appearance-none",
+                          )}
+                        >
+                          <option value="">Uhrzeit waehlen</option>
+                          {reservationTimeSlots.map((time) => (
+                            <option key={time} value={time}>
+                              {time} Uhr
+                            </option>
+                          ))}
+                        </select>
+                      </FieldError>
+                    </div>
+
+                    <FieldError>
+                      <MessageSquare className="absolute left-4 top-4 z-10 h-5 w-5 text-silver" />
+                      <textarea
+                        rows={4}
+                        value={formData.message}
+                        onChange={(e) =>
+                          setFormData({ ...formData, message: e.target.value })
+                        }
+                        onFocus={() => setFocusedField("message")}
+                        onBlur={() => setFocusedField(null)}
+                        placeholder="Nachricht / besondere Wuensche"
+                        className={cn(
+                          "w-full resize-none rounded-lg border-2 bg-smoke py-4 pl-12 pr-4 text-carbon transition-all duration-300 placeholder:text-silver",
+                          focusedField === "message"
+                            ? "border-mahogany shadow-[0_0_0_3px_rgba(164,22,26,0.1)]"
+                            : "border-transparent hover:border-silver/50",
+                        )}
+                      />
+                    </FieldError>
+
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="magnetic-btn flex w-full items-center justify-center gap-2 rounded-lg bg-mahogany py-4 text-sm font-medium uppercase tracking-widest text-white transition-all duration-300 hover:bg-garnet active:scale-[0.98] disabled:opacity-60"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          Wird gesendet…
+                        </>
+                      ) : (
+                        "Tisch reservieren"
+                      )}
+                    </button>
+                  </form>
+                </>
+              )}
 
               <div className="mt-8 border-t border-dust pt-8">
                 <p className="mb-4 text-sm text-muted-foreground">

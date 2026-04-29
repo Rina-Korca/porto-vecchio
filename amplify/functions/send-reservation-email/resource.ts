@@ -1,0 +1,12 @@
+import { defineFunction } from "@aws-amplify/backend";
+
+export const sendReservationEmail = defineFunction({
+  name: "send-reservation-email",
+  entry: "./handler.ts",
+  environment: {
+    SES_SENDER_EMAIL: "reservierung@ristorante-bonfini.de",
+    ADMIN_EMAILS:
+      "reservierung@bonfini.de,reservierung@ristorante-bonfini.de",
+  },
+  timeoutSeconds: 15,
+});

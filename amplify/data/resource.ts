@@ -1,82 +1,61 @@
-import { type ClientSchema, a, defineData } from "@aws-amplify/backend"
-import { reservationNotifications } from "../functions/reservation-notifications/resource"
+import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
+import { sendReservationEmail } from "../functions/send-reservation-email/resource";
+import { sendStatusEmail } from "../functions/send-status-email/resource";
 
-const schema = a
-  .schema({
-  ReservationStatus: a.enum(["PENDING", "CONFIRMED", "REJECTED"]),
-
-  ReservationResult: a.customType({
-    id: a.id().required(),
-    name: a.string().required(),
-    email: a.email().required(),
-    phone: a.string(),
-    date: a.date().required(),
-    time: a.string().required(),
-    guests: a.integer().required(),
-    message: a.string(),
-    status: a.ref("ReservationStatus").required(),
-    createdAt: a.datetime(),
-    updatedAt: a.datetime(),
-  }),
-
+const schema = a.schema({
   Reservation: a
     .model({
       name: a.string().required(),
       email: a.email().required(),
-      phone: a.string(),
-      date: a.date().required(),
-      time: a.string().required(),
+      phone: a.phone(),
+      reservationDate: a.date().required(),
+      reservationTime: a.string().required(),
       guests: a.integer().required(),
       message: a.string(),
-      status: a.ref("ReservationStatus").required(),
+      status: a.enum(["PENDING", "CONFIRMED", "REJECTED", "CANCELLED"]),
     })
-    .secondaryIndexes((index) => [
-      index("date").sortKeys(["time"]).queryField("reservationsByDateTime"),
-      index("status")
-        .sortKeys(["date", "time"])
-        .queryField("reservationsByStatusDateTime"),
-    ])
     .authorization((allow) => [
-      allow.group("ADMINS").to(["read", "delete"]),
+      allow.guest().to(["create"]),
+      allow.authenticated().to(["create", "read", "update", "delete"]),
     ]),
 
-  createReservationRequest: a
-    .mutation()
+  sendReservationEmail: a
+    .query()
     .arguments({
+      id: a.string().required(),
       name: a.string().required(),
-      email: a.email().required(),
+      email: a.string().required(),
       phone: a.string(),
-      date: a.date().required(),
-      time: a.string().required(),
+      reservationDate: a.string().required(),
+      reservationTime: a.string().required(),
       guests: a.integer().required(),
       message: a.string(),
+      status: a.string().required(),
     })
-    .returns(a.ref("ReservationResult"))
-    .authorization((allow) => [allow.publicApiKey()])
-    .handler(a.handler.function(reservationNotifications)),
+    .returns(a.json())
+    .authorization((allow) => [allow.guest(), allow.authenticated()])
+    .handler(a.handler.function(sendReservationEmail)),
 
-  updateReservationStatus: a
-    .mutation()
+  sendStatusEmail: a
+    .query()
     .arguments({
-      id: a.id().required(),
-      status: a.ref("ReservationStatus").required(),
+      email: a.string().required(),
+      name: a.string().required(),
+      reservationDate: a.string().required(),
+      reservationTime: a.string().required(),
+      guests: a.integer().required(),
+      status: a.string().required(),
     })
-    .returns(a.ref("ReservationResult"))
-    .authorization((allow) => [allow.group("ADMINS")])
-    .handler(a.handler.function(reservationNotifications)),
-  })
-  .authorization((allow) => [
-    allow.resource(reservationNotifications).to(["query", "mutate"]),
-  ])
+    .returns(a.json())
+    .authorization((allow) => [allow.authenticated()])
+    .handler(a.handler.function(sendStatusEmail)),
+});
 
-export type Schema = ClientSchema<typeof schema>
+export type Schema = ClientSchema<typeof schema>;
 
 export const data = defineData({
   schema,
   authorizationModes: {
-    defaultAuthorizationMode: "userPool",
-    apiKeyAuthorizationMode: {
-      expiresInDays: 30,
-    },
+    defaultAuthorizationMode: "iam",
   },
-})
+});
