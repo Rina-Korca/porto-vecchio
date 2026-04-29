@@ -81,7 +81,7 @@ async function createReservation(args: Record<string, unknown>) {
     },
   ])
 
-  return null
+  return reservation
 }
 
 async function updateReservationStatus(args: Record<string, unknown>) {

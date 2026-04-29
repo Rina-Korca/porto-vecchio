@@ -5,6 +5,20 @@ const schema = a
   .schema({
   ReservationStatus: a.enum(["PENDING", "CONFIRMED", "REJECTED"]),
 
+  ReservationResult: a.customType({
+    id: a.id().required(),
+    name: a.string().required(),
+    email: a.email().required(),
+    phone: a.string(),
+    date: a.date().required(),
+    time: a.string().required(),
+    guests: a.integer().required(),
+    message: a.string(),
+    status: a.ref("ReservationStatus").required(),
+    createdAt: a.datetime(),
+    updatedAt: a.datetime(),
+  }),
+
   Reservation: a
     .model({
       name: a.string().required(),
@@ -37,7 +51,7 @@ const schema = a
       guests: a.integer().required(),
       message: a.string(),
     })
-    .returns(a.ref("Reservation"))
+    .returns(a.ref("ReservationResult"))
     .authorization((allow) => [allow.publicApiKey()])
     .handler(a.handler.function(reservationNotifications)),
 
@@ -47,7 +61,7 @@ const schema = a
       id: a.id().required(),
       status: a.ref("ReservationStatus").required(),
     })
-    .returns(a.ref("Reservation"))
+    .returns(a.ref("ReservationResult"))
     .authorization((allow) => [allow.group("ADMINS")])
     .handler(a.handler.function(reservationNotifications)),
   })
