@@ -1,7 +1,6 @@
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 
 const ses = new SESClient({ region: "eu-west-1" });
-const SES_SENDER = process.env.SES_SENDER_EMAIL!;
 
 interface StatusEvent {
   email: string;
@@ -27,9 +26,27 @@ const statusText: Record<string, { subject: string; body: string }> = {
   },
 };
 
-export const handler = async (event: StatusEvent) => {
-  const r = event;
+export const handler = async (event: { arguments: StatusEvent }) => {
+  const r = event.arguments;
+
+  const SES_SENDER = process.env.SES_SENDER_EMAIL;
+  if (!SES_SENDER) {
+    console.error("SES_SENDER_EMAIL env var is not set");
+    return { success: false, error: "Sender email not configured" };
+  }
+
+  if (!r.email) {
+    console.error("Customer email is missing from arguments:", JSON.stringify(r));
+    return { success: false, error: "Customer email is required" };
+  }
+
   const t = statusText[r.status] ?? statusText.CANCELLED;
+
+  console.log("Sending status email", {
+    customer: r.email,
+    status: r.status,
+    sender: SES_SENDER,
+  });
 
   await ses.send(
     new SendEmailCommand({

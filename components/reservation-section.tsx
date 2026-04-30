@@ -89,16 +89,17 @@ export function ReservationSection() {
       }
 
       // Send email notifications (best-effort, don't block success)
+      // Use validated form values — the create response may omit fields under guest auth
       try {
         const { errors: emailErrors } = await client.queries.sendReservationEmail({
           id: created.id,
-          name: created.name,
-          email: created.email,
-          phone: created.phone ?? undefined,
-          reservationDate: created.reservationDate,
-          reservationTime: created.reservationTime,
-          guests: created.guests,
-          message: created.message ?? undefined,
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          phone: normalizedPhone || undefined,
+          reservationDate: formData.date,
+          reservationTime: formData.time,
+          guests: Number(formData.guests),
+          message: formData.message.trim() || undefined,
           status: "PENDING",
         })
 
@@ -187,14 +188,16 @@ export function ReservationSection() {
                     </div>
                   )}
 
-                  <form onSubmit={handleSubmit} className="space-y-6">
+                  <form onSubmit={handleSubmit} className="space-y-6" autoComplete="on">
                     <div className="grid gap-6 sm:grid-cols-2">
                       <FieldError error={errors.name}>
                         <User className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
                         <input
+                          name="name"
                           type="text"
                           required
                           minLength={2}
+                          autoComplete="name"
                           value={formData.name}
                           onChange={(e) =>
                             setFormData({ ...formData, name: e.target.value })
@@ -209,8 +212,10 @@ export function ReservationSection() {
                       <FieldError error={errors.email}>
                         <Mail className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
                         <input
+                          name="email"
                           type="email"
                           required
+                          autoComplete="email"
                           value={formData.email}
                           onChange={(e) =>
                             setFormData({ ...formData, email: e.target.value })
@@ -225,7 +230,9 @@ export function ReservationSection() {
                       <FieldError error={errors.phone}>
                         <Phone className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
                         <input
+                          name="tel"
                           type="tel"
+                          autoComplete="tel"
                           value={formData.phone}
                           onChange={(e) =>
                             setFormData({ ...formData, phone: e.target.value })
@@ -240,10 +247,12 @@ export function ReservationSection() {
                       <FieldError error={errors.guests}>
                         <Users className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
                         <input
+                          name="guests"
                           type="number"
                           min={1}
                           step={1}
                           required
+                          autoComplete="on"
                           value={formData.guests}
                           onChange={(e) =>
                             setFormData({ ...formData, guests: e.target.value })
@@ -258,9 +267,11 @@ export function ReservationSection() {
                       <FieldError error={errors.date}>
                         <Calendar className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
                         <input
+                          name="reservationDate"
                           type="date"
                           required
                           min={todayDateValue()}
+                          autoComplete="off"
                           value={formData.date}
                           onChange={(e) =>
                             setFormData({ ...formData, date: e.target.value })
@@ -274,7 +285,9 @@ export function ReservationSection() {
                       <FieldError error={errors.time}>
                         <Clock className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
                         <select
+                          name="reservationTime"
                           required
+                          autoComplete="off"
                           value={formData.time}
                           onChange={(e) =>
                             setFormData({ ...formData, time: e.target.value })
@@ -299,7 +312,9 @@ export function ReservationSection() {
                     <FieldError>
                       <MessageSquare className="absolute left-4 top-4 z-10 h-5 w-5 text-silver" />
                       <textarea
+                        name="message"
                         rows={4}
+                        autoComplete="on"
                         value={formData.message}
                         onChange={(e) =>
                           setFormData({ ...formData, message: e.target.value })

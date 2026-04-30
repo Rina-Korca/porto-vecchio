@@ -128,18 +128,22 @@ export default function AdminPage() {
           {loginError && (
             <div className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">{loginError}</div>
           )}
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-4" autoComplete="on">
             <input
+              name="username"
               type="email"
               required
+              autoComplete="username"
               placeholder="E-Mail"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full rounded-lg border-2 border-dust bg-smoke px-4 py-3 text-carbon focus:border-mahogany focus:outline-none"
             />
             <input
+              name="password"
               type="password"
               required
+              autoComplete="current-password"
               placeholder="Passwort"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -211,17 +215,19 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
       await client.models.Reservation.update({ id: r.id, status })
 
       // Send status email to user (best-effort)
-      try {
-        await client.queries.sendStatusEmail({
-          email: r.email!,
-          name: r.name!,
-          reservationDate: r.reservationDate!,
-          reservationTime: r.reservationTime!,
-          guests: r.guests!,
-          status,
-        })
-      } catch (emailErr) {
-        console.error("Status email failed (reservation still updated):", emailErr)
+      if (r.email && r.name && r.reservationDate && r.reservationTime && r.guests) {
+        try {
+          await client.queries.sendStatusEmail({
+            email: r.email,
+            name: r.name,
+            reservationDate: r.reservationDate,
+            reservationTime: r.reservationTime,
+            guests: r.guests,
+            status,
+          })
+        } catch (emailErr) {
+          console.error("Status email failed (reservation still updated):", emailErr)
+        }
       }
 
       await fetchReservations()

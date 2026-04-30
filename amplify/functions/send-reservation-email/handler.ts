@@ -2,9 +2,6 @@ import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 
 const ses = new SESClient({ region: "eu-west-1" });
 
-const SES_SENDER = process.env.SES_SENDER_EMAIL!;
-const ADMIN_EMAILS = process.env.ADMIN_EMAILS!.split(",").map((e) => e.trim());
-
 interface ReservationEvent {
   id: string;
   name: string;
@@ -17,8 +14,33 @@ interface ReservationEvent {
   status: string;
 }
 
-export const handler = async (event: ReservationEvent) => {
-  const r = event;
+export const handler = async (event: { arguments: ReservationEvent }) => {
+  const r = event.arguments;
+
+  const SES_SENDER = process.env.SES_SENDER_EMAIL;
+  if (!SES_SENDER) {
+    console.error("SES_SENDER_EMAIL env var is not set");
+    return { success: false, error: "Sender email not configured" };
+  }
+
+  const adminRaw = process.env.ADMIN_EMAILS ?? "";
+  const adminEmails = adminRaw.split(",").map((e) => e.trim()).filter(Boolean);
+  if (!adminEmails.length) {
+    console.error("ADMIN_EMAILS env var is empty or not set");
+    return { success: false, error: "Admin emails not configured" };
+  }
+
+  if (!r.email) {
+    console.error("Customer email is missing from arguments:", JSON.stringify(r));
+    return { success: false, error: "Customer email is required" };
+  }
+
+  console.log("Sending reservation emails", {
+    customer: r.email,
+    admins: adminEmails,
+    sender: SES_SENDER,
+    id: r.id,
+  });
 
   await Promise.all([
     ses.send(
@@ -53,7 +75,7 @@ export const handler = async (event: ReservationEvent) => {
     ses.send(
       new SendEmailCommand({
         Source: SES_SENDER,
-        Destination: { ToAddresses: ADMIN_EMAILS },
+        Destination: { ToAddresses: adminEmails },
         Message: {
           Subject: {
             Data: `Neue Reservierung – ${r.name} – ${r.reservationDate} ${r.reservationTime}`,
