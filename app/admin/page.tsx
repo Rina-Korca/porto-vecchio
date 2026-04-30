@@ -5,6 +5,7 @@ import {
   signIn,
   signOut,
   getCurrentUser,
+  fetchAuthSession,
 } from "aws-amplify/auth"
 import { generateClient } from "aws-amplify/data"
 import type { Schema } from "@/amplify/data/resource"
@@ -151,6 +152,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
     setLoadError("")
     try {
       configureAmplifyClient()
+      await fetchAuthSession()
       const client = generateClient<Schema>({ authMode: "userPool" })
       const { data, errors } = await client.models.Reservation.list({
         limit: 1000,
