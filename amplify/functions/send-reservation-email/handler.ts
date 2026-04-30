@@ -42,18 +42,7 @@ export const handler = async (event: { arguments: ReservationEvent }) => {
     id: r.id,
   });
 
-  await Promise.all([
-    ses.send(
-      new SendEmailCommand({
-        Source: SES_SENDER,
-        Destination: { ToAddresses: [r.email] },
-        Message: {
-          Subject: {
-            Data: `Reservierungsanfrage erhalten – ${r.reservationDate}`,
-          },
-          Body: {
-            Html: {
-              Data: `
+  const customerHtml = `
 <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
   <h2 style="color:#a4161a">Ristorante Bonfini</h2>
   <p>Liebe/r ${r.name},</p>
@@ -65,24 +54,9 @@ export const handler = async (event: { arguments: ReservationEvent }) => {
   </table>
   <p style="background:#fff3cd;padding:12px;border-radius:6px"><strong>Hinweis:</strong> Ihre Reservierung ist noch nicht bestätigt. Unser Team wird sich in Kürze bei Ihnen melden.</p>
   <p>Mit freundlichen Grüßen,<br/>Ristorante Bonfini</p>
-</div>`,
-            },
-          },
-        },
-      })
-    ),
+</div>`;
 
-    ses.send(
-      new SendEmailCommand({
-        Source: SES_SENDER,
-        Destination: { ToAddresses: adminEmails },
-        Message: {
-          Subject: {
-            Data: `Neue Reservierung – ${r.name} – ${r.reservationDate} ${r.reservationTime}`,
-          },
-          Body: {
-            Html: {
-              Data: `
+  const adminHtml = `
 <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
   <h2 style="color:#a4161a">Neue Reservierungsanfrage</h2>
   <p>Status: <strong>PENDING</strong></p>
@@ -96,13 +70,41 @@ export const handler = async (event: { arguments: ReservationEvent }) => {
     <tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Gäste</strong></td><td style="padding:8px;border-bottom:1px solid #eee">${r.guests}</td></tr>
     <tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Nachricht</strong></td><td style="padding:8px;border-bottom:1px solid #eee">${r.message || "-"}</td></tr>
   </table>
-</div>`,
-            },
-          },
+</div>`;
+
+  // Send customer email
+  try {
+    await ses.send(
+      new SendEmailCommand({
+        Source: SES_SENDER,
+        Destination: { ToAddresses: [r.email] },
+        Message: {
+          Subject: { Data: `Reservierungsanfrage erhalten – ${r.reservationDate}` },
+          Body: { Html: { Data: customerHtml } },
         },
       })
-    ),
-  ]);
+    );
+  } catch (err) {
+    console.error("Failed to send customer email:", err);
+  }
+
+  // Send admin emails individually so one failure doesn't block others
+  for (const admin of adminEmails) {
+    try {
+      await ses.send(
+        new SendEmailCommand({
+          Source: SES_SENDER,
+          Destination: { ToAddresses: [admin] },
+          Message: {
+            Subject: { Data: `Neue Reservierung – ${r.name} – ${r.reservationDate} ${r.reservationTime}` },
+            Body: { Html: { Data: adminHtml } },
+          },
+        })
+      );
+    } catch (err) {
+      console.error(`Failed to send admin email to ${admin}:`, err);
+    }
+  }
 
   return { success: true };
 };
