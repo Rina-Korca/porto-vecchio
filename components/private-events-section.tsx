@@ -79,8 +79,8 @@ export function PrivateEventsSection() {
               
               <div className="relative aspect-[4/5]">
                 <Image
-                  src="/images/private-dining.jpg"
-                  alt="Private Dining im Bonfini"
+                  src="/images/interier/O-1.jpg"
+                  alt="Oberer Gastraum des Bonfini fuer private Veranstaltungen"
                   fill
                   className="object-cover"
                 />

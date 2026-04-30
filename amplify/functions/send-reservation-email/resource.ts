@@ -7,7 +7,7 @@ export const sendReservationEmail = defineFunction({
   environment: {
     SES_SENDER_EMAIL: "reservierung@ristorante-bonfini.de",
     ADMIN_EMAILS:
-      "reservierung@bonfini.de,reservierung@ristorante-bonfini.de",
+      "reservierung@ristorante-bonfini.de",
   },
   timeoutSeconds: 15,
 });

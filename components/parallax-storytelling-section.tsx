@@ -28,8 +28,8 @@ export function ParallaxStorytellingSection() {
 
   return (
     <MultiLayerParallax
-      backgroundImage="/images/parallax-wine.jpg"
-      backgroundAlt="Wine cellar atmosphere at Ristorante Bonfini"
+      backgroundImage="/images/interier/O-2.jpg"
+      backgroundAlt="Gastraum und Atmosphaere im Ristorante Bonfini"
       midLayerContent={MidLayerContent}
       minHeight="85vh"
       overlayColor="rgba(11, 9, 10, 0.55)"

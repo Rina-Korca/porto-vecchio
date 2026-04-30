@@ -1,6 +1,6 @@
 "use client"
 
-import { FormEvent, type ReactNode, useState, useEffect } from "react"
+import { FormEvent, type ReactNode, useEffect, useMemo, useState } from "react"
 import Image from "next/image"
 import {
   Calendar,
@@ -19,7 +19,7 @@ import type { Schema } from "@/amplify/data/resource"
 import { useInView } from "@/hooks/use-in-view"
 import { companyInfo, openingHours } from "@/lib/company-info"
 import {
-  reservationTimeSlots,
+  getReservationTimeSlotsForDate,
   todayDateValue,
   validateReservationRequest,
   normalizeReservationPhone,
@@ -45,6 +45,16 @@ export function ReservationSection() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const availableTimeSlots = useMemo(
+    () => getReservationTimeSlotsForDate(formData.date),
+    [formData.date],
+  )
+
+  useEffect(() => {
+    if (formData.time && !availableTimeSlots.includes(formData.time)) {
+      setFormData((current) => ({ ...current, time: "" }))
+    }
+  }, [availableTimeSlots, formData.time])
 
   useEffect(() => {
     try {
@@ -288,6 +298,7 @@ export function ReservationSection() {
                           name="reservationTime"
                           required
                           autoComplete="off"
+                          disabled={!formData.date || availableTimeSlots.length === 0}
                           value={formData.time}
                           onChange={(e) =>
                             setFormData({ ...formData, time: e.target.value })
@@ -297,10 +308,18 @@ export function ReservationSection() {
                           className={cn(
                             inputClasses("time"),
                             "cursor-pointer appearance-none",
+                            (!formData.date || availableTimeSlots.length === 0) &&
+                              "cursor-not-allowed opacity-60",
                           )}
                         >
-                          <option value="">Uhrzeit waehlen</option>
-                          {reservationTimeSlots.map((time) => (
+                          <option value="">
+                            {!formData.date
+                              ? "Bitte zuerst Datum waehlen"
+                              : availableTimeSlots.length === 0
+                                ? "An diesem Tag geschlossen"
+                                : "Uhrzeit waehlen"}
+                          </option>
+                          {availableTimeSlots.map((time) => (
                             <option key={time} value={time}>
                               {time} Uhr
                             </option>
@@ -385,8 +404,8 @@ export function ReservationSection() {
           >
             <div className="relative min-h-[500px] overflow-hidden rounded-2xl shadow-xl shadow-carbon/10 lg:min-h-[700px]">
               <Image
-                src="/images/interior.jpg"
-                alt="Elegantes Restaurant Interieur"
+                src="/images/interier/U-1.jpg"
+                alt="Atmosphaerischer Innenbereich des Ristorante Bonfini"
                 fill
                 className="object-cover"
               />

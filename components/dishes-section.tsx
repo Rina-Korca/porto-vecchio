@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useInView } from "@/hooks/use-in-view"
-import { cn } from "@/lib/utils"
-import Image from "next/image"
+import { useInView } from "@/hooks/use-in-view";
+import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 const dishes = [
   {
@@ -10,32 +10,32 @@ const dishes = [
     description:
       "Hausgemachte Bandnudeln mit frischem schwarzem Trüffel und Parmigiano Reggiano",
     price: "38",
-    image: "/images/dish-pasta.jpg",
+    image: "/images/food/BonfiniRestaurant_AnnaNesterenko-12.jpg",
   },
   {
     name: "Branzino alla Griglia",
     description:
       "Gegrillter Wolfsbarsch mit mediterranem Gemüse und Zitronenöl",
     price: "42",
-    image: "/images/dish-fish.jpg",
+    image: "/images/food/BonfiniRestaurant_AnnaNesterenko-14.jpg",
   },
   {
     name: "Filetto di Manzo",
     description:
       "Rinderfilet mit Barolo-Reduktion, Trüffelkartoffeln und Spinat",
     price: "52",
-    image: "/images/dish-steak.jpg",
+    image: "/images/food/BonfiniRestaurant_AnnaNesterenko-18.jpg",
   },
   {
     name: "Risotto ai Funghi Porcini",
     description: "Cremiges Risotto mit Steinpilzen und frischen Kräutern",
     price: "32",
-    image: "/images/dish-risotto.jpg",
+    image: "/images/food/BonfiniRestaurant_AnnaNesterenko-7.jpg",
   },
-]
+];
 
 export function DishesSection() {
-  const { ref, isInView } = useInView({ threshold: 0.1 })
+  const { ref, isInView } = useInView({ threshold: 0.1 });
 
   return (
     <section ref={ref} className="py-24 md:py-32 bg-white">
@@ -45,7 +45,9 @@ export function DishesSection() {
           <span
             className={cn(
               "inline-block text-mahogany uppercase tracking-[0.3em] text-sm mb-6 transition-all duration-700",
-              isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              isInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8",
             )}
           >
             Empfehlungen
@@ -53,7 +55,9 @@ export function DishesSection() {
           <h2
             className={cn(
               "font-serif text-4xl md:text-5xl text-carbon mb-6 leading-tight transition-all duration-700 delay-200",
-              isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              isInView
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8",
             )}
           >
             Unsere <span className="text-mahogany">Signature Dishes</span>
@@ -70,7 +74,7 @@ export function DishesSection() {
                 "group bg-smoke rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500",
                 isInView
                   ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-8"
+                  : "opacity-0 translate-y-8",
               )}
               style={{ transitionDelay: `${300 + index * 100}ms` }}
             >
@@ -78,7 +82,7 @@ export function DishesSection() {
                 <div className="relative w-full sm:w-48 h-48 sm:h-auto flex-shrink-0">
                   <Image
                     src={dish.image}
-                    alt={dish.name}
+                    alt={`${dish.name} - ${dish.description}`}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-700"
                   />
@@ -102,5 +106,5 @@ export function DishesSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { useInView } from "@/hooks/use-in-view"
-import { cn } from "@/lib/utils"
-import Image from "next/image"
+import { useInView } from "@/hooks/use-in-view";
+import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 export function CuisineSection() {
-  const { ref, isInView } = useInView({ threshold: 0.2 })
+  const { ref, isInView } = useInView({ threshold: 0.2 });
 
   return (
     <section id="kueche" ref={ref} className="py-24 md:py-32 bg-white">
@@ -17,13 +17,13 @@ export function CuisineSection() {
               "relative transition-all duration-1000",
               isInView
                 ? "opacity-100 translate-x-0"
-                : "opacity-0 -translate-x-12"
+                : "opacity-0 -translate-x-12",
             )}
           >
             <div className="relative aspect-[4/5] rounded-lg overflow-hidden shadow-2xl">
               <Image
-                src="/images/chef-cooking.jpg"
-                alt="Unser Küchenchef bei der Arbeit"
+                src="/images/food/BonfiniRestaurant_AnnaNesterenko-14.jpg"
+                alt="Gegrillter Wolfsbarsch mit mediterranem Gemüse - sorgfältig angerichtetes Gericht aus der Bonfini Kueche"
                 fill
                 className="object-cover"
               />
@@ -38,15 +38,14 @@ export function CuisineSection() {
               "transition-all duration-1000 delay-300",
               isInView
                 ? "opacity-100 translate-x-0"
-                : "opacity-0 translate-x-12"
+                : "opacity-0 translate-x-12",
             )}
           >
             <span className="inline-block text-mahogany uppercase tracking-[0.3em] text-sm mb-6">
               Unsere Küche
             </span>
             <h2 className="font-serif text-4xl md:text-5xl text-carbon mb-8 leading-tight">
-              Tradition trifft{" "}
-              <span className="text-mahogany">Moderne</span>
+              Tradition trifft <span className="text-mahogany">Moderne</span>
             </h2>
             <div className="thin-divider w-16 mb-8" />
             <p className="text-muted-foreground text-lg leading-relaxed mb-6">
@@ -71,5 +70,5 @@ export function CuisineSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

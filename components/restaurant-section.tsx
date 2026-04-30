@@ -23,8 +23,8 @@ export function RestaurantSection() {
               <ScrollReveal direction="left" delay={0}>
                 <div className="relative aspect-[4/3] lg:aspect-[4/5] overflow-hidden rounded-sm shadow-2xl">
                   <ScrollImage
-                    src="/images/gallery-interior-1.jpg"
-                    alt="Bonfini Restaurant Interior"
+                    src="/images/interier/O-2.jpg"
+                    alt="Heller Gastraum im Ristorante Bonfini mit gedeckten Tischen"
                     className="object-cover"
                     containerClassName="w-full h-full"
                     zoomAmount={1.12}
@@ -49,8 +49,8 @@ export function RestaurantSection() {
                 <ScrollReveal direction="right" delay={200}>
                   <div className="relative aspect-[3/2] overflow-hidden rounded-sm shadow-xl">
                     <ScrollImage
-                      src="/images/interior-detail.jpg"
-                      alt="Restaurant Ambiance Detail"
+                      src="/images/interier/U-1.jpg"
+                      alt="Atmosphaerischer Innenbereich des Ristorante Bonfini"
                       className="object-cover"
                       containerClassName="w-full h-full"
                       zoomAmount={1.1}
@@ -66,8 +66,8 @@ export function RestaurantSection() {
                 <ScrollReveal direction="right" delay={400}>
                   <div className="relative aspect-[3/2] overflow-hidden rounded-sm shadow-xl">
                     <ScrollImage
-                      src="/images/gallery-interior-2.jpg"
-                      alt="Restaurant Bar Area"
+                      src="/images/interier/U-2.jpg"
+                      alt="Unterer Restaurantbereich des Ristorante Bonfini"
                       className="object-cover"
                       containerClassName="w-full h-full"
                       zoomAmount={1.08}

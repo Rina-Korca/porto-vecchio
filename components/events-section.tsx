@@ -44,8 +44,8 @@ export function EventsSection() {
           >
             <div className="relative aspect-[4/5] rounded-lg overflow-hidden shadow-2xl">
               <Image
-                src="/images/private-dining.jpg"
-                alt="Private Dining Raum"
+                src="/images/interier/O-1.jpg"
+                alt="Oberer Gastraum des Bonfini fuer private Feiern"
                 fill
                 className="object-cover"
               />

@@ -1,9 +1,78 @@
-export const reservationTimeSlots = Array.from({ length: 12 }, (_, index) => {
-  const minutes = 17 * 60 + index * 30
-  const hours = Math.floor(minutes / 60)
-  const mins = minutes % 60
-  return `${String(hours).padStart(2, "0")}:${String(mins).padStart(2, "0")}`
-})
+import { openingSchedule } from "./company-info"
+
+const RESERVATION_SLOT_INTERVAL_MINUTES = 30
+const LAST_RESERVATION_BEFORE_CLOSE_MINUTES = 30
+
+function timeToMinutes(time: string) {
+  const [hours, minutes] = time.split(":").map(Number)
+  return hours * 60 + minutes
+}
+
+function minutesToTime(totalMinutes: number) {
+  const minutesInDay = 24 * 60
+  const normalizedMinutes = ((totalMinutes % minutesInDay) + minutesInDay) % minutesInDay
+  const hours = Math.floor(normalizedMinutes / 60)
+  const minutes = normalizedMinutes % 60
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`
+}
+
+function parseDateInput(date: string) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date)
+  if (!match) return null
+
+  const year = Number(match[1])
+  const month = Number(match[2])
+  const day = Number(match[3])
+  const parsed = new Date(year, month - 1, day)
+
+  if (
+    parsed.getFullYear() !== year ||
+    parsed.getMonth() !== month - 1 ||
+    parsed.getDate() !== day
+  ) {
+    return null
+  }
+
+  return parsed
+}
+
+function getReservationTimeSlotsForHours(hours: {
+  opensAt: string
+  closesAt: string
+}) {
+  const slots: string[] = []
+  const opensAt = timeToMinutes(hours.opensAt)
+  let closesAt = timeToMinutes(hours.closesAt)
+
+  if (closesAt <= opensAt) {
+    closesAt += 24 * 60
+  }
+
+  const lastSlot = closesAt - LAST_RESERVATION_BEFORE_CLOSE_MINUTES
+  for (
+    let slot = opensAt;
+    slot <= lastSlot;
+    slot += RESERVATION_SLOT_INTERVAL_MINUTES
+  ) {
+    slots.push(minutesToTime(slot))
+  }
+
+  return slots
+}
+
+export const reservationTimeSlots = Array.from(
+  new Set(openingSchedule.flatMap((hours) => getReservationTimeSlotsForHours(hours))),
+).sort()
+
+export function getReservationTimeSlotsForDate(date: string) {
+  const parsedDate = parseDateInput(date)
+  if (!parsedDate) return []
+
+  const hours = openingSchedule.find((entry) => entry.dayIndex === parsedDate.getDay())
+  if (!hours) return []
+
+  return getReservationTimeSlotsForHours(hours)
+}
 
 export function todayDateValue() {
   const now = new Date()
@@ -37,7 +106,7 @@ export function validateReservationRequest(input: {
     errors.date = "Bitte waehlen Sie ein Datum ab heute."
   }
 
-  if (!reservationTimeSlots.includes(input.time)) {
+  if (!getReservationTimeSlotsForDate(input.date).includes(input.time)) {
     errors.time = "Bitte waehlen Sie eine gueltige Uhrzeit."
   }
 

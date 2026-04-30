@@ -72,8 +72,8 @@ export function InteriorSection() {
           >
             <div className="relative aspect-[4/5] rounded-lg overflow-hidden shadow-2xl">
               <Image
-                src="/images/interior.jpg"
-                alt="Elegantes Restaurant Interieur"
+                src="/images/interier/O-2.jpg"
+                alt="Eleganter Innenbereich des Ristorante Bonfini"
                 fill
                 className="object-cover"
               />
@@ -81,8 +81,8 @@ export function InteriorSection() {
             {/* Overlapping image */}
             <div className="absolute -bottom-8 -left-8 w-48 h-48 rounded-lg overflow-hidden shadow-xl hidden md:block">
               <Image
-                src="/images/interior-detail.jpg"
-                alt="Restaurant Detail"
+                src="/images/interier/U-1.jpg"
+                alt="Detailansicht des Bonfini Innenbereichs"
                 fill
                 className="object-cover"
               />
