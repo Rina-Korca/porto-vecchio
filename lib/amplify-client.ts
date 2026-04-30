@@ -38,7 +38,7 @@ export function configureAmplifyClient() {
     )
   }
 
-  Amplify.configure(config, { ssr: true })
+  Amplify.configure(config)
   configured = true
 }
 

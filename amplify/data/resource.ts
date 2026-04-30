@@ -16,7 +16,8 @@ const schema = a.schema({
     })
     .authorization((allow) => [
       allow.guest().to(["create"]),
-      allow.authenticated().to(["create", "read", "update", "delete"]),
+      allow.authenticated("identityPool").to(["create", "read", "update", "delete"]),
+      allow.authenticated("userPools").to(["create", "read", "update", "delete"]),
     ]),
 
   sendReservationEmail: a
@@ -33,7 +34,7 @@ const schema = a.schema({
       status: a.string().required(),
     })
     .returns(a.json())
-    .authorization((allow) => [allow.guest(), allow.authenticated()])
+    .authorization((allow) => [allow.guest(), allow.authenticated("identityPool"), allow.authenticated("userPools")])
     .handler(a.handler.function(sendReservationEmail)),
 
   sendStatusEmail: a
@@ -47,7 +48,7 @@ const schema = a.schema({
       status: a.string().required(),
     })
     .returns(a.json())
-    .authorization((allow) => [allow.authenticated()])
+    .authorization((allow) => [allow.authenticated("identityPool"), allow.authenticated("userPools")])
     .handler(a.handler.function(sendStatusEmail)),
 });
 

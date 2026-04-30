@@ -4,7 +4,6 @@ import { useEffect, useState, useCallback } from "react"
 import {
   signIn,
   signOut,
-  getCurrentUser,
   fetchAuthSession,
 } from "aws-amplify/auth"
 import { generateClient } from "aws-amplify/data"
@@ -47,6 +46,15 @@ const STATUS_LABELS: Record<string, string> = {
   CANCELLED: "Storniert",
 }
 
+async function hasValidUserPoolTokens(): Promise<boolean> {
+  try {
+    const session = await fetchAuthSession()
+    return !!session.tokens?.accessToken
+  } catch {
+    return false
+  }
+}
+
 export default function AdminPage() {
   const [authState, setAuthState] = useState<"loading" | "login" | "authenticated">("loading")
   const [email, setEmail] = useState("")
@@ -63,9 +71,9 @@ export default function AdminPage() {
       return
     }
 
-    getCurrentUser()
-      .then(() => setAuthState("authenticated"))
-      .catch(() => setAuthState("login"))
+    hasValidUserPoolTokens().then((valid) =>
+      setAuthState(valid ? "authenticated" : "login"),
+    )
   }, [])
 
   async function handleLogin(e: React.FormEvent) {
@@ -73,7 +81,21 @@ export default function AdminPage() {
     setLoggingIn(true)
     setLoginError("")
     try {
-      await signIn({ username: email, password })
+      const { isSignedIn, nextStep } = await signIn({ username: email, password })
+
+      if (!isSignedIn) {
+        setLoginError(
+          `Anmeldung erfordert einen weiteren Schritt: ${nextStep.signInStep}`,
+        )
+        return
+      }
+
+      const valid = await hasValidUserPoolTokens()
+      if (!valid) {
+        setLoginError("Anmeldung erfolgreich, aber keine gültige Sitzung erhalten. Bitte erneut versuchen.")
+        return
+      }
+
       setAuthState("authenticated")
     } catch (err: unknown) {
       setLoginError(err instanceof Error ? err.message : "Login fehlgeschlagen")
@@ -140,6 +162,11 @@ export default function AdminPage() {
   return <Dashboard onLogout={handleLogout} />
 }
 
+function getClient() {
+  configureAmplifyClient()
+  return generateClient<Schema>({ authMode: "userPool" })
+}
+
 function Dashboard({ onLogout }: { onLogout: () => void }) {
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [loading, setLoading] = useState(true)
@@ -151,9 +178,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
   const fetchReservations = useCallback(async () => {
     setLoadError("")
     try {
-      configureAmplifyClient()
-      await fetchAuthSession()
-      const client = generateClient<Schema>({ authMode: "userPool" })
+      const client = getClient()
       const { data, errors } = await client.models.Reservation.list({
         limit: 1000,
       })
@@ -182,13 +207,12 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
   async function updateStatus(r: Reservation, status: "CONFIRMED" | "REJECTED" | "CANCELLED") {
     setActionLoading(r.id)
     try {
-      const client = generateClient<Schema>({ authMode: "userPool" })
+      const client = getClient()
       await client.models.Reservation.update({ id: r.id, status })
 
       // Send status email to user (best-effort)
       try {
-        const emailClient = generateClient<Schema>({ authMode: "userPool" })
-        await emailClient.queries.sendStatusEmail({
+        await client.queries.sendStatusEmail({
           email: r.email!,
           name: r.name!,
           reservationDate: r.reservationDate!,
@@ -215,7 +239,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
     if (!confirm("Reservierung wirklich löschen?")) return
     setActionLoading(id)
     try {
-      const client = generateClient<Schema>({ authMode: "userPool" })
+      const client = getClient()
       await client.models.Reservation.delete({ id })
       await fetchReservations()
       if (selected?.id === id) setSelected(null)
