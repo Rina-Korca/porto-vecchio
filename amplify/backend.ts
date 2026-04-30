@@ -1,9 +1,9 @@
 import { defineBackend } from "@aws-amplify/backend";
 import { PolicyStatement, Effect } from "aws-cdk-lib/aws-iam";
-import { auth } from "./auth/resource.js";
-import { data } from "./data/resource.js";
-import { sendReservationEmail } from "./functions/send-reservation-email/resource.js";
-import { sendStatusEmail } from "./functions/send-status-email/resource.js";
+import { auth } from "./auth/resource";
+import { data } from "./data/resource";
+import { sendReservationEmail } from "./functions/send-reservation-email/resource";
+import { sendStatusEmail } from "./functions/send-status-email/resource";
 
 const backend = defineBackend({
   auth,
