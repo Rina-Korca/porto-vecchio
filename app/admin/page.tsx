@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState, useCallback } from "react"
-import { Amplify } from "aws-amplify"
 import {
   signIn,
   signOut,
@@ -9,6 +8,7 @@ import {
 } from "aws-amplify/auth"
 import { generateClient } from "aws-amplify/data"
 import type { Schema } from "@/amplify/data/resource"
+import { configureAmplifyClient, getErrorMessage } from "@/lib/amplify-client"
 import {
   Calendar,
   CheckCircle2,
@@ -29,19 +29,6 @@ import {
   X,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
-
-let configured = false
-function ensureAmplify() {
-  if (configured) return
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const outputs = require("@/amplify_outputs.json")
-    Amplify.configure(outputs, { ssr: true })
-    configured = true
-  } catch {
-    // not yet generated
-  }
-}
 
 type Reservation = Schema["Reservation"]["type"]
 
@@ -67,7 +54,14 @@ export default function AdminPage() {
   const [loggingIn, setLoggingIn] = useState(false)
 
   useEffect(() => {
-    ensureAmplify()
+    try {
+      configureAmplifyClient()
+    } catch (err) {
+      setLoginError(getErrorMessage(err))
+      setAuthState("login")
+      return
+    }
+
     getCurrentUser()
       .then(() => setAuthState("authenticated"))
       .catch(() => setAuthState("login"))
@@ -151,13 +145,19 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
   const [tab, setTab] = useState<"list" | "calendar">("list")
   const [selected, setSelected] = useState<Reservation | null>(null)
   const [actionLoading, setActionLoading] = useState<string | null>(null)
+  const [loadError, setLoadError] = useState("")
 
   const fetchReservations = useCallback(async () => {
+    setLoadError("")
     try {
+      configureAmplifyClient()
       const client = generateClient<Schema>({ authMode: "userPool" })
-      const { data } = await client.models.Reservation.list({
+      const { data, errors } = await client.models.Reservation.list({
         limit: 1000,
       })
+      if (errors?.length) {
+        throw new Error(errors[0].message)
+      }
       setReservations(
         (data ?? []).sort(
           (a, b) =>
@@ -167,6 +167,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
       )
     } catch (err) {
       console.error("Failed to fetch reservations", err)
+      setLoadError(getErrorMessage(err))
     } finally {
       setLoading(false)
     }
@@ -267,6 +268,11 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
         {loading ? (
           <div className="flex items-center justify-center py-20">
             <Loader2 className="h-8 w-8 animate-spin text-mahogany" />
+          </div>
+        ) : loadError ? (
+          <div className="rounded-xl border border-red-200 bg-red-50 p-6 text-red-700">
+            <p className="font-medium">Reservierungen konnten nicht geladen werden.</p>
+            <p className="mt-2 text-sm">{loadError}</p>
           </div>
         ) : tab === "list" ? (
           <ReservationList
@@ -622,4 +628,3 @@ function todayStr() {
   const pad = (n: number) => String(n).padStart(2, "0")
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
 }
-

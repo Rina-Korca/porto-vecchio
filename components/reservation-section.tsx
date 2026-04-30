@@ -14,7 +14,6 @@ import {
   Users,
   XCircle,
 } from "lucide-react"
-import { Amplify } from "aws-amplify"
 import { generateClient } from "aws-amplify/data"
 import type { Schema } from "@/amplify/data/resource"
 import { useInView } from "@/hooks/use-in-view"
@@ -23,21 +22,10 @@ import {
   reservationTimeSlots,
   todayDateValue,
   validateReservationRequest,
+  normalizeReservationPhone,
 } from "@/lib/reservations"
+import { configureAmplifyClient, getErrorMessage } from "@/lib/amplify-client"
 import { cn } from "@/lib/utils"
-
-let configured = false
-function ensureAmplify() {
-  if (configured) return
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const outputs = require("@/amplify_outputs.json")
-    Amplify.configure(outputs, { ssr: true })
-    configured = true
-  } catch {
-    // outputs not yet generated
-  }
-}
 
 const emptyForm = {
   name: "",
@@ -58,7 +46,13 @@ export function ReservationSection() {
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  useEffect(() => { ensureAmplify() }, [])
+  useEffect(() => {
+    try {
+      configureAmplifyClient()
+    } catch (err) {
+      console.error("Amplify configuration error:", err)
+    }
+  }, [])
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -72,11 +66,13 @@ export function ReservationSection() {
     setSubmitError(null)
 
     try {
+      configureAmplifyClient()
+      const normalizedPhone = normalizeReservationPhone(formData.phone)
       const client = generateClient<Schema>()
       const { data: created, errors: gqlErrors } = await client.models.Reservation.create({
         name: formData.name.trim(),
         email: formData.email.trim(),
-        phone: formData.phone.trim() || null,
+        phone: normalizedPhone,
         reservationDate: formData.date,
         reservationTime: formData.time,
         guests: Number(formData.guests),
@@ -88,20 +84,26 @@ export function ReservationSection() {
         throw new Error(gqlErrors[0].message)
       }
 
+      if (!created?.id) {
+        throw new Error("Reservation create returned no record.")
+      }
+
       // Send email notifications (best-effort, don't block success)
       try {
-        if (created) {
-          await client.queries.sendReservationEmail({
-            id: created.id,
-            name: created.name,
-            email: created.email,
-            phone: created.phone ?? undefined,
-            reservationDate: created.reservationDate,
-            reservationTime: created.reservationTime,
-            guests: created.guests,
-            message: created.message ?? undefined,
-            status: "PENDING",
-          })
+        const { errors: emailErrors } = await client.queries.sendReservationEmail({
+          id: created.id,
+          name: created.name,
+          email: created.email,
+          phone: created.phone ?? undefined,
+          reservationDate: created.reservationDate,
+          reservationTime: created.reservationTime,
+          guests: created.guests,
+          message: created.message ?? undefined,
+          status: "PENDING",
+        })
+
+        if (emailErrors?.length) {
+          throw new Error(emailErrors[0].message)
         }
       } catch (emailErr) {
         console.error("Email notification failed:", emailErr)
@@ -113,7 +115,7 @@ export function ReservationSection() {
     } catch (err) {
       console.error("Reservation submit error:", err)
       setSubmitError(
-        "Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt."
+        `Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt. (${getErrorMessage(err)})`
       )
     } finally {
       setIsSubmitting(false)
@@ -220,7 +222,7 @@ export function ReservationSection() {
                         />
                       </FieldError>
 
-                      <FieldError>
+                      <FieldError error={errors.phone}>
                         <Phone className="absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-silver" />
                         <input
                           type="tel"

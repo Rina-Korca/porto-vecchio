@@ -14,6 +14,7 @@ export function todayDateValue() {
 export function validateReservationRequest(input: {
   name: string
   email: string
+  phone?: string
   date: string
   time: string
   guests: string
@@ -26,6 +27,10 @@ export function validateReservationRequest(input: {
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.email.trim())) {
     errors.email = "Bitte geben Sie eine gueltige E-Mail-Adresse ein."
+  }
+
+  if (input.phone?.trim() && !normalizeReservationPhone(input.phone)) {
+    errors.phone = "Bitte geben Sie eine gueltige Telefonnummer ein."
   }
 
   if (!input.date || input.date < todayDateValue()) {
@@ -42,4 +47,27 @@ export function validateReservationRequest(input: {
   }
 
   return errors
+}
+
+export function normalizeReservationPhone(input: string) {
+  const trimmed = input.trim()
+  if (!trimmed) return null
+
+  const compact = trimmed.replace(/[^\d+]/g, "")
+  if (!compact) return null
+  if ((compact.match(/\+/g) ?? []).length > 1) return null
+  if (compact.includes("+") && !compact.startsWith("+")) return null
+
+  let normalized: string
+  if (compact.startsWith("+")) {
+    normalized = `+${compact.slice(1).replace(/\D/g, "")}`
+  } else if (compact.startsWith("00")) {
+    normalized = `+${compact.slice(2).replace(/\D/g, "")}`
+  } else if (compact.startsWith("0")) {
+    normalized = `+49${compact.slice(1).replace(/\D/g, "")}`
+  } else {
+    normalized = `+49${compact.replace(/\D/g, "")}`
+  }
+
+  return /^\+[1-9]\d{6,14}$/.test(normalized) ? normalized : null
 }
