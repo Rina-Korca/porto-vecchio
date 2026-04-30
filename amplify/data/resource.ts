@@ -1,6 +1,6 @@
 import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
-import { sendReservationEmail } from "../functions/send-reservation-email/resource";
-import { sendStatusEmail } from "../functions/send-status-email/resource";
+import { sendReservationEmail } from "../functions/send-reservation-email/resource.js";
+import { sendStatusEmail } from "../functions/send-status-email/resource.js";
 
 const schema = a.schema({
   Reservation: a
