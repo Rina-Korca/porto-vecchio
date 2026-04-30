@@ -15,10 +15,7 @@ const backend = defineBackend({
 const sesPolicy = new PolicyStatement({
   effect: Effect.ALLOW,
   actions: ["ses:SendEmail", "ses:SendRawEmail"],
-  resources: [
-    "arn:aws:ses:eu-west-1:*:identity/ristorante-bonfini.de",
-    "arn:aws:ses:eu-west-1:*:identity/bonfini.de",
-  ],
+  resources: ["*"],
 });
 
 backend.sendReservationEmail.resources.lambda.addToRolePolicy(sesPolicy);
