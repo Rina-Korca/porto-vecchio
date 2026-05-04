@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react"
 import {
   signIn,
   signOut,
+  confirmSignIn,
   fetchAuthSession,
 } from "aws-amplify/auth"
 import { generateClient } from "aws-amplify/data"
@@ -56,9 +57,10 @@ async function hasValidUserPoolTokens(): Promise<boolean> {
 }
 
 export default function AdminPage() {
-  const [authState, setAuthState] = useState<"loading" | "login" | "authenticated">("loading")
+  const [authState, setAuthState] = useState<"loading" | "login" | "newPassword" | "authenticated">("loading")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [newPassword, setNewPassword] = useState("")
   const [loginError, setLoginError] = useState("")
   const [loggingIn, setLoggingIn] = useState(false)
 
@@ -81,9 +83,16 @@ export default function AdminPage() {
     setLoggingIn(true)
     setLoginError("")
     try {
+      // Clear any stale sign-in session from a previous attempt
+      try { await signOut() } catch { /* ignore */ }
       const { isSignedIn, nextStep } = await signIn({ username: email, password })
 
       if (!isSignedIn) {
+        if (nextStep.signInStep === "CONFIRM_SIGN_IN_WITH_NEW_PASSWORD_REQUIRED") {
+          setAuthState("newPassword")
+          setLoginError("")
+          return
+        }
         setLoginError(
           `Anmeldung erfordert einen weiteren Schritt: ${nextStep.signInStep}`,
         )
@@ -104,6 +113,29 @@ export default function AdminPage() {
     }
   }
 
+  async function handleNewPassword(e: React.FormEvent) {
+    e.preventDefault()
+    setLoggingIn(true)
+    setLoginError("")
+    try {
+      const { isSignedIn } = await confirmSignIn({ challengeResponse: newPassword })
+      if (!isSignedIn) {
+        setLoginError("Passwort konnte nicht gesetzt werden. Bitte erneut versuchen.")
+        return
+      }
+      const valid = await hasValidUserPoolTokens()
+      if (!valid) {
+        setLoginError("Anmeldung erfolgreich, aber keine gültige Sitzung erhalten.")
+        return
+      }
+      setAuthState("authenticated")
+    } catch (err: unknown) {
+      setLoginError(err instanceof Error ? err.message : "Fehler beim Setzen des neuen Passworts")
+    } finally {
+      setLoggingIn(false)
+    }
+  }
+
   async function handleLogout() {
     await signOut()
     setAuthState("login")
@@ -117,47 +149,75 @@ export default function AdminPage() {
     )
   }
 
-  if (authState === "login") {
+  if (authState === "login" || authState === "newPassword") {
     return (
       <div className="flex min-h-screen items-center justify-center bg-smoke px-4">
         <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl">
           <div className="mb-8 text-center">
-            <h1 className="font-serif text-3xl text-carbon">Admin Login</h1>
-            <p className="mt-2 text-sm text-muted-foreground">Ristorante Bonfini</p>
+            <h1 className="font-serif text-3xl text-carbon">
+              {authState === "newPassword" ? "Neues Passwort setzen" : "Admin Login"}
+            </h1>
+            <p className="mt-2 text-sm text-muted-foreground">
+              {authState === "newPassword"
+                ? "Bitte wählen Sie ein neues Passwort"
+                : "Ristorante Bonfini"}
+            </p>
           </div>
           {loginError && (
             <div className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">{loginError}</div>
           )}
-          <form onSubmit={handleLogin} className="space-y-4" autoComplete="on">
-            <input
-              name="username"
-              type="email"
-              required
-              autoComplete="username"
-              placeholder="E-Mail"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border-2 border-dust bg-smoke px-4 py-3 text-carbon focus:border-mahogany focus:outline-none"
-            />
-            <input
-              name="password"
-              type="password"
-              required
-              autoComplete="current-password"
-              placeholder="Passwort"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg border-2 border-dust bg-smoke px-4 py-3 text-carbon focus:border-mahogany focus:outline-none"
-            />
-            <button
-              type="submit"
-              disabled={loggingIn}
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-mahogany py-3 text-sm font-medium uppercase tracking-widest text-white hover:bg-garnet disabled:opacity-60"
-            >
-              {loggingIn ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-              Anmelden
-            </button>
-          </form>
+          {authState === "newPassword" ? (
+            <form onSubmit={handleNewPassword} className="space-y-4">
+              <input
+                type="password"
+                required
+                autoComplete="new-password"
+                placeholder="Neues Passwort"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="w-full rounded-lg border-2 border-dust bg-smoke px-4 py-3 text-carbon focus:border-mahogany focus:outline-none"
+              />
+              <button
+                type="submit"
+                disabled={loggingIn}
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-mahogany py-3 text-sm font-medium uppercase tracking-widest text-white hover:bg-garnet disabled:opacity-60"
+              >
+                {loggingIn ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+                Passwort setzen
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleLogin} className="space-y-4" autoComplete="on">
+              <input
+                name="username"
+                type="email"
+                required
+                autoComplete="username"
+                placeholder="E-Mail"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full rounded-lg border-2 border-dust bg-smoke px-4 py-3 text-carbon focus:border-mahogany focus:outline-none"
+              />
+              <input
+                name="password"
+                type="password"
+                required
+                autoComplete="current-password"
+                placeholder="Passwort"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full rounded-lg border-2 border-dust bg-smoke px-4 py-3 text-carbon focus:border-mahogany focus:outline-none"
+              />
+              <button
+                type="submit"
+                disabled={loggingIn}
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-mahogany py-3 text-sm font-medium uppercase tracking-widest text-white hover:bg-garnet disabled:opacity-60"
+              >
+                {loggingIn ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+                Anmelden
+              </button>
+            </form>
+          )}
         </div>
       </div>
     )
