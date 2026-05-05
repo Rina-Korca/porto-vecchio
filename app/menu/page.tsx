@@ -46,7 +46,7 @@ export default function MenuPage() {
           </h1>
           <p className="mt-5 text-base leading-7 text-[#6c5240] md:text-lg">
             Die aktuelle Karte steht als PDF bereit. Fuer Bestellungen koennen
-            Sie die Gerichte und Mengen direkt im Bestellformular eintragen.
+            Sie Speisen und Getraenke direkt im Bestellbereich auswaehlen.
           </p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
             <a

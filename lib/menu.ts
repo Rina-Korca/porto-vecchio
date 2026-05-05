@@ -15,7 +15,4 @@ export const MENU_PAGE_IMAGES = [
   "/menu/menu-page-12.png",
   "/menu/menu-page-13.png",
   "/menu/menu-page-14.png",
-  "/menu/menu-page-15.png",
-  "/menu/menu-page-16.png",
-  "/menu/menu-page-17.png",
 ]
