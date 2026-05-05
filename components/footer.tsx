@@ -9,8 +9,10 @@ const navigationLinks = [
   { href: "#kueche", label: "Unsere Küche" },
   { href: "#restaurant", label: "Das Restaurant" },
   { href: "#empfehlungen", label: "Empfehlungen" },
+  { href: "#speisekarte", label: "Speisekarte" },
   { href: "#galerie", label: "Galerie" },
   { href: "#reservierung", label: "Reservierung" },
+  { href: companyInfo.orderHref, label: "Bestellen" },
 ]
 
 const legalLinks = [
@@ -107,7 +109,7 @@ export function Footer() {
           <div className="lg:col-span-5">
             {/* Logo */}
             <div className="mb-8">
-              <a href="#" className="inline-block group" aria-label="Bonfini Startseite">
+              <a href="/" className="inline-block group" aria-label="Bonfini Startseite">
                 <img
                   src="/images/logo/logo.png"
                   alt="Bonfini"

@@ -10,8 +10,10 @@ const navLinks = [
   { href: "#kueche", label: "Küche" },
   { href: "#restaurant", label: "Das Restaurant" },
   { href: "#empfehlungen", label: "Empfehlungen" },
+  { href: "#speisekarte", label: "Speisekarte" },
   { href: "#galerie", label: "Galerie" },
   { href: "#reservierung", label: "Reservierung" },
+  { href: companyInfo.orderHref, label: "Bestellen" },
 ]
 
 export function Navigation() {
@@ -24,7 +26,9 @@ export function Navigation() {
       setIsScrolled(window.scrollY > 80)
       
       // Track active section
-      const sections = navLinks.map(link => link.href.slice(1))
+      const sections = navLinks
+        .filter((link) => link.href.startsWith("#"))
+        .map((link) => link.href.slice(1))
       for (const section of sections.reverse()) {
         const element = document.getElementById(section)
         if (element) {
@@ -65,7 +69,7 @@ export function Navigation() {
       <nav className="container mx-auto px-6 lg:px-12 flex items-center justify-between">
         {/* Logo */}
         <a
-          href="#"
+          href="/"
           className={cn(
             "block transition-all duration-500 hover:opacity-85",
             isScrolled ? "w-28 md:w-32" : "w-32 md:w-36"
@@ -80,7 +84,7 @@ export function Navigation() {
         </a>
 
         {/* Desktop Navigation */}
-        <ul className="hidden lg:flex items-center gap-10">
+        <ul className="hidden lg:flex items-center gap-5 xl:gap-8">
           {navLinks.map((link) => (
             <li key={link.href}>
               <a

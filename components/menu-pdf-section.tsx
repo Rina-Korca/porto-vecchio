@@ -7,32 +7,15 @@ import {
   Download,
   Minus,
   Plus,
+  ShoppingBag,
   X,
 } from "lucide-react";
 
 import { useInView } from "@/hooks/use-in-view";
+import { companyInfo } from "@/lib/company-info";
+import { MENU_PAGE_IMAGES, MENU_PDF_HREF } from "@/lib/menu";
 
-const MENU_PAGES = [
-  "/menu/menu-page-01.png",
-  "/menu/menu-page-02.png",
-  "/menu/menu-page-03.png",
-  "/menu/menu-page-04.png",
-  "/menu/menu-page-05.png",
-  "/menu/menu-page-06.png",
-  "/menu/menu-page-07.png",
-  "/menu/menu-page-08.png",
-  "/menu/menu-page-09.png",
-  "/menu/menu-page-10.png",
-  "/menu/menu-page-11.png",
-  "/menu/menu-page-12.png",
-  "/menu/menu-page-13.png",
-  "/menu/menu-page-14.png",
-  "/menu/menu-page-15.png",
-  "/menu/menu-page-16.png",
-  "/menu/menu-page-17.png",
-];
-
-const MENU_PDF_HREF = "/menu/speisekarte.pdf";
+const MENU_PAGES = MENU_PAGE_IMAGES;
 const FLIP_DURATION = 720;
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 3;
@@ -607,7 +590,7 @@ export function MenuPdfSection() {
             </div>
           </div>
 
-          <div className="mt-8 flex justify-center">
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a
               href={MENU_PDF_HREF}
               download
@@ -615,6 +598,13 @@ export function MenuPdfSection() {
             >
               <Download className="size-4" />
               PDF herunterladen
+            </a>
+            <a
+              href={companyInfo.orderHref}
+              className="inline-flex items-center justify-center gap-3 rounded-full border border-[#8b1e22]/30 bg-[#fffaf1] px-7 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-[#8b1e22] shadow-[0_16px_34px_rgba(54,31,13,0.1)] transition hover:-translate-y-0.5 hover:border-[#8b1e22]/55 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8b1e22] focus-visible:ring-offset-4 focus-visible:ring-offset-[#fbf3e5]"
+            >
+              <ShoppingBag className="size-4" />
+              Bestellung aufgeben
             </a>
           </div>
         </div>

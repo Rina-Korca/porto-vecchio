@@ -203,7 +203,7 @@ export function HeroSection() {
 
           {/* CTA Buttons */}
           <div
-            className={`flex flex-col sm:flex-row gap-4 justify-center mb-16 transition-all duration-1000 delay-600 ease-luxury ${
+            className={`flex flex-col sm:flex-row sm:flex-wrap gap-4 justify-center mb-16 transition-all duration-1000 delay-600 ease-luxury ${
               isVisible
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-8"
@@ -217,11 +217,18 @@ export function HeroSection() {
               <div className="absolute inset-0 bg-garnet transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
             </a>
             <a
-              href="#empfehlungen"
+              href="#speisekarte"
               className="group relative inline-flex items-center justify-center border border-white/40 text-white px-8 md:px-10 py-3.5 md:py-4 text-xs md:text-sm uppercase tracking-[0.2em] font-medium overflow-hidden transition-all duration-500 hover:border-white/70"
             >
               <span className="relative z-10">Speisekarte</span>
               <div className="absolute inset-0 bg-white/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+            </a>
+            <a
+              href={companyInfo.orderHref}
+              className="group relative inline-flex items-center justify-center border border-mahogany/70 text-white px-8 md:px-10 py-3.5 md:py-4 text-xs md:text-sm uppercase tracking-[0.2em] font-medium overflow-hidden transition-all duration-500 hover:border-mahogany"
+            >
+              <span className="relative z-10">Bestellen</span>
+              <div className="absolute inset-0 bg-mahogany/25 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
             </a>
           </div>
 

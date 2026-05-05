@@ -6,10 +6,12 @@ import {
   Calendar,
   CheckCircle2,
   Clock,
+  FileText,
   Loader2,
   Mail,
   MessageSquare,
   Phone,
+  ShoppingBag,
   User,
   Users,
   XCircle,
@@ -391,6 +393,29 @@ export function ReservationSection() {
                     </div>
                     <span className="font-medium">{companyInfo.email}</span>
                   </a>
+                </div>
+                <div className="mt-6 rounded-lg bg-smoke p-4">
+                  <p className="text-sm leading-6 text-muted-foreground">
+                    Hinweis: Tischreservierungen laufen direkt ueber dieses
+                    Formular. Die aktuelle Speisekarte und Bestellungen ohne
+                    Online-Zahlung sind ebenfalls online.
+                  </p>
+                  <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+                    <a
+                      href={companyInfo.menuHref}
+                      className="inline-flex items-center justify-center gap-2 rounded-lg border border-dust bg-white px-4 py-2 text-sm font-medium text-carbon transition hover:border-mahogany hover:text-mahogany"
+                    >
+                      <FileText className="h-4 w-4" />
+                      Speisekarte
+                    </a>
+                    <a
+                      href={companyInfo.orderHref}
+                      className="inline-flex items-center justify-center gap-2 rounded-lg bg-mahogany px-4 py-2 text-sm font-medium text-white transition hover:bg-garnet"
+                    >
+                      <ShoppingBag className="h-4 w-4" />
+                      Bestellung aufgeben
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>

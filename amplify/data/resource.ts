@@ -20,6 +20,23 @@ const schema = a.schema({
       allow.authenticated("userPools").to(["create", "read", "update", "delete"]),
     ]),
 
+  CustomerOrder: a
+    .model({
+      customerName: a.string().required(),
+      email: a.email().required(),
+      phone: a.phone().required(),
+      pickupDate: a.date().required(),
+      pickupTime: a.string().required(),
+      orderDetails: a.string().required(),
+      notes: a.string(),
+      status: a.enum(["PENDING", "ACCEPTED", "PREPARING", "READY", "COMPLETED", "CANCELLED"]),
+    })
+    .authorization((allow) => [
+      allow.guest().to(["create"]),
+      allow.authenticated("identityPool").to(["create", "read", "update", "delete"]),
+      allow.authenticated("userPools").to(["create", "read", "update", "delete"]),
+    ]),
+
   sendReservationEmail: a
     .query()
     .arguments({

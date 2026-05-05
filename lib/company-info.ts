@@ -7,10 +7,14 @@ export const companyInfo = {
   phoneDisplay: "+49 30 95614848",
   phoneHref: "tel:+493095614848",
   email: "reservierung@ristorante-bonfini.de",
-  mapsHref:
-    "https://www.google.com/maps/search/?api=1&query=Chausseestra%C3%9Fe+15%2C+10115+Berlin%2C+Germany",
+  mapsHref: "https://maps.app.goo.gl/VetrUvZnVC17T6XB6",
+  googleProfileHref: "https://maps.app.goo.gl/VetrUvZnVC17T6XB6",
   mapsDirectionsHref:
     "https://www.google.com/maps/dir/?api=1&destination=Chausseestra%C3%9Fe+15%2C+10115+Berlin%2C+Germany",
+  menuHref: "/menu",
+  menuPdfHref: "/menu/speisekarte.pdf",
+  orderHref: "/bestellen",
+  priceRange: "€20–30 pro Person",
 }
 
 export const openingSchedule = [

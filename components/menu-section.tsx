@@ -2,6 +2,8 @@
 
 import { useInView } from "@/hooks/use-in-view"
 import { cn } from "@/lib/utils"
+import { companyInfo } from "@/lib/company-info"
+import { MENU_PDF_HREF } from "@/lib/menu"
 import { FileText, Download } from "lucide-react"
 
 export function MenuSection() {
@@ -46,14 +48,15 @@ export function MenuSection() {
             )}
           >
             <a
-              href="#"
+              href={companyInfo.menuHref}
               className="magnetic-btn inline-flex items-center justify-center gap-3 bg-mahogany text-white px-8 py-4 text-sm uppercase tracking-widest font-medium hover:bg-garnet transition-colors rounded"
             >
               <FileText className="w-5 h-5" />
               Speisekarte ansehen
             </a>
             <a
-              href="#"
+              href={MENU_PDF_HREF}
+              download
               className="magnetic-btn inline-flex items-center justify-center gap-3 border border-white/30 text-white px-8 py-4 text-sm uppercase tracking-widest font-medium hover:bg-white/10 transition-colors rounded"
             >
               <Download className="w-5 h-5" />
