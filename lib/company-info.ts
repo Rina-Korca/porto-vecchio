@@ -14,6 +14,11 @@ export const companyInfo = {
   menuHref: "/menu",
   menuPdfHref: "/menu/speisekarte.pdf",
   orderHref: "/bestellen",
+  instagramHref: "https://www.instagram.com/ristorantebonfini/",
+  facebookHref: "https://de-de.facebook.com/ristorantebonfini",
+  tripadvisorHref:
+    "https://www.tripadvisor.de/Restaurant_Review-g187323-d1347856-Reviews-Ristorante_Bonfini-Berlin.html",
+  yelpHref: "https://www.yelp.de/biz/bonfini-berlin-2",
   priceRange: "€20–30 pro Person",
 }
 

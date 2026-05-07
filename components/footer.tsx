@@ -71,22 +71,22 @@ function YelpIcon(props: SVGProps<SVGSVGElement>) {
 
 const socialLinks = [
   {
-    href: "https://www.instagram.com/ristorantebonfini/",
+    href: companyInfo.instagramHref,
     label: "Instagram",
     Icon: Instagram,
   },
   {
-    href: "https://de-de.facebook.com/ristorantebonfini#",
+    href: companyInfo.facebookHref,
     label: "Facebook",
     Icon: Facebook,
   },
   {
-    href: "https://www.tripadvisor.de/Restaurant_Review-g187323-d1347856-Reviews-Ristorante_Bonfini-Berlin.html",
+    href: companyInfo.tripadvisorHref,
     label: "Tripadvisor",
     Icon: TripadvisorIcon,
   },
   {
-    href: "https://www.yelp.de/biz/bonfini-berlin-2",
+    href: companyInfo.yelpHref,
     label: "Yelp",
     Icon: YelpIcon,
   },

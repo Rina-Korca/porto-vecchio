@@ -1,6 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Lato } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { GoogleAnalytics } from "@/components/google-analytics";
+import { JsonLd } from "@/components/json-ld";
+import {
+  createRestaurantJsonLd,
+  createWebsiteJsonLd,
+  seoConfig,
+} from "@/lib/seo";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -17,10 +24,13 @@ const lato = Lato({
 });
 
 export const metadata: Metadata = {
-  title: "Ristorante Bonfini | Fine Italian Dining in Berlin",
-  description:
-    "Erleben Sie authentische italienische Küche im Herzen von Berlin. Ristorante Bonfini bietet exquisite Gerichte, erlesene Weine und ein unvergessliches Ambiente seit 2008.",
-  generator: "v0.app",
+  metadataBase: new URL(seoConfig.siteUrl),
+  applicationName: seoConfig.siteName,
+  title: {
+    default: seoConfig.defaultTitle,
+    template: `%s | ${seoConfig.siteName}`,
+  },
+  description: seoConfig.defaultDescription,
   keywords: [
     "Restaurant",
     "Berlin",
@@ -32,27 +42,62 @@ export const metadata: Metadata = {
     "Bonfini",
     "Italian Restaurant Berlin",
   ],
-  authors: [{ name: "Ristorante Bonfini" }],
+  authors: [{ name: seoConfig.siteName }],
+  creator: seoConfig.siteName,
+  publisher: seoConfig.siteName,
+  alternates: {
+    canonical: "/",
+    languages: {
+      [seoConfig.language]: "/",
+    },
+  },
   openGraph: {
-    title: "Ristorante Bonfini | Fine Italian Dining in Berlin",
-    description:
-      "Erleben Sie authentische italienische Küche im Herzen von Berlin.",
+    title: seoConfig.defaultTitle,
+    description: seoConfig.defaultDescription,
+    url: "/",
+    siteName: seoConfig.siteName,
+    images: [seoConfig.defaultOgImage],
     type: "website",
-    locale: "de_DE",
+    locale: seoConfig.locale,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: seoConfig.defaultTitle,
+    description: seoConfig.defaultDescription,
+    images: [seoConfig.defaultOgImage.url],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  verification: {
+    google: seoConfig.googleSiteVerification,
   },
   icons: {
     icon: [
       {
         url: "/images/logo/favicon.png",
-        sizes: "192x192",
-      },
-      {
-        url: "/images/logo/favicon.png",
-        sizes: "256x256",
+        sizes: "1536x1024",
+        type: "image/png",
       },
     ],
-    apple: "/apple-icon.png",
+    shortcut: "/images/logo/favicon.png",
+    apple: [
+      {
+        url: "/images/logo/favicon.png",
+        sizes: "1536x1024",
+        type: "image/png",
+      },
+    ],
   },
+  manifest: "/manifest.webmanifest",
 };
 
 export const viewport: Viewport = {
@@ -76,7 +121,9 @@ export default function RootLayout({
       className={`${playfair.variable} ${lato.variable} bg-smoke`}
     >
       <body className="font-sans antialiased selection:bg-mahogany selection:text-white">
+        <JsonLd data={[createWebsiteJsonLd(), createRestaurantJsonLd()]} />
         {children}
+        <GoogleAnalytics />
         {process.env.NODE_ENV === "production" && <Analytics />}
       </body>
     </html>

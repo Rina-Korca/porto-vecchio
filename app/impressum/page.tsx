@@ -1,11 +1,14 @@
 import type { Metadata } from "next"
 import type { ReactNode } from "react"
 import { Mail, Phone } from "lucide-react"
+import { JsonLd } from "@/components/json-ld"
+import { createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = {
-  title: "Impressum | Ristorante Bonfini",
+export const metadata: Metadata = createPageMetadata({
+  title: "Impressum",
   description: "Rechtliche Angaben der Luemi Gastronomie UG (haftungsbeschränkt).",
-}
+  path: "/impressum",
+})
 
 function LegalSection({
   title,
@@ -25,6 +28,12 @@ function LegalSection({
 export default function ImpressumPage() {
   return (
     <main className="min-h-screen bg-[#fbf3e5] px-6 py-20 text-carbon md:px-10 md:py-28">
+      <JsonLd
+        data={createBreadcrumbJsonLd([
+          { name: "Startseite", path: "/" },
+          { name: "Impressum", path: "/impressum" },
+        ])}
+      />
       <section className="mx-auto max-w-4xl">
         <div className="mb-12">
           <a href="/" aria-label="Bonfini Startseite" className="inline-block">

@@ -1,17 +1,26 @@
 import type { Metadata } from "next"
 import { CalendarCheck, Download, ShoppingBag } from "lucide-react"
+import { JsonLd } from "@/components/json-ld"
 import { companyInfo } from "@/lib/company-info"
 import { MENU_PAGE_IMAGES, MENU_PDF_HREF } from "@/lib/menu"
+import { createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = {
-  title: "Speisekarte | Ristorante Bonfini",
+export const metadata: Metadata = createPageMetadata({
+  title: "Speisekarte",
   description:
-    "Aktuelle Speisekarte des Ristorante Bonfini in Berlin ansehen, als PDF herunterladen oder eine Bestellung ohne Online-Zahlung aufgeben.",
-}
+    "Aktuelle Speisekarte des Ristorante Bonfini in Berlin ansehen, als PDF herunterladen oder eine Bestellung zur Abholung aufgeben.",
+  path: "/menu",
+})
 
 export default function MenuPage() {
   return (
     <main className="min-h-screen bg-[#fbf3e5] text-carbon">
+      <JsonLd
+        data={createBreadcrumbJsonLd([
+          { name: "Startseite", path: "/" },
+          { name: "Speisekarte", path: "/menu" },
+        ])}
+      />
       <header className="border-b border-[#8b1e22]/15 bg-[#fffaf1]">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-5">
           <a href="/" className="block w-32 transition hover:opacity-80" aria-label="Bonfini Startseite">

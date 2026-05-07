@@ -1,10 +1,14 @@
 import type { Metadata } from "next"
 import type { ReactNode } from "react"
+import { JsonLd } from "@/components/json-ld"
+import { createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = {
-  title: "Datenschutz | Ristorante Bonfini",
-  description: "Datenschutzerklärung für die Website von Ristorante Bonfini.",
-}
+export const metadata: Metadata = createPageMetadata({
+  title: "Datenschutz",
+  description:
+    "Datenschutzerklärung für die Website des Ristorante Bonfini in Berlin.",
+  path: "/datenschutz",
+})
 
 function LegalSection({
   title,
@@ -34,6 +38,12 @@ function LegalList({ items }: { items: string[] }) {
 export default function DatenschutzPage() {
   return (
     <main className="min-h-screen bg-[#fbf3e5] px-6 py-20 text-carbon md:px-10 md:py-28">
+      <JsonLd
+        data={createBreadcrumbJsonLd([
+          { name: "Startseite", path: "/" },
+          { name: "Datenschutz", path: "/datenschutz" },
+        ])}
+      />
       <section className="mx-auto max-w-4xl">
         <div className="mb-12">
           <a href="/" aria-label="Bonfini Startseite" className="inline-block">

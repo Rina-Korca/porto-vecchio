@@ -127,7 +127,7 @@ export function RestaurantSection() {
                 {/* CTA Button */}
                 <ScrollReveal direction="up" delay={1000}>
                   <a
-                    href="#gallery"
+                    href="#galerie"
                     className="group inline-flex items-center gap-3 transition-all duration-300"
                   >
                     <span className="text-sm tracking-wide uppercase font-medium text-smoke">

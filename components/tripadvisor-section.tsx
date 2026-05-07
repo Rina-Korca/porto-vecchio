@@ -4,6 +4,7 @@ import { useInView } from "@/hooks/use-in-view"
 import { cn } from "@/lib/utils"
 import { useEffect, useState } from "react"
 import { ExternalLink } from "lucide-react"
+import { companyInfo } from "@/lib/company-info"
 
 function AnimatedCounter({ target, duration = 2000, isActive }: { target: number; duration?: number; isActive: boolean }) {
   const [count, setCount] = useState(0)
@@ -140,14 +141,18 @@ export function TripadvisorSection() {
               )}
             >
               <a
-                href="#"
+                href={companyInfo.tripadvisorHref}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group inline-flex items-center gap-2 px-8 py-3.5 bg-garnet text-white font-medium rounded-sm hover:bg-mahogany transition-all duration-300"
               >
                 Bewertungen lesen
                 <ExternalLink className="w-4 h-4 opacity-70 group-hover:opacity-100 transition-opacity" />
               </a>
               <a
-                href="#"
+                href={companyInfo.tripadvisorHref}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-3.5 border border-carbon/20 text-carbon font-medium rounded-sm hover:border-garnet hover:text-garnet transition-all duration-300"
               >
                 <svg className="w-5 h-5 text-[#00aa6c]" viewBox="0 0 24 24" fill="currentColor">

@@ -1,3 +1,5 @@
+import type { Metadata } from "next"
+import { JsonLd } from "@/components/json-ld"
 import { Navigation } from "@/components/navigation"
 import { HeroSection } from "@/components/hero-section"
 import { StorytellingSection } from "@/components/storytelling-section"
@@ -13,10 +15,19 @@ import { PrivateEventsSection } from "@/components/private-events-section"
 import { HoursContactSection } from "@/components/hours-contact-section"
 import { LocationSection } from "@/components/location-section"
 import { Footer } from "@/components/footer"
+import { createBreadcrumbJsonLd, createPageMetadata, seoConfig } from "@/lib/seo"
+
+export const metadata: Metadata = createPageMetadata({
+  title: seoConfig.defaultTitle,
+  description: seoConfig.defaultDescription,
+  path: "/",
+  absoluteTitle: true,
+})
 
 export default function Home() {
   return (
     <main className="overflow-x-hidden">
+      <JsonLd data={createBreadcrumbJsonLd([{ name: "Startseite", path: "/" }])} />
       <Navigation />
       <HeroSection />
       <StorytellingSection />
