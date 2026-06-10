@@ -10,7 +10,7 @@ export const companyInfo = {
   mapsHref: "https://maps.app.goo.gl/VetrUvZnVC17T6XB6",
   googleProfileHref: "https://maps.app.goo.gl/VetrUvZnVC17T6XB6",
   mapsDirectionsHref:
-    "https://www.google.com/maps/dir/?api=1&destination=Chausseestra%C3%9Fe+15%2C+10115+Berlin%2C+Germany",
+    "https://www.google.com/maps/place/Ristorante+Bonfini/@52.529594,13.3820263,17z/data=!3m1!4b1!4m6!3m5!1s0x416523d127fc1e87:0x92e6d7ad9dd86823!8m2!3d52.5295908!4d13.3846012!16s%2Fg%2F1tfrft10?entry=ttu&g_ep=EgoyMDI2MDYwMy4xIKXMDSoASAFQAw%3D%3D",
   menuHref: "/menu",
   menuPdfHref: "/menu/speisekarte.pdf",
   orderHref: "/bestellen",

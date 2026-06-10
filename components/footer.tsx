@@ -234,6 +234,17 @@ export function Footer() {
               L&apos;arte della cucina italiana
             </p>
           </div>
+          <p className="text-smoke/40 text-sm text-center mt-6">
+            Powered by{" "}
+            <a
+              href="https://clearline-ai.tech/en"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-smoke/60 hover:text-strawberry transition-colors duration-300 underline"
+            >
+              Clearline Tech
+            </a>
+          </p>
         </div>
       </div>
     </footer>

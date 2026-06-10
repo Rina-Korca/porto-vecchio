@@ -14,7 +14,7 @@ export function LocationSection() {
       className="relative w-full"
     >
       {/* Full-width Map Container */}
-      <div className="relative h-[500px] md:h-[600px] w-full">
+      <div className="relative h-[300px] md:h-[600px] w-full">
         {/* Google Maps Iframe */}
         <iframe
           src="https://www.google.com/maps?q=Chausseestra%C3%9Fe%2015%2C%2010115%20Berlin%2C%20Germany&output=embed"
@@ -31,9 +31,9 @@ export function LocationSection() {
         {/* Gradient Overlay for better card visibility */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent pointer-events-none" />
 
-        {/* Floating Address Card */}
+        {/* Floating Address Card - hidden on mobile, shown on md+ */}
         <div
-          className={`absolute left-4 md:left-8 lg:left-16 top-1/2 -translate-y-1/2 z-10 transition-all duration-1000 ${
+          className={`hidden md:block absolute left-4 md:left-8 lg:left-16 top-1/2 -translate-y-1/2 z-10 transition-all duration-1000 ${
             isInView ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
           }`}
         >
@@ -137,44 +137,44 @@ export function LocationSection() {
             </a>
           </div>
         </div>
+      </div>
 
-        {/* Bottom Info Bar - Mobile */}
-        <div
-          className={`absolute bottom-0 left-0 right-0 bg-[var(--onyx)]/95 backdrop-blur-sm p-4 md:hidden transition-all duration-700 delay-300 ${
-            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}
-        >
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <MapPin className="w-5 h-5 text-[var(--garnet)]" />
-              <div>
-                <img
-                  src="/images/logo/logo.png"
-                  alt="Bonfini"
-                  className="mb-1 h-auto w-24 object-contain"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <a
-                  href={companyInfo.mapsHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white/70 text-xs transition-colors hover:text-white"
-                >
-                  {companyInfo.addressDisplay}
-                </a>
-              </div>
-            </div>
-            <a
-              href={companyInfo.mapsDirectionsHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-[var(--garnet)] text-white px-4 py-2 text-xs tracking-wider uppercase"
-            >
-              Route
-            </a>
-          </div>
+      {/* Mobile Info Card - below the map */}
+      <div className="md:hidden bg-white p-6">
+        <p className="text-[var(--garnet)] text-xs tracking-[0.2em] uppercase mb-1">
+          Im Herzen Berlins
+        </p>
+        <h2 className="font-serif text-xl text-[var(--onyx)] mb-4">
+          Ristorante Bonfini
+        </h2>
+        <div className="w-10 h-px bg-[var(--garnet)] mb-4" />
+        <div className="space-y-3 mb-6">
+          <a
+            href={companyInfo.mapsHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 text-[var(--carbon)]/70 text-sm hover:text-[var(--garnet)] transition-colors"
+          >
+            <MapPin className="w-4 h-4 text-[var(--garnet)] flex-shrink-0" />
+            <span>{companyInfo.addressDisplay}</span>
+          </a>
+          <a
+            href={companyInfo.phoneHref}
+            className="flex items-center gap-3 text-[var(--carbon)]/70 text-sm hover:text-[var(--garnet)] transition-colors"
+          >
+            <Phone className="w-4 h-4 text-[var(--garnet)] flex-shrink-0" />
+            <span>{companyInfo.phoneDisplay}</span>
+          </a>
         </div>
+        <a
+          href={companyInfo.mapsDirectionsHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group inline-flex items-center gap-3 bg-[var(--garnet)] text-white px-6 py-3 text-sm tracking-wider uppercase hover:bg-[var(--mahogany)] transition-all duration-300 w-full justify-center"
+        >
+          <Navigation className="w-4 h-4" />
+          <span>Route planen</span>
+        </a>
       </div>
 
       {/* Decorative Bottom Border */}
