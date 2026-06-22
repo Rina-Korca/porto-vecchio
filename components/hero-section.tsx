@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useRef } from "react";
 import { MapPin, Phone } from "lucide-react";
-import Image from "next/image";
 import { companyInfo } from "@/lib/company-info";
 
 export function HeroSection() {
@@ -92,13 +91,15 @@ export function HeroSection() {
             : {}
         }
       >
-        <Image
-          src="/images/porto/dining-terrace.jpg"
-          alt="Holzofen-Pizza im Porto Vecchio"
-          fill
-          priority
-          className="object-cover"
-        />
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/videos/herosection.mp4" type="video/mp4" />
+        </video>
       </div>
 
       {/* === MID LAYER (0.6x scroll speed) - Decorative elements === */}
