@@ -7,12 +7,12 @@ const rawSiteUrl =
 export const seoConfig = {
   siteUrl: rawSiteUrl.replace(/\/$/, ""),
   siteName: companyInfo.name,
-  defaultTitle: "Ristorante Bonfini | Italienisches Restaurant in Berlin-Mitte",
+  defaultTitle: "Porto Vecchio | Ristorante & Pizzeria in Speyer",
   defaultDescription:
-    "Ristorante Bonfini in der Chausseestraße Berlin-Mitte: italienische Küche, ausgewählte Weine, Reservierung, Speisekarte und Abholung.",
+    "Porto Vecchio in Speyer am Rhein: Holzofen-Pizza, Pasta, Fleisch- und Fischgerichte, italienisch-mediterrane Küche und telefonische Reservierung.",
   locale: "de_DE",
   language: "de-DE",
-  themeColor: "#8b1e22",
+  themeColor: "#006466",
   googleAnalyticsId:
     process.env.NEXT_PUBLIC_GA_ID || process.env.GOOGLE_ANALYTICS_ID || "G-JSFWX3FT71",
   googleSiteVerification:
@@ -20,10 +20,10 @@ export const seoConfig = {
     process.env.GOOGLE_SITE_VERIFICATION ||
     "PASTE_VERIFICATION_CODE_HERE",
   defaultOgImage: {
-    url: "/images/hero-restaurant.jpg",
-    width: 1024,
-    height: 1024,
-    alt: "Ristorante Bonfini in Berlin-Mitte",
+    url: "/images/porto/dining-terrace.jpg",
+    width: 2304,
+    height: 1536,
+    alt: "Holzofen-Pizza im Porto Vecchio in Speyer",
   },
 }
 
@@ -119,6 +119,21 @@ export function createWebsiteJsonLd() {
 }
 
 export function createRestaurantJsonLd() {
+  const sameAs = [
+    companyInfo.instagramHref,
+    companyInfo.facebookHref,
+    companyInfo.googleProfileHref,
+  ].filter(Boolean)
+
+  const openingHoursSpecification = openingSchedule.flatMap((entry) =>
+    entry.servicePeriods.map(({ opensAt, closesAt }) => ({
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: `https://schema.org/${entry.day}`,
+      opens: opensAt,
+      closes: closesAt === "24:00" ? "23:59" : closesAt,
+    })),
+  )
+
   return {
     "@context": "https://schema.org",
     "@type": "Restaurant",
@@ -127,33 +142,21 @@ export function createRestaurantJsonLd() {
     url: seoConfig.siteUrl,
     description: seoConfig.defaultDescription,
     image: absoluteUrl(seoConfig.defaultOgImage.url),
-    logo: absoluteUrl("/images/logo/logo-red.png"),
+    logo: absoluteUrl("/images/porto/logo-white.png"),
     telephone: companyInfo.phoneDisplay,
-    email: companyInfo.email,
     address: {
       "@type": "PostalAddress",
       streetAddress: companyInfo.addressLine1,
-      postalCode: "10115",
-      addressLocality: "Berlin",
+      postalCode: "67346",
+      addressLocality: "Speyer",
       addressCountry: "DE",
     },
     priceRange: companyInfo.priceRange,
-    servesCuisine: "Italian",
+    servesCuisine: ["Italian", "Mediterranean", "Pizza"],
     acceptsReservations: true,
     menu: absoluteUrl(companyInfo.menuHref),
-    sameAs: [
-      companyInfo.instagramHref,
-      companyInfo.facebookHref,
-      companyInfo.tripadvisorHref,
-      companyInfo.yelpHref,
-      companyInfo.googleProfileHref,
-    ],
-    openingHoursSpecification: openingSchedule.map(({ day, opensAt, closesAt }) => ({
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: `https://schema.org/${day}`,
-      opens: opensAt,
-      closes: closesAt === "24:00" ? "23:59" : closesAt,
-    })),
+    sameAs,
+    openingHoursSpecification,
   }
 }
 

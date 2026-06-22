@@ -36,8 +36,8 @@ export function ParallaxSection() {
 
   return (
     <MultiLayerParallax
-      backgroundImage="/images/food/BonfiniRestaurant_AnnaNesterenko-33.jpg"
-      backgroundAlt="Erlesene Weine aus den besten italienischen Anbaugebieten - kulinarische Auswahl im Ristorante Bonfini"
+      backgroundImage="/images/porto/gallery-09.jpg"
+      backgroundAlt="Rheinpromenade und mediterranes Ambiente im Porto Vecchio"
       midLayerContent={MidLayerContent}
       minHeight="60vh"
       overlayColor="rgba(11, 9, 10, 0.65)"

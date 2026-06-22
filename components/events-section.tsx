@@ -8,21 +8,21 @@ import { Users, Wine, Utensils } from "lucide-react"
 const eventTypes = [
   {
     icon: Users,
-    title: "Private Dining",
+    title: "Salette",
     description:
-      "Unser separater Raum für bis zu 20 Gäste. Perfekt für Geburtstage, Jubiläen oder Firmenfeiern.",
+      "Unser separater Nebenraum für bis zu 45 Personen. Geeignet für Familienfeiern, Hochzeiten, Jubiläen und Firmenfeiern.",
   },
   {
     icon: Wine,
-    title: "Weinverkostung",
+    title: "Domzimmer",
     description:
-      "Entdecken Sie mit unserem Sommelier die besten italienischen Weine bei einer exklusiven Verkostung.",
+      "Ein eigener Rahmen für Feiern mit bis zu 30 Personen und italienischem Flair.",
   },
   {
     icon: Utensils,
-    title: "Kochkurse",
+    title: "Individuelle Planung",
     description:
-      "Lernen Sie die Geheimnisse der italienischen Küche direkt von unserem Küchenchef.",
+      "Planen Sie Ihren Anlass mit uns persönlich und sprechen Sie Ihre Wünsche direkt mit unserem Team ab.",
   },
 ]
 
@@ -44,8 +44,8 @@ export function EventsSection() {
           >
             <div className="relative aspect-[4/5] rounded-lg overflow-hidden shadow-2xl">
               <Image
-                src="/images/interier/O-1.jpg"
-                alt="Oberer Gastraum des Bonfini fuer private Feiern"
+                src="/images/porto/gallery-02.jpg"
+                alt="Gastraum des Porto Vecchio fuer private Feiern"
                 fill
                 className="object-cover"
               />
@@ -99,10 +99,10 @@ export function EventsSection() {
             </div>
 
             <a
-              href="mailto:reservierung@ristorante-bonfini.de"
+              href="tel:+496232620101"
               className="magnetic-btn inline-block mt-10 bg-mahogany text-white px-8 py-4 text-sm uppercase tracking-widest font-medium hover:bg-garnet transition-colors rounded"
             >
-              Anfrage senden
+              Telefonisch anfragen
             </a>
           </div>
         </div>

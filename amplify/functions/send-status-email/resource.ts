@@ -5,7 +5,7 @@ export const sendStatusEmail = defineFunction({
   entry: "./handler.ts",
   runtime: 22,
   environment: {
-    SES_SENDER_EMAIL: "reservierung@ristorante-bonfini.de",
+    SES_SENDER_EMAIL: process.env.SES_SENDER_EMAIL ?? "",
   },
   timeoutSeconds: 15,
 });

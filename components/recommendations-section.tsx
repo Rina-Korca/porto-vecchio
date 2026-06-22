@@ -9,41 +9,41 @@ import { cn } from "@/lib/utils";
 const recommendations = [
   {
     id: 1,
-    title: "Hausgemachte Pasta",
+    title: "Holzofen-Pizza",
     description:
-      "Täglich frisch zubereitet nach überlieferten Familienrezepten",
-    image: "/images/food/BonfiniRestaurant_AnnaNesterenko-2.jpg",
+      "Knusprig gebacken mit dem typischen Aroma des Holzofens",
+    image: "/images/porto/dining-terrace.jpg",
   },
   {
     id: 2,
-    title: "Frische Antipasti",
-    description: "Eine Auswahl mediterraner Vorspeisen aus besten Zutaten",
-    image: "/images/food/BonfiniRestaurant_AnnaNesterenko-3.jpg",
+    title: "Pasta-Gerichte",
+    description: "Schmackhafte Klassiker der italienischen Küche",
+    image: "/images/porto/promenade.jpg",
   },
   {
     id: 3,
-    title: "Italienische Klassiker",
+    title: "Fleischvariationen",
     description:
-      "Zeitlose Gerichte der italienischen Küche, meisterhaft interpretiert",
-    image: "/images/food/BonfiniRestaurant_AnnaNesterenko-4.jpg",
+      "Herzhafte Gerichte mit mediterraner Handschrift",
+    image: "/images/porto/restaurant-view.jpg",
   },
   {
     id: 4,
-    title: "Ausgewählte Weine",
-    description: "Erlesene Tropfen aus den besten Anbaugebieten Italiens",
-    image: "/images/food/BonfiniRestaurant_AnnaNesterenko-33.jpg",
+    title: "Fischgerichte",
+    description: "Feine Variationen für Liebhaber mediterraner Küche",
+    image: "/images/porto/gallery-04.jpg",
   },
   {
     id: 5,
-    title: "Saisonale Empfehlungen",
-    description: "Kreationen aus den frischesten Zutaten der Saison",
-    image: "/images/food/BonfiniRestaurant_AnnaNesterenko-7.jpg",
+    title: "Tagesessen",
+    description: "Wechselnde Empfehlungen von unseren Tafeln",
+    image: "/images/porto/gallery-05.jpg",
   },
   {
     id: 6,
-    title: "Dolci della Casa",
-    description: "Süße Verführungen zum krönenden Abschluss",
-    image: "/images/food/BonfiniRestaurant_AnnaNesterenko-8.jpg",
+    title: "Feiern im Porto Vecchio",
+    description: "Italienisches Flair für Familien- und Firmenfeiern",
+    image: "/images/porto/gallery-07.jpg",
   },
 ];
 
@@ -199,7 +199,7 @@ export function RecommendationsSection() {
 
           <ScrollReveal direction="up" delay={200}>
             <p className="text-lg md:text-xl text-mahogany italic font-serif">
-              Ausgewählte Momente aus unserer Küche
+              Italienisch-mediterrane Momente aus unserer Küche
             </p>
           </ScrollReveal>
         </div>

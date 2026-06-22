@@ -2,11 +2,13 @@ import type { Metadata } from "next"
 import type { ReactNode } from "react"
 import { JsonLd } from "@/components/json-ld"
 import { createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo"
+import { BrandWordmark } from "@/components/brand-wordmark"
+import { companyInfo } from "@/lib/company-info"
 
 export const metadata: Metadata = createPageMetadata({
   title: "Datenschutz",
   description:
-    "Datenschutzerklärung für die Website des Ristorante Bonfini in Berlin.",
+    "Datenschutzerklärung für die Website des Porto Vecchio in Speyer.",
   path: "/datenschutz",
 })
 
@@ -37,7 +39,7 @@ function LegalList({ items }: { items: string[] }) {
 
 export default function DatenschutzPage() {
   return (
-    <main className="min-h-screen bg-[#fbf3e5] px-6 py-20 text-carbon md:px-10 md:py-28">
+    <main className="min-h-screen bg-smoke px-6 py-20 text-carbon md:px-10 md:py-28">
       <JsonLd
         data={createBreadcrumbJsonLd([
           { name: "Startseite", path: "/" },
@@ -46,12 +48,8 @@ export default function DatenschutzPage() {
       />
       <section className="mx-auto max-w-4xl">
         <div className="mb-12">
-          <a href="/" aria-label="Bonfini Startseite" className="inline-block">
-            <img
-              src="/images/logo/logo-red.png"
-              alt="Bonfini"
-              className="mb-8 h-auto w-44 object-contain"
-            />
+          <a href="/" aria-label="Porto Vecchio Startseite" className="mb-8 inline-block">
+            <BrandWordmark className="text-carbon" />
           </a>
           <p className="mb-3 text-sm uppercase tracking-[0.28em] text-mahogany">
             Rechtliche Angaben
@@ -87,8 +85,8 @@ export default function DatenschutzPage() {
               <h4 className="font-semibold text-carbon">Wie erfassen wir Ihre Daten?</h4>
               <p>
                 Ihre Daten werden zum einen dadurch erhoben, dass Sie uns diese mitteilen.
-                Hierbei kann es sich z.B. um Daten handeln, die Sie in ein Kontaktformular
-                eingeben.
+                Hierbei kann es sich z.B. um Daten handeln, die Sie uns telefonisch
+                oder auf anderem direkten Weg mitteilen.
               </p>
               <p>
                 Andere Daten werden automatisch beim Besuch der Website durch unsere
@@ -149,21 +147,15 @@ export default function DatenschutzPage() {
                 ist:
               </p>
               <p>
-                Limabo Gastro UG (haftungsbeschränkt)
+                {companyInfo.name}
                 <br />
-                Chausseestrasse 15
+                Inhaber: {companyInfo.owner}
                 <br />
-                10115 Berlin
+                {companyInfo.addressLine1}
                 <br />
-                Telefon: 030-9561 4848
+                {companyInfo.addressLine2}
                 <br />
-                E-Mail:{" "}
-                <a
-                  href="mailto:restaurant@bonfini.de"
-                  className="font-medium text-mahogany underline-offset-4 hover:underline"
-                >
-                  restaurant@bonfini.de
-                </a>
+                Telefon: {companyInfo.phoneDisplay}
               </p>
               <p>
                 Verantwortliche Stelle ist die natürliche oder juristische Person, die
@@ -217,7 +209,7 @@ export default function DatenschutzPage() {
               <h3 className="font-serif text-xl text-carbon">SSL- bzw. TLS-Verschlüsselung</h3>
               <p>
                 Diese Seite nutzt aus Sicherheitsgründen und zum Schutz der Übertragung
-                vertraulicher Inhalte, wie zum Beispiel Bestellungen oder Anfragen, die
+                vertraulicher Inhalte, wie zum Beispiel Anfragen, die
                 Sie an uns als Seitenbetreiber senden, eine SSL-bzw. TLS-Verschlüsselung.
                 Eine verschlüsselte Verbindung erkennen Sie daran, dass die Adresszeile
                 des Browsers von “http://” auf “https://” wechselt und an dem

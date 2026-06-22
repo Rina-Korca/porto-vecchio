@@ -76,7 +76,7 @@ export function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative h-screen min-h-[700px] max-h-[1200px] flex items-center justify-center overflow-hidden"
+      className="relative h-screen min-h-[700px] max-h-[1200px] flex items-center justify-center pt-24 overflow-hidden"
     >
       {/* === BACKGROUND LAYER (0.3x scroll speed) === */}
       <div
@@ -92,19 +92,13 @@ export function HeroSection() {
             : {}
         }
       >
-        {/* Video Background */}
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source
-            src="/videos/7818021-hd_1920_1080_24fps.mp4"
-            type="video/mp4"
-          />
-        </video>
+        <Image
+          src="/images/porto/dining-terrace.jpg"
+          alt="Holzofen-Pizza im Porto Vecchio"
+          fill
+          priority
+          className="object-cover"
+        />
       </div>
 
       {/* === MID LAYER (0.6x scroll speed) - Decorative elements === */}
@@ -147,16 +141,6 @@ export function HeroSection() {
         }
       >
         <div className="flex flex-col items-center text-center">
-          {/* Small intro text */}
-          <span
-            className={`text-white/60 text-xs md:text-sm uppercase tracking-[0.4em] mb-6 transition-all duration-1000 ease-luxury ${
-              isVisible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-8"
-            }`}
-          >
-            Benvenuti
-          </span>
 
           {/* Main Headline */}
           <h1
@@ -166,9 +150,9 @@ export function HeroSection() {
                 : "opacity-0 translate-y-12"
             }`}
           >
-            Ristorante
+            Porto
             <br />
-            <span className="italic">Bonfini</span>
+            <span className="italic">Vecchio</span>
           </h1>
 
           {/* Decorative Line */}
@@ -186,7 +170,7 @@ export function HeroSection() {
                 : "opacity-0 translate-y-8"
             }`}
           >
-            Italienische Gastfreundschaft im Herzen Berlins
+            Ristorante & Pizzeria in Speyer
           </p>
 
           {/* Description */}
@@ -197,8 +181,9 @@ export function HeroSection() {
                 : "opacity-0 translate-y-8"
             }`}
           >
-            Ein Ort für Freude, Genuß und Geselligkeit. Wo sich Tradition und
-            Moderne zu einem unvergesslichen Erlebnis verbinden.
+            Bei uns sind Sie im Urlaub: Holzofen-Pizza, Pasta, Fleisch- und
+            Fischgerichte und italienisch-mediterrane Küche direkt an der
+            Rheinpromenade.
           </p>
 
           {/* CTA Buttons */}
@@ -210,10 +195,10 @@ export function HeroSection() {
             }`}
           >
             <a
-              href="#reservierung"
-              className="group relative inline-flex items-center justify-center bg-mahogany text-white px-8 md:px-10 py-3.5 md:py-4 text-xs md:text-sm uppercase tracking-[0.2em] font-medium overflow-hidden transition-all duration-500 hover:shadow-[0_10px_40px_rgba(164,22,26,0.4)]"
+              href={companyInfo.phoneHref}
+              className="group relative inline-flex items-center justify-center bg-mahogany text-white px-8 md:px-10 py-3.5 md:py-4 text-xs md:text-sm uppercase tracking-[0.2em] font-medium overflow-hidden transition-all duration-500 hover:shadow-[0_10px_40px_rgba(0,100,102,0.35)]"
             >
-              <span className="relative z-10">Tisch reservieren</span>
+              <span className="relative z-10">Telefonisch reservieren</span>
               <div className="absolute inset-0 bg-garnet transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
             </a>
             <a
@@ -224,10 +209,10 @@ export function HeroSection() {
               <div className="absolute inset-0 bg-white/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
             </a>
             <a
-              href={companyInfo.orderHref}
+              href="#anfahrt"
               className="group relative inline-flex items-center justify-center border border-mahogany/70 text-white px-8 md:px-10 py-3.5 md:py-4 text-xs md:text-sm uppercase tracking-[0.2em] font-medium overflow-hidden transition-all duration-500 hover:border-mahogany"
             >
-              <span className="relative z-10">Bestellen</span>
+              <span className="relative z-10">Anfahrt</span>
               <div className="absolute inset-0 bg-mahogany/25 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
             </a>
           </div>

@@ -44,7 +44,7 @@ export const handler = async (event: { arguments: ReservationEvent }) => {
 
   const customerHtml = `
 <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
-  <h2 style="color:#a4161a">Ristorante Bonfini</h2>
+  <h2 style="color:#006466">Porto Vecchio</h2>
   <p>Liebe/r ${r.name},</p>
   <p>vielen Dank für Ihre Reservierungsanfrage!</p>
   <table style="border-collapse:collapse;width:100%;margin:16px 0">
@@ -53,12 +53,12 @@ export const handler = async (event: { arguments: ReservationEvent }) => {
     <tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Gäste</strong></td><td style="padding:8px;border-bottom:1px solid #eee">${r.guests}</td></tr>
   </table>
   <p style="background:#fff3cd;padding:12px;border-radius:6px"><strong>Hinweis:</strong> Ihre Reservierung ist noch nicht bestätigt. Unser Team wird sich in Kürze bei Ihnen melden.</p>
-  <p>Mit freundlichen Grüßen,<br/>Ristorante Bonfini</p>
+  <p>Mit freundlichen Grüßen,<br/>Porto Vecchio</p>
 </div>`;
 
   const adminHtml = `
 <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
-  <h2 style="color:#a4161a">Neue Reservierungsanfrage</h2>
+  <h2 style="color:#006466">Neue Reservierungsanfrage</h2>
   <p>Status: <strong>PENDING</strong></p>
   <table style="border-collapse:collapse;width:100%;margin:16px 0">
     <tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>ID</strong></td><td style="padding:8px;border-bottom:1px solid #eee">${r.id}</td></tr>

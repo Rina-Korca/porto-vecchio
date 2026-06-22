@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { ScrollReveal, MultiLayerParallax, DepthCard } from "@/components/scroll-animations"
+import { companyInfo } from "@/lib/company-info"
 
 export function ParallaxStorytellingSection() {
   // Mid-layer decorative content
@@ -28,8 +29,8 @@ export function ParallaxStorytellingSection() {
 
   return (
     <MultiLayerParallax
-      backgroundImage="/images/interier/O-2.jpg"
-      backgroundAlt="Gastraum und Atmosphaere im Ristorante Bonfini"
+      backgroundImage="/images/porto/gallery-09.jpg"
+      backgroundAlt="Gastraum und Atmosphaere im Porto Vecchio"
       midLayerContent={MidLayerContent}
       minHeight="85vh"
       overlayColor="rgba(11, 9, 10, 0.55)"
@@ -61,7 +62,7 @@ export function ParallaxStorytellingSection() {
                 <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-carbon leading-tight">
                   Ein Ort für Freude,
                   <br />
-                  <span className="italic text-mahogany">Genuß</span> und Geselligkeit.
+                  <span className="italic text-mahogany">Genuss</span> und Geselligkeit.
                 </h2>
               </ScrollReveal>
 
@@ -77,8 +78,8 @@ export function ParallaxStorytellingSection() {
               {/* Description */}
               <ScrollReveal direction="up" delay={500}>
                 <p className="font-sans text-lg md:text-xl text-carbon/70 leading-relaxed max-w-xl mx-auto">
-                  Im Bonfini verbinden sich italienische Gastfreundschaft, hochwertige Produkte 
-                  und Berliner Lebendigkeit zu einem Erlebnis, das bleibt.
+                  Im Porto Vecchio verbinden sich italienische Gastfreundschaft,
+                  Rheinblick und mediterrane Küche zu einem Erlebnis, das bleibt.
                 </p>
               </ScrollReveal>
 
@@ -86,10 +87,10 @@ export function ParallaxStorytellingSection() {
               <ScrollReveal direction="up" delay={600}>
                 <div className="pt-4">
                   <Link
-                    href="#reservierung"
+                    href={companyInfo.phoneHref}
                     className="group relative inline-flex items-center gap-3 bg-mahogany text-white px-10 py-4 text-sm tracking-wider uppercase font-medium overflow-hidden transition-all duration-500 hover:bg-garnet hover:shadow-xl hover:shadow-mahogany/20"
                   >
-                    <span className="relative z-10">Jetzt reservieren</span>
+                    <span className="relative z-10">Telefonisch reservieren</span>
                     <svg 
                       className="relative z-10 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" 
                       fill="none" 

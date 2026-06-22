@@ -33,14 +33,16 @@ export const metadata: Metadata = {
   description: seoConfig.defaultDescription,
   keywords: [
     "Restaurant",
-    "Berlin",
+    "Speyer",
     "Italienisch",
-    "Fine Dining",
+    "Ristorante",
+    "Pizzeria",
     "Pasta",
     "Pizza",
-    "Wein",
-    "Bonfini",
-    "Italian Restaurant Berlin",
+    "Holzofen Pizza",
+    "Rheinpromenade",
+    "Porto Vecchio",
+    "Italian Restaurant Speyer",
   ],
   authors: [{ name: seoConfig.siteName }],
   creator: seoConfig.siteName,
@@ -105,8 +107,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f5f3f4" },
-    { media: "(prefers-color-scheme: dark)", color: "#0b090a" },
+    { media: "(prefers-color-scheme: light)", color: "#f4f8f8" },
+    { media: "(prefers-color-scheme: dark)", color: "#212f45" },
   ],
 };
 

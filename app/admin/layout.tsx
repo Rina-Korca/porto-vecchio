@@ -4,7 +4,7 @@ import { createPageMetadata } from "@/lib/seo"
 
 export const metadata: Metadata = createPageMetadata({
   title: "Admin",
-  description: "Geschützter Administrationsbereich des Ristorante Bonfini.",
+  description: "Geschützter Administrationsbereich des Porto Vecchio.",
   path: "/admin",
   noIndex: true,
 })

@@ -29,33 +29,33 @@ export function InteriorSection() {
             </h2>
             <div className="thin-divider w-16 mb-8" />
             <p className="text-muted-foreground text-lg leading-relaxed mb-6">
-              Unser Restaurant vereint italienische Eleganz mit Berliner
-              Modernität. Warme Holztöne, sanftes Kerzenlicht und
-              zeitgenössische Kunstwerke schaffen eine Atmosphäre, die zum
+              Unser Restaurant verbindet italienisches Flair mit der besonderen
+              Lage direkt am Rhein. Warme Gastlichkeit, mediterrane Details und
+              der Blick zur Promenade schaffen eine Atmosphäre, die zum
               Verweilen einlädt.
             </p>
             <p className="text-muted-foreground text-lg leading-relaxed mb-8">
-              Mit 60 Sitzplätzen im Hauptraum, einem privaten Veranstaltungsraum
-              für bis zu 20 Gäste und unserer sonnigen Terrasse bieten wir den
-              perfekten Rahmen für jeden Anlass.
+              Für Feierlichkeiten stehen unser separater Nebenraum Salette für
+              bis zu 45 Personen und das Domzimmer für bis zu 30 Personen zur
+              Verfügung.
             </p>
             <div className="flex gap-8">
               <div>
-                <p className="font-serif text-4xl text-mahogany mb-1">60</p>
+                <p className="font-serif text-4xl text-mahogany mb-1">45</p>
                 <p className="text-sm text-muted-foreground uppercase tracking-wider">
-                  Sitzplätze
-                </p>
-              </div>
-              <div>
-                <p className="font-serif text-4xl text-mahogany mb-1">20</p>
-                <p className="text-sm text-muted-foreground uppercase tracking-wider">
-                  Privat
+                  Salette
                 </p>
               </div>
               <div>
                 <p className="font-serif text-4xl text-mahogany mb-1">30</p>
                 <p className="text-sm text-muted-foreground uppercase tracking-wider">
-                  Terrasse
+                  Domzimmer
+                </p>
+              </div>
+              <div>
+                <p className="font-serif text-4xl text-mahogany mb-1">2</p>
+                <p className="text-sm text-muted-foreground uppercase tracking-wider">
+                  Parkplätze
                 </p>
               </div>
             </div>
@@ -72,8 +72,8 @@ export function InteriorSection() {
           >
             <div className="relative aspect-[4/5] rounded-lg overflow-hidden shadow-2xl">
               <Image
-                src="/images/interier/O-2.jpg"
-                alt="Eleganter Innenbereich des Ristorante Bonfini"
+                src="/images/porto/gallery-02.jpg"
+                alt="Innenbereich im Porto Vecchio in Speyer"
                 fill
                 className="object-cover"
               />
@@ -81,8 +81,8 @@ export function InteriorSection() {
             {/* Overlapping image */}
             <div className="absolute -bottom-8 -left-8 w-48 h-48 rounded-lg overflow-hidden shadow-xl hidden md:block">
               <Image
-                src="/images/interier/U-1.jpg"
-                alt="Detailansicht des Bonfini Innenbereichs"
+                src="/images/porto/gallery-08.jpg"
+                alt="Detailansicht des Porto Vecchio Innenbereichs"
                 fill
                 className="object-cover"
               />

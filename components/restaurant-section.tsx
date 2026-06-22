@@ -22,9 +22,9 @@ export function RestaurantSection() {
             <ParallaxElement speed={0.1} className="lg:col-span-7 relative z-10">
               <ScrollReveal direction="left" delay={0}>
                 <div className="relative aspect-[4/3] lg:aspect-[4/5] overflow-hidden rounded-sm shadow-2xl">
-                  <ScrollImage
-                    src="/images/interier/O-2.jpg"
-                    alt="Heller Gastraum im Ristorante Bonfini mit gedeckten Tischen"
+                    <ScrollImage
+                    src="/images/porto/gallery-03.jpg"
+                    alt="Heller Gastraum im Porto Vecchio mit gedeckten Tischen"
                     className="object-cover"
                     containerClassName="w-full h-full"
                     zoomAmount={1.12}
@@ -48,9 +48,9 @@ export function RestaurantSection() {
               <ParallaxElement speed={0.2}>
                 <ScrollReveal direction="right" delay={200}>
                   <div className="relative aspect-[3/2] overflow-hidden rounded-sm shadow-xl">
-                    <ScrollImage
-                      src="/images/interier/U-1.jpg"
-                      alt="Atmosphaerischer Innenbereich des Ristorante Bonfini"
+                      <ScrollImage
+                      src="/images/porto/gallery-02.jpg"
+                      alt="Atmosphaerischer Innenbereich des Porto Vecchio"
                       className="object-cover"
                       containerClassName="w-full h-full"
                       zoomAmount={1.1}
@@ -65,9 +65,9 @@ export function RestaurantSection() {
               <ParallaxElement speed={0.25}>
                 <ScrollReveal direction="right" delay={400}>
                   <div className="relative aspect-[3/2] overflow-hidden rounded-sm shadow-xl">
-                    <ScrollImage
-                      src="/images/interier/U-2.jpg"
-                      alt="Unterer Restaurantbereich des Ristorante Bonfini"
+                      <ScrollImage
+                      src="/images/porto/gallery-09.jpg"
+                      alt="Restaurantbereich des Porto Vecchio mit Rheinblick"
                       className="object-cover"
                       containerClassName="w-full h-full"
                       zoomAmount={1.08}
@@ -80,10 +80,10 @@ export function RestaurantSection() {
             </div>
           </div>
 
-          {/* Dark Burgundy Text Card - Overlapping with parallax */}
+          {/* Dark text card - overlapping with parallax */}
           <ParallaxElement speed={0.15} className="relative lg:absolute lg:bottom-16 lg:right-0 lg:w-[55%] xl:w-[50%] mt-8 lg:mt-0 z-20">
             <ScrollReveal direction="up" delay={500}>
-              <div className="relative p-10 lg:p-14 rounded-sm shadow-2xl bg-[#2d0a0a]">
+              <div className="relative p-10 lg:p-14 rounded-sm shadow-2xl bg-[var(--deep-space-blue)]">
                 {/* Decorative corner accents */}
                 <div className="absolute top-6 left-6 w-12 h-12 border-l-2 border-t-2 border-white/15" />
                 <div className="absolute bottom-6 right-6 w-12 h-12 border-r-2 border-b-2 border-white/15" />
@@ -110,17 +110,17 @@ export function RestaurantSection() {
                 {/* Italian subtitle */}
                 <ScrollReveal direction="up" delay={800}>
                   <p className="font-serif text-lg italic text-gold/90 mb-8">
-                    Un luogo di armonia
+                    Vacanza sul Reno
                   </p>
                 </ScrollReveal>
 
                 {/* Description */}
                 <ScrollReveal direction="up" delay={900}>
                   <p className="text-base lg:text-lg leading-relaxed mb-10 font-light text-smoke/85">
-                    Das Bonfini – ein Ort der Harmonie. In der Übertreibung liegt bekanntermaßen 
-                    das beste Verständnis. Wir aber bleiben bescheiden und dürfen behaupten, dass 
-                    guter Geschmack sich bei uns nicht nur auf dem Teller oder im Weinglas wiederfindet. 
-                    Kommen Sie doch einfach rein!
+                    Porto Vecchio bringt italienisches Urlaubsgefühl nach Speyer.
+                    Direkt an der Rheinpromenade erwartet Sie ein warmes Ambiente,
+                    ein Blick auf den Rhein und Service, der Ihre Mittagspause,
+                    Ihr Abendessen oder Ihre Feier entspannt begleitet.
                   </p>
                 </ScrollReveal>
 
@@ -149,7 +149,7 @@ export function RestaurantSection() {
           <ScrollReveal direction="scale" delay={700} className="hidden lg:block absolute top-8 left-[60%] z-30">
             <div className="px-6 py-4 rounded-sm shadow-lg backdrop-blur-sm bg-white/95">
               <p className="font-serif text-sm italic text-mahogany">
-                &ldquo;Dove il buon gusto incontra l&apos;armonia&rdquo;
+                &ldquo;Bei uns sind Sie im Urlaub&rdquo;
               </p>
             </div>
           </ScrollReveal>

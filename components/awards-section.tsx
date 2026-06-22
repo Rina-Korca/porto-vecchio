@@ -7,21 +7,21 @@ import { Award, Star, Trophy } from "lucide-react"
 const awards = [
   {
     icon: Star,
-    title: "Tripadvisor",
-    subtitle: "Travellers' Choice 2024",
-    description: "Top 10% der Restaurants weltweit",
+    title: "Rheinpromenade",
+    subtitle: "Speyerer Rhein",
+    description: "Ambiente direkt am Wasser",
   },
   {
     icon: Award,
-    title: "Michelin Guide",
-    subtitle: "Empfohlen",
-    description: "Ausgezeichnete Qualität seit 2018",
+    title: "Holzofen",
+    subtitle: "Pizza & Pasta",
+    description: "Italienisch-mediterrane Küche",
   },
   {
     icon: Trophy,
-    title: "Berlin Food Award",
-    subtitle: "Bestes Italienisches Restaurant",
-    description: "Gewinner 2023",
+    title: "Feiern",
+    subtitle: "Salette & Domzimmer",
+    description: "Räume für bis zu 45 Personen",
   },
 ]
 

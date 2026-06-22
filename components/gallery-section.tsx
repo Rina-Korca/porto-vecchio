@@ -8,43 +8,43 @@ import { X } from "lucide-react";
 
 const galleryImages = [
   {
-    src: "/images/interier/O-2.jpg",
-    alt: "Heller Gastraum im Ristorante Bonfini mit eleganter Einrichtung",
+    src: "/images/porto/gallery-02.jpg",
+    alt: "Heller Gastraum im Porto Vecchio mit mediterraner Einrichtung",
     category: "interieur",
   },
   {
-    src: "/images/food/BonfiniRestaurant_AnnaNesterenko-2.jpg",
-    alt: "Hausgemachte Pasta - Signature Dish aus der Bonfini Kueche",
+    src: "/images/porto/gallery-04.jpg",
+    alt: "Italienisch-mediterrane Küche im Porto Vecchio",
     category: "gerichte",
   },
   {
-    src: "/images/food/BonfiniRestaurant_AnnaNesterenko-33.jpg",
-    alt: "Premium Weinauswahl aus den besten italienischen Anbaugebieten",
+    src: "/images/porto/gallery-09.jpg",
+    alt: "Abendstimmung an der Rheinpromenade beim Porto Vecchio",
     category: "wein",
   },
   {
-    src: "/images/exterier/F.jpg",
-    alt: "Aussenbereich des Ristorante Bonfini mit gemütlicher Atmosphäre",
+    src: "/images/porto/dining-terrace.jpg",
+    alt: "Terrasse und Restaurantbereich des Porto Vecchio",
     category: "terrasse",
   },
   {
-    src: "/images/food/BonfiniRestaurant_AnnaNesterenko-12.jpg",
-    alt: "Tagliatelle al Tartufo - hausgemachte Pasta mit schwarzem Trüffel",
+    src: "/images/porto/gallery-06.jpg",
+    alt: "Italienische Spezialität im Porto Vecchio",
     category: "gerichte",
   },
   {
-    src: "/images/exterier/Ansicht-A.jpg",
-    alt: "Aussenansicht des Ristorante Bonfini an der Chausseestrasse",
+    src: "/images/porto/restaurant-view.jpg",
+    alt: "Aussenansicht des Porto Vecchio am Hafenbecken in Speyer",
     category: "exterieur",
   },
   {
-    src: "/images/interier/U-2.jpg",
-    alt: "Unterer Restaurantbereich des Bonfini mit intimer Atmosphäre",
+    src: "/images/porto/gallery-08.jpg",
+    alt: "Restaurantbereich des Porto Vecchio mit gemütlicher Atmosphäre",
     category: "interieur",
   },
   {
-    src: "/images/food/BonfiniRestaurant_AnnaNesterenko-8.jpg",
-    alt: "Dolci della Casa - hausgemachte Desserts zum Abschluss",
+    src: "/images/porto/gallery-11.jpg",
+    alt: "Mediterrane Speisen im Porto Vecchio",
     category: "gerichte",
   },
 ];
@@ -163,7 +163,7 @@ export function GallerySection() {
           <div className="relative max-w-5xl max-h-[90vh] w-full h-full">
             <Image
               src={lightboxImage}
-              alt="Ausgewaehltes Galeriebild des Ristorante Bonfini"
+              alt="Ausgewaehltes Galeriebild des Porto Vecchio"
               fill
               className="object-contain"
             />

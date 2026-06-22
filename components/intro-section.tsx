@@ -38,10 +38,9 @@ export function IntroSection() {
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             )}
           >
-            Seit 2008 begrüßen wir unsere Gäste im Ristorante Bonfini. Unser
-            Küchenchef Marco Bonfini bringt die Aromen seiner Heimat Toskana
-            nach Berlin. Jedes Gericht erzählt eine Geschichte von Tradition,
-            Leidenschaft und höchster Qualität.
+            Im Porto Vecchio verwöhnen wir Sie mit knusprigen Holzofen-Pizzen,
+            schmackhaften Pasta-Gerichten, Fleisch- und Fischvariationen sowie
+            weiteren Spezialitäten der italienisch-mediterranen Küche.
           </p>
           <p
             className={cn(
@@ -49,9 +48,9 @@ export function IntroSection() {
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             )}
           >
-            Wir laden Sie ein, die authentischen Geschmäcker Italiens zu
-            entdecken, begleitet von erlesenen Weinen aus den besten Regionen
-            des Landes.
+            Genießen Sie unser Ambiente direkt an der Rheinpromenade mit Blick
+            auf den Speyerer Rhein und lassen Sie sich von unseren täglich
+            wechselnden Empfehlungen überraschen.
           </p>
         </div>
       </div>

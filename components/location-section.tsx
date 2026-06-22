@@ -3,6 +3,7 @@
 import { useInView } from "@/hooks/use-in-view"
 import { MapPin, Navigation, Phone, Clock } from "lucide-react"
 import { companyInfo, openingHours } from "@/lib/company-info"
+import { BrandWordmark } from "@/components/brand-wordmark"
 
 export function LocationSection() {
   const { ref: sectionRef, isInView } = useInView({ threshold: 0.1 })
@@ -17,7 +18,7 @@ export function LocationSection() {
       <div className="relative h-[300px] md:h-[600px] w-full">
         {/* Google Maps Iframe */}
         <iframe
-          src="https://www.google.com/maps?q=Chausseestra%C3%9Fe%2015%2C%2010115%20Berlin%2C%20Germany&output=embed"
+          src="https://www.google.com/maps?q=Porto%20Vecchio%20Im%20Hafenbecken%2011%2067346%20Speyer&output=embed"
           width="100%"
           height="100%"
           style={{ border: 0 }}
@@ -25,7 +26,7 @@ export function LocationSection() {
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
           className="grayscale-[30%] contrast-[1.1]"
-          title="Ristorante Bonfini Standort"
+          title="Porto Vecchio Standort"
         />
 
         {/* Gradient Overlay for better card visibility */}
@@ -38,7 +39,6 @@ export function LocationSection() {
           }`}
         >
           <div className="bg-white/95 backdrop-blur-sm p-6 md:p-8 lg:p-10 shadow-2xl max-w-sm md:max-w-md relative">
-            {/* Burgundy Top Accent */}
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[var(--garnet)] to-[var(--mahogany)]" />
 
             {/* Decorative Corner */}
@@ -46,18 +46,12 @@ export function LocationSection() {
             <div className="absolute bottom-4 left-4 w-8 h-8 border-b border-l border-[var(--garnet)]/30" />
 
             {/* Heading */}
-            <img
-              src="/images/logo/logo-red.png"
-              alt="Bonfini"
-              className="mb-5 h-auto w-40 object-contain"
-              loading="lazy"
-              decoding="async"
-            />
+            <BrandWordmark className="mb-5 text-[var(--onyx)]" />
             <p className="text-[var(--garnet)] text-sm tracking-[0.2em] uppercase mb-2">
-              Im Herzen Berlins
+              Direkt an der Rheinpromenade
             </p>
             <h2 className="font-serif text-2xl md:text-3xl text-[var(--onyx)] mb-6">
-              Ristorante Bonfini
+              Porto Vecchio
             </h2>
 
             {/* Divider */}
@@ -142,10 +136,10 @@ export function LocationSection() {
       {/* Mobile Info Card - below the map */}
       <div className="md:hidden bg-white p-6">
         <p className="text-[var(--garnet)] text-xs tracking-[0.2em] uppercase mb-1">
-          Im Herzen Berlins
+          Direkt an der Rheinpromenade
         </p>
         <h2 className="font-serif text-xl text-[var(--onyx)] mb-4">
-          Ristorante Bonfini
+          Porto Vecchio
         </h2>
         <div className="w-10 h-px bg-[var(--garnet)] mb-4" />
         <div className="space-y-3 mb-6">

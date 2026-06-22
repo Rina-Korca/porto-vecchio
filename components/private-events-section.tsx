@@ -10,13 +10,13 @@ import { companyInfo } from "@/lib/company-info"
 const features = [
   {
     icon: Building2,
-    title: "Zwei Etagen",
-    description: "Großzügige Räumlichkeiten auf zwei Ebenen"
+    title: "Salette",
+    description: "Separater Nebenraum für bis zu 45 Personen"
   },
   {
     icon: Users,
-    title: "Bis ca. 60 Personen",
-    description: "Perfekt für größere Gruppen und Feiern"
+    title: "Domzimmer",
+    description: "Exzellenter Rahmen für bis zu 30 Personen"
   },
   {
     icon: MessageCircle,
@@ -25,8 +25,8 @@ const features = [
   },
   {
     icon: Sparkles,
-    title: "Italienisches Ambiente",
-    description: "Authentische Atmosphäre für besondere Anlässe"
+    title: "Italienisches Flair",
+    description: "Hervorragende Speisen und zuvorkommender Service"
   }
 ]
 
@@ -53,7 +53,7 @@ export function PrivateEventsSection() {
         <div 
           className="absolute inset-0"
           style={{
-            background: "radial-gradient(ellipse at 100% 50%, rgba(128, 0, 32, 0.08), transparent 70%)"
+            background: "radial-gradient(ellipse at 100% 50%, rgba(0, 100, 102, 0.08), transparent 70%)"
           }}
         />
       </div>
@@ -72,15 +72,15 @@ export function PrivateEventsSection() {
               <div 
                 className="absolute inset-0 z-10 transition-transform duration-1000 ease-out"
                 style={{
-                  backgroundColor: "#800020",
+                  backgroundColor: "var(--stormy-teal)",
                   transform: imageRevealed ? "translateX(100%)" : "translateX(0)"
                 }}
               />
               
               <div className="relative aspect-[4/5]">
                 <Image
-                  src="/images/interier/O-1.jpg"
-                  alt="Oberer Gastraum des Bonfini fuer private Veranstaltungen"
+                  src="/images/porto/gallery-02.jpg"
+                  alt="Nebenraum des Porto Vecchio fuer private Veranstaltungen"
                   fill
                   className="object-cover"
                 />
@@ -99,11 +99,11 @@ export function PrivateEventsSection() {
             >
               <div 
                 className="w-10 h-0.5 mb-3"
-                style={{ backgroundColor: "#800020" }}
+                style={{ backgroundColor: "var(--stormy-teal)" }}
               />
               <p 
                 className="font-serif italic text-sm"
-                style={{ color: "#800020" }}
+                style={{ color: "var(--stormy-teal)" }}
               >
                 &ldquo;Il vostro evento, la nostra passione&rdquo;
               </p>
@@ -115,7 +115,7 @@ export function PrivateEventsSection() {
             {/* Decorative element */}
             <div 
               className="absolute -top-4 -left-4 w-24 h-24 border-l-2 border-t-2 opacity-30"
-              style={{ borderColor: "#800020" }}
+              style={{ borderColor: "var(--stormy-teal)" }}
             />
           </div>
 
@@ -129,13 +129,13 @@ export function PrivateEventsSection() {
             >
               <div 
                 className="w-8 h-0.5"
-                style={{ backgroundColor: "#800020" }}
+                style={{ backgroundColor: "var(--stormy-teal)" }}
               />
               <span 
                 className="text-sm tracking-widest uppercase"
-                style={{ color: "#800020" }}
+                style={{ color: "var(--stormy-teal)" }}
               >
-                Exklusive Räumlichkeiten
+                Feiern in Speyer
               </span>
             </div>
 
@@ -147,7 +147,7 @@ export function PrivateEventsSection() {
               style={{ color: "#1a1a1a" }}
             >
               Feiern &<br />
-              <span style={{ color: "#800020" }}>Veranstaltungen</span>
+              <span style={{ color: "var(--stormy-teal)" }}>Veranstaltungen</span>
             </h2>
 
             {/* Description */}
@@ -157,7 +157,11 @@ export function PrivateEventsSection() {
               }`}
               style={{ color: "#4a4a4a" }}
             >
-              Wir bieten Ihnen Platz auf zwei Etagen. Die obere Etage können Sie auch gerne für Gruppen und Veranstaltungen bis ca. 60 Personen mieten. Sprechen Sie uns einfach darauf an.
+              Ihre Feier oder Veranstaltung in Speyer wird mit uns zu einem
+              unvergesslichen Erlebnis. Ob Hochzeit, Familienfeier,
+              Geburtstag, Weihnachtsfeier oder Jubiläum: Wir verwöhnen Sie und
+              Ihre Gäste mit italienischem Flair, hervorragenden Speisen und
+              zuvorkommendem Service.
             </p>
 
             {/* Feature grid */}
@@ -175,11 +179,11 @@ export function PrivateEventsSection() {
                 >
                   <div 
                     className="w-10 h-10 rounded-full flex items-center justify-center mb-3 transition-colors group-hover:bg-opacity-100"
-                    style={{ backgroundColor: "rgba(128, 0, 32, 0.1)" }}
+                    style={{ backgroundColor: "rgba(0, 100, 102, 0.1)" }}
                   >
                     <feature.icon 
                       className="w-5 h-5 transition-colors"
-                      style={{ color: "#800020" }}
+                      style={{ color: "var(--stormy-teal)" }}
                     />
                   </div>
                   <h3 
@@ -207,7 +211,7 @@ export function PrivateEventsSection() {
               <Link
                 href="#reservierung"
                 className="group inline-flex items-center gap-3 px-8 py-4 text-white font-medium tracking-wide transition-all duration-300 hover:gap-5"
-                style={{ backgroundColor: "#800020" }}
+                style={{ backgroundColor: "var(--stormy-teal)" }}
               >
                 <span>Veranstaltung anfragen</span>
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
@@ -222,7 +226,7 @@ export function PrivateEventsSection() {
                 <a 
                   href={companyInfo.phoneHref}
                   className="underline underline-offset-2 transition-colors hover:no-underline"
-                  style={{ color: "#800020" }}
+                  style={{ color: "var(--stormy-teal)" }}
                 >
                   {companyInfo.phoneDisplay}
                 </a>
@@ -236,7 +240,7 @@ export function PrivateEventsSection() {
       <div 
         className="absolute bottom-0 left-0 right-0 h-px"
         style={{ 
-          background: "linear-gradient(90deg, transparent, rgba(128, 0, 32, 0.2), transparent)" 
+          background: "linear-gradient(90deg, transparent, rgba(0, 100, 102, 0.2), transparent)" 
         }}
       />
     </section>

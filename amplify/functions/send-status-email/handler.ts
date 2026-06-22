@@ -58,7 +58,7 @@ export const handler = async (event: { arguments: StatusEvent }) => {
           Html: {
             Data: `
 <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
-  <h2 style="color:#a4161a">Ristorante Bonfini</h2>
+  <h2 style="color:#006466">Porto Vecchio</h2>
   <p>Liebe/r ${r.name},</p>
   <p>${t.body}</p>
   <table style="border-collapse:collapse;width:100%;margin:16px 0">
@@ -66,7 +66,7 @@ export const handler = async (event: { arguments: StatusEvent }) => {
     <tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Uhrzeit</strong></td><td style="padding:8px;border-bottom:1px solid #eee">${r.reservationTime} Uhr</td></tr>
     <tr><td style="padding:8px;border-bottom:1px solid #eee"><strong>Gäste</strong></td><td style="padding:8px;border-bottom:1px solid #eee">${r.guests}</td></tr>
   </table>
-  <p>Mit freundlichen Grüßen,<br/>Ristorante Bonfini</p>
+  <p>Mit freundlichen Grüßen,<br/>Porto Vecchio</p>
 </div>`,
           },
         },

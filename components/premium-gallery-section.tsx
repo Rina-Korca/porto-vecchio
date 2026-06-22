@@ -8,96 +8,95 @@ import { cn } from "@/lib/utils";
 const categories = [
   { id: "all", label: "Alle" },
   { id: "interieur", label: "Interieur" },
-  { id: "exterieur", label: "Exterieur" },
-  { id: "terrasse", label: "Terrasse" },
+  { id: "rheinblick", label: "Rheinblick" },
   { id: "kueche", label: "Küche" },
   { id: "gerichte", label: "Gerichte" },
-  { id: "wein", label: "Wein" },
+  { id: "feiern", label: "Feiern" },
 ];
 
 const galleryImages = [
   {
     id: 1,
-    src: "/images/interier/O-2.jpg",
-    alt: "Heller Gastraum im Ristorante Bonfini",
+    src: "/images/porto/gallery-03.jpg",
+    alt: "Heller Gastraum im Porto Vecchio",
     category: "interieur",
     size: "large",
   },
   {
     id: 2,
-    src: "/images/food/BonfiniRestaurant_AnnaNesterenko-2.jpg",
-    alt: "Hausgemachte Pasta - Premium Gericht aus der Bonfini Kueche",
+    src: "/images/porto/dining-terrace.jpg",
+    alt: "Holzofen-Pizza im Porto Vecchio",
     category: "gerichte",
     size: "small",
   },
   {
     id: 3,
-    src: "/images/food/BonfiniRestaurant_AnnaNesterenko-33.jpg",
-    alt: "Erlesene Weine aus den besten italienischen Anbaugebieten",
-    category: "wein",
+    src: "/images/porto/gallery-02.jpg",
+    alt: "Nebenraum mit gedeckten Tischen",
+    category: "feiern",
     size: "medium",
   },
   {
     id: 4,
-    src: "/images/exterier/F.jpg",
-    alt: "Aussenbereich des Ristorante Bonfini",
-    category: "terrasse",
+    src: "/images/porto/gallery-09.jpg",
+    alt: "Gastraum mit Blick auf den Rhein",
+    category: "rheinblick",
     size: "large",
   },
   {
     id: 5,
-    src: "/images/food/BonfiniRestaurant_AnnaNesterenko-14.jpg",
-    alt: "Gegrillter Wolfsbarsch mit mediterranem Gemüse - Premium Gericht aus der Bonfini Kueche",
+    src: "/images/porto/restaurant-view.jpg",
+    alt: "Vorbereitung eines Fleischgerichts",
     category: "kueche",
     size: "medium",
   },
   {
     id: 6,
-    src: "/images/exterier/Ansicht-A.jpg",
-    alt: "Restaurant Aussenansicht an der Chausseestrasse",
-    category: "exterieur",
+    src: "/images/porto/promenade.jpg",
+    alt: "Frisches Brot im Porto Vecchio",
+    category: "kueche",
     size: "small",
   },
   {
     id: 7,
-    src: "/images/food/BonfiniRestaurant_AnnaNesterenko-3.jpg",
-    alt: "Frische Antipasti - mediterraner Genuss aus besten Zutaten",
-    category: "gerichte",
+    src: "/images/porto/gallery-07.jpg",
+    alt: "Bar und Innenbereich des Porto Vecchio",
+    category: "interieur",
     size: "medium",
   },
   {
     id: 8,
-    src: "/images/interier/U-2.jpg",
-    alt: "Unterer Restaurantbereich des Bonfini",
+    src: "/images/porto/gallery-01.jpg",
+    alt: "Mediterranes Detail im Porto Vecchio",
     category: "interieur",
     size: "small",
   },
   {
     id: 9,
-    src: "/images/food/BonfiniRestaurant_AnnaNesterenko-18.jpg",
-    alt: "Rinderfilet mit Barolo-Reduktion - Premium Fleischgericht aus der Bonfini Kueche",
-    category: "gerichte",
+    src: "/images/porto/gallery-11.jpg",
+    alt: "Gedeckter Bereich für Gäste",
+    category: "feiern",
     size: "large",
   },
   {
     id: 10,
-    src: "/images/interier/IMG-20180420-WA0007.jpg",
-    alt: "Gedeckter Innenbereich im Ristorante Bonfini",
-    category: "interieur",
+    src: "/images/porto/gallery-04.jpg",
+    alt: "Mediterranes Gericht im Porto Vecchio",
+    category: "gerichte",
     size: "small",
   },
   {
     id: 11,
-    src: "/images/food/BonfiniRestaurant_AnnaNesterenko-8.jpg",
-    alt: "Dolci della Casa - hausgemachte Desserts zum krönenden Abschluss",
+    src: "/images/porto/gallery-05.jpg",
+    alt: "Gericht aus der italienisch-mediterranen Küche",
     category: "gerichte",
     size: "medium",
   },
   {
     id: 12,
-    src: "/images/interier/O-1.jpg",
-    alt: "Private Dining im oberen Gastraum des Bonfini",
-    category: "interieur",
+    src: "/images/porto/gallery-12.jpg",
+    alt: "Innenbereich für gesellige Abende",
+    category: "feiern",
     size: "large",
   },
 ];
@@ -177,7 +176,7 @@ function GalleryImage({
         />
 
         {/* Hover overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#722F37]/90 via-[#722F37]/40 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--deep-purple)]/90 via-[var(--stormy-teal)]/40 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
         {/* Category label */}
         <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 transition-all duration-500 group-hover:opacity-100">
@@ -351,8 +350,8 @@ export function PremiumGallerySection() {
       </div>
 
       {/* Decorative elements */}
-      <div className="pointer-events-none absolute -left-32 top-1/4 h-64 w-64 rounded-full bg-[#722F37]/5 blur-3xl" />
-      <div className="pointer-events-none absolute -right-32 bottom-1/4 h-64 w-64 rounded-full bg-[#722F37]/5 blur-3xl" />
+      <div className="pointer-events-none absolute -left-32 top-1/4 h-64 w-64 rounded-full bg-[var(--stormy-teal)]/5 blur-3xl" />
+      <div className="pointer-events-none absolute -right-32 bottom-1/4 h-64 w-64 rounded-full bg-[var(--deep-purple)]/5 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
@@ -365,15 +364,15 @@ export function PremiumGallerySection() {
                 : "translate-y-8 opacity-0",
             )}
           >
-            <span className="mb-4 inline-block font-serif text-sm italic tracking-widest text-[#722F37]">
+            <span className="mb-4 inline-block font-serif text-sm italic tracking-widest text-mahogany">
               Galleria
             </span>
-            <h2 className="font-serif text-4xl leading-tight text-[#1a1a1a] md:text-5xl lg:text-6xl">
-              Einblicke ins Bonfini
+            <h2 className="font-serif text-4xl leading-tight text-carbon md:text-5xl lg:text-6xl">
+              Einblicke ins Porto Vecchio
             </h2>
-            <div className="mx-auto mt-6 h-px w-24 bg-gradient-to-r from-transparent via-[#722F37] to-transparent" />
-            <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-[#4a4a4a]">
-              Momente aus Küche, Raum und Gastfreundschaft.
+            <div className="mx-auto mt-6 h-px w-24 bg-gradient-to-r from-transparent via-mahogany to-transparent" />
+            <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-carbon/70">
+              Momente aus Küche, Gastraum und Gastfreundschaft am Rhein.
             </p>
           </div>
         </div>
@@ -394,8 +393,8 @@ export function PremiumGallerySection() {
                 "relative px-5 py-2.5 text-sm font-medium tracking-wide transition-all duration-300",
                 "rounded-full border",
                 activeCategory === category.id
-                  ? "border-[#722F37] bg-[#722F37] text-white"
-                  : "border-[#d4d4d4] bg-white text-[#4a4a4a] hover:border-[#722F37]/50 hover:text-[#722F37]",
+                  ? "border-mahogany bg-mahogany text-white"
+                  : "border-dust bg-white text-carbon/70 hover:border-mahogany/50 hover:text-mahogany",
               )}
             >
               {category.label}

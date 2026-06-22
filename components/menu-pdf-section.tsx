@@ -7,13 +7,12 @@ import {
   Download,
   Minus,
   Plus,
-  ShoppingBag,
   X,
 } from "lucide-react";
 
 import { useInView } from "@/hooks/use-in-view";
-import { companyInfo } from "@/lib/company-info";
 import { MENU_PAGE_IMAGES, MENU_PDF_HREF } from "@/lib/menu";
+import { BrandWordmark } from "@/components/brand-wordmark";
 
 const MENU_PAGES = MENU_PAGE_IMAGES;
 const FLIP_DURATION = 720;
@@ -71,7 +70,7 @@ function PageImage({
     >
       <img
         src={MENU_PAGES[index]}
-        alt={`Bonfini Speisekarte Seite ${index + 1}`}
+        alt={`Speisekarte Seite ${index + 1}`}
         className="block h-auto w-full object-contain"
         draggable={false}
         loading="lazy"
@@ -445,7 +444,7 @@ export function MenuPdfSection() {
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-white/50 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#f3e3ca]/70 to-transparent" />
-        <div className="absolute left-1/2 top-20 h-px w-[min(680px,78vw)] -translate-x-1/2 bg-[#8b1e22]/20" />
+        <div className="absolute left-1/2 top-20 h-px w-[min(680px,78vw)] -translate-x-1/2 bg-mahogany/20" />
       </div>
 
       <div className="relative z-10 mx-auto flex w-full max-w-[1760px] flex-col items-center">
@@ -454,20 +453,14 @@ export function MenuPdfSection() {
             isInView ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
-          <img
-            src="/images/logo/logo-red.png"
-            alt="Bonfini"
-            className="mx-auto mb-5 h-auto w-36 object-contain md:w-44"
-            loading="lazy"
-            decoding="async"
-          />
+          <BrandWordmark className="mb-5 text-carbon" />
           <div className="mb-4 flex items-center justify-center gap-4">
-            <span className="h-px w-12 bg-[#8b1e22]/45" />
-            <span className="h-1.5 w-1.5 rotate-45 bg-[#8b1e22]" />
-            <span className="h-px w-12 bg-[#8b1e22]/45" />
+            <span className="h-px w-12 bg-mahogany/45" />
+            <span className="h-1.5 w-1.5 rotate-45 bg-mahogany" />
+            <span className="h-px w-12 bg-mahogany/45" />
           </div>
-          <p className="font-serif text-sm uppercase tracking-[0.28em] text-[#8b1e22]">
-            Bonfini
+          <p className="font-serif text-sm uppercase tracking-[0.28em] text-mahogany">
+            Porto Vecchio
           </p>
           <h2 className="mt-2 font-serif text-4xl leading-tight md:text-5xl">
             Speisekarte
@@ -485,7 +478,7 @@ export function MenuPdfSection() {
               onClick={goPrevious}
               disabled={!canGoPrevious || Boolean(flip)}
               aria-label="Vorherige Seite"
-              className="absolute left-2 top-1/2 z-30 flex size-10 -translate-y-1/2 items-center justify-center rounded-full border border-[#8b1e22]/25 bg-[#fffaf1]/90 text-[#8b1e22] shadow-[0_12px_30px_rgba(54,31,13,0.18)] transition hover:-translate-y-[52%] hover:border-[#8b1e22]/50 hover:bg-white disabled:pointer-events-none disabled:opacity-35 md:static md:size-12 md:translate-y-0 md:shrink-0 md:hover:-translate-y-0.5"
+              className="absolute left-2 top-1/2 z-30 flex size-10 -translate-y-1/2 items-center justify-center rounded-full border border-mahogany/25 bg-white/90 text-mahogany shadow-[0_12px_30px_rgba(27,58,75,0.16)] transition hover:-translate-y-[52%] hover:border-mahogany/50 hover:bg-white disabled:pointer-events-none disabled:opacity-35 md:static md:size-12 md:translate-y-0 md:shrink-0 md:hover:-translate-y-0.5"
             >
               <ChevronLeft className="size-5" />
             </button>
@@ -496,7 +489,7 @@ export function MenuPdfSection() {
               onTouchEnd={onTouchEnd}
             >
               <div className="absolute -inset-2 rounded-[1.5rem] bg-[#7d4e1b]/10 blur-2xl md:-inset-6 md:rounded-[2rem] md:blur-3xl" />
-              <div className="relative overflow-visible rounded-[0.35rem] border border-[#8b1e22]/18 bg-[#4b2d16] p-1.5 shadow-[0_28px_70px_rgba(48,28,12,0.24)] md:p-2">
+              <div className="relative overflow-visible rounded-[0.35rem] border border-mahogany/18 bg-[var(--deep-space-blue)] p-1.5 shadow-[0_28px_70px_rgba(33,47,69,0.24)] md:p-2">
                 <div className="relative overflow-visible rounded-[0.25rem] bg-[#fffaf0]">
                   <div className="grid grid-cols-1 items-start md:grid-cols-2">
                     <div className="relative border-[#4b2d16]/10 md:border-r">
@@ -562,7 +555,7 @@ export function MenuPdfSection() {
               onClick={goNext}
               disabled={!canGoNext || Boolean(flip)}
               aria-label="Nächste Seite"
-              className="absolute right-2 top-1/2 z-30 flex size-10 -translate-y-1/2 items-center justify-center rounded-full border border-[#8b1e22]/25 bg-[#fffaf1]/90 text-[#8b1e22] shadow-[0_12px_30px_rgba(54,31,13,0.18)] transition hover:-translate-y-[52%] hover:border-[#8b1e22]/50 hover:bg-white disabled:pointer-events-none disabled:opacity-35 md:static md:size-12 md:translate-y-0 md:shrink-0 md:hover:-translate-y-0.5"
+              className="absolute right-2 top-1/2 z-30 flex size-10 -translate-y-1/2 items-center justify-center rounded-full border border-mahogany/25 bg-white/90 text-mahogany shadow-[0_12px_30px_rgba(27,58,75,0.16)] transition hover:-translate-y-[52%] hover:border-mahogany/50 hover:bg-white disabled:pointer-events-none disabled:opacity-35 md:static md:size-12 md:translate-y-0 md:shrink-0 md:hover:-translate-y-0.5"
             >
               <ChevronRight className="size-5" />
             </button>
@@ -573,10 +566,10 @@ export function MenuPdfSection() {
               <p className="text-sm font-medium uppercase tracking-[0.18em] text-[#6c5240]">
                 {pageLabel} von {MENU_PAGES.length}
               </p>
-              <p className="text-sm text-[#8b1e22]">{progress}%</p>
+              <p className="text-sm text-mahogany">{progress}%</p>
             </div>
             <div
-              className="h-1.5 w-full overflow-hidden rounded-full bg-[#8b1e22]/12"
+              className="h-1.5 w-full overflow-hidden rounded-full bg-mahogany/12"
               aria-label={`Fortschritt ${progress} Prozent`}
               role="progressbar"
               aria-valuemin={0}
@@ -584,7 +577,7 @@ export function MenuPdfSection() {
               aria-valuenow={progress}
             >
               <div
-                className="h-full rounded-full bg-[#8b1e22] transition-all duration-500"
+                className="h-full rounded-full bg-mahogany transition-all duration-500"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -594,17 +587,10 @@ export function MenuPdfSection() {
             <a
               href={MENU_PDF_HREF}
               download
-              className="inline-flex items-center justify-center gap-3 rounded-full border border-[#8b1e22]/30 bg-[#8b1e22] px-7 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-white shadow-[0_16px_34px_rgba(139,30,34,0.24)] transition hover:-translate-y-0.5 hover:bg-[#6f171b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8b1e22] focus-visible:ring-offset-4 focus-visible:ring-offset-[#fbf3e5]"
+              className="inline-flex items-center justify-center gap-3 rounded-full border border-mahogany/30 bg-mahogany px-7 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-white shadow-[0_16px_34px_rgba(0,100,102,0.24)] transition hover:-translate-y-0.5 hover:bg-garnet focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mahogany focus-visible:ring-offset-4 focus-visible:ring-offset-smoke"
             >
               <Download className="size-4" />
               PDF herunterladen
-            </a>
-            <a
-              href={companyInfo.orderHref}
-              className="inline-flex items-center justify-center gap-3 rounded-full border border-[#8b1e22]/30 bg-[#fffaf1] px-7 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-[#8b1e22] shadow-[0_16px_34px_rgba(54,31,13,0.1)] transition hover:-translate-y-0.5 hover:border-[#8b1e22]/55 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8b1e22] focus-visible:ring-offset-4 focus-visible:ring-offset-[#fbf3e5]"
-            >
-              <ShoppingBag className="size-4" />
-              Bestellung aufgeben
             </a>
           </div>
         </div>
@@ -683,7 +669,7 @@ export function MenuPdfSection() {
 
             <img
               src={MENU_PAGES[zoomPage]}
-              alt={`Bonfini Speisekarte Seite ${zoomPage + 1}`}
+              alt={`Speisekarte Seite ${zoomPage + 1}`}
               className="absolute left-1/2 top-1/2 max-h-none max-w-none select-none object-contain"
               draggable={false}
               style={{

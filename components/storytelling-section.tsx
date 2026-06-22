@@ -32,8 +32,8 @@ export function StorytellingSection() {
             {/* Main heading with parallax */}
             <HeadlineScroll speed={0.08}>
               <ScrollReveal direction="up" delay={100}>
-                <h2 className="font-serif text-6xl md:text-7xl lg:text-8xl text-carbon mb-8 italic">
-                  Bravo!
+                <h2 className="font-serif text-5xl md:text-6xl lg:text-7xl text-carbon mb-8 italic">
+                  Willkommen
                 </h2>
               </ScrollReveal>
             </HeadlineScroll>
@@ -42,12 +42,11 @@ export function StorytellingSection() {
             <div className="space-y-6">
               <ScrollReveal direction="up" delay={200}>
                 <p className="text-carbon/75 text-lg md:text-xl leading-relaxed font-light">
-                  Im Herzen Berlins, in einer Straße der Moderne und des
-                  Aufbruchs, bieten wir einen Raum für{" "}
-                  <span className="text-mahogany font-normal">Freude</span>,{" "}
-                  <span className="text-mahogany font-normal">Genuß</span> und{" "}
+                  Im Porto Vecchio verwöhnen wir Sie mit{" "}
+                  <span className="text-mahogany font-normal">knusprigen Holzofen-Pizzen</span>,{" "}
+                  <span className="text-mahogany font-normal">Pasta</span> und{" "}
                   <span className="text-mahogany font-normal">
-                    Geselligkeit
+                    mediterranen Spezialitäten
                   </span>
                   .
                 </p>
@@ -55,8 +54,10 @@ export function StorytellingSection() {
 
               <ScrollReveal direction="up" delay={350}>
                 <p className="text-carbon/75 text-lg md:text-xl leading-relaxed font-light">
-                  Unser Ziel ist es, Nahrung zu schaffen, die wiederherstellt,
-                  wieder auffüllt und belebt.
+                  Genießen Sie unser einzigartiges Ambiente direkt an der
+                  Rheinpromenade mit herrlichem Blick auf den Speyerer Rhein.
+                  Neben der umfangreichen Speisekarte bieten wir täglich
+                  wechselnde Tagesessen.
                 </p>
               </ScrollReveal>
             </div>
@@ -66,7 +67,7 @@ export function StorytellingSection() {
               <div className="mt-12 flex items-center gap-4">
                 <div className="w-12 h-px bg-silver" />
                 <span className="font-serif text-sm text-silver italic tracking-wide">
-                  Seit 2008 in Berlin
+                  Direkt am Rhein in Speyer
                 </span>
               </div>
             </ScrollReveal>
@@ -81,8 +82,8 @@ export function StorytellingSection() {
             >
               <ScrollReveal direction="right" delay={200} className="h-full">
                 <ScrollImage
-                  src="/images/interier/O-1.jpg"
-                  alt="Oberer Gastraum des Ristorante Bonfini mit gedeckten Tischen"
+                  src="/images/porto/gallery-03.jpg"
+                  alt="Gastraum im Porto Vecchio mit gedeckten Tischen"
                   className="object-cover"
                   containerClassName="w-full h-full shadow-premium-lg overflow-hidden"
                   zoomAmount={1.12}
@@ -99,8 +100,8 @@ export function StorytellingSection() {
             >
               <ScrollReveal direction="left" delay={400} className="h-full">
                 <ScrollImage
-                  src="/images/food/BonfiniRestaurant_AnnaNesterenko-3.jpg"
-                  alt="Frische Antipasti - mediterrane Vorspeisen aus besten Zutaten im Ristorante Bonfini"
+                  src="/images/porto/dining-terrace.jpg"
+                  alt="Holzofen-Pizzen im Porto Vecchio"
                   className="object-cover"
                   containerClassName="w-full h-full shadow-premium overflow-hidden"
                   zoomAmount={1.15}
@@ -117,8 +118,8 @@ export function StorytellingSection() {
             >
               <ScrollReveal direction="up" delay={600} className="h-full">
                 <ScrollImage
-                  src="/images/food/BonfiniRestaurant_AnnaNesterenko-12.jpg"
-                  alt="Tagliatelle al Tartufo - hausgemachte Pasta mit schwarzem Trüffel und Parmigiano Reggiano im Ristorante Bonfini"
+                  src="/images/porto/restaurant-view.jpg"
+                  alt="Frische Fleischgerichte in der Porto Vecchio Küche"
                   className="object-cover"
                   containerClassName="w-full h-full shadow-premium overflow-hidden"
                   zoomAmount={1.1}
@@ -135,8 +136,8 @@ export function StorytellingSection() {
             >
               <ScrollReveal direction="right" delay={800} className="h-full">
                 <ScrollImage
-                  src="/images/food/BonfiniRestaurant_AnnaNesterenko-33.jpg"
-                  alt="Erlesene Weine aus den besten italienischen Anbaugebieten - Premium Weinauswahl im Ristorante Bonfini"
+                  src="/images/porto/promenade.jpg"
+                  alt="Frisches Brot und mediterrane Gastlichkeit im Porto Vecchio"
                   className="object-cover"
                   containerClassName="w-full h-full shadow-premium overflow-hidden"
                   zoomAmount={1.08}

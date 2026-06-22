@@ -1,12 +1,14 @@
 import type { Metadata } from "next"
 import type { ReactNode } from "react"
-import { Mail, Phone } from "lucide-react"
+import { Phone } from "lucide-react"
 import { JsonLd } from "@/components/json-ld"
 import { createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo"
+import { BrandWordmark } from "@/components/brand-wordmark"
+import { companyInfo } from "@/lib/company-info"
 
 export const metadata: Metadata = createPageMetadata({
   title: "Impressum",
-  description: "Rechtliche Angaben der Luemi Gastronomie UG (haftungsbeschränkt).",
+  description: "Rechtliche Angaben des Porto Vecchio in Speyer.",
   path: "/impressum",
 })
 
@@ -27,7 +29,7 @@ function LegalSection({
 
 export default function ImpressumPage() {
   return (
-    <main className="min-h-screen bg-[#fbf3e5] px-6 py-20 text-carbon md:px-10 md:py-28">
+    <main className="min-h-screen bg-smoke px-6 py-20 text-carbon md:px-10 md:py-28">
       <JsonLd
         data={createBreadcrumbJsonLd([
           { name: "Startseite", path: "/" },
@@ -36,12 +38,8 @@ export default function ImpressumPage() {
       />
       <section className="mx-auto max-w-4xl">
         <div className="mb-12">
-          <a href="/" aria-label="Bonfini Startseite" className="inline-block">
-            <img
-              src="/images/logo/logo-red.png"
-              alt="Bonfini"
-              className="mb-8 h-auto w-44 object-contain"
-            />
+          <a href="/" aria-label="Porto Vecchio Startseite" className="mb-8 inline-block">
+            <BrandWordmark className="text-carbon" />
           </a>
           <p className="mb-3 text-sm uppercase tracking-[0.28em] text-mahogany">
             Rechtliche Angaben
@@ -53,52 +51,30 @@ export default function ImpressumPage() {
           <div className="space-y-10">
             <LegalSection title="Angaben gemäß § 5 TMG">
               <p>
-                Luemi Gastronomie UG (haftungsbeschränkt)
+                {companyInfo.name}
                 <br />
-                Chausseestrasse 15
+                Inhaber: {companyInfo.owner}
                 <br />
-                10115 Berlin
+                {companyInfo.addressLine1}
+                <br />
+                {companyInfo.addressLine2}
               </p>
             </LegalSection>
 
             <LegalSection title="Vertreten durch">
-              <p>Frau Merita Schneewind</p>
+              <p>{companyInfo.owner}</p>
             </LegalSection>
 
             <LegalSection title="Kontakt">
               <div className="space-y-3">
                 <a
-                  href="tel:+493095614848"
+                  href={companyInfo.phoneHref}
                   className="flex items-center gap-3 transition-colors hover:text-mahogany"
                 >
                   <Phone className="h-5 w-5 shrink-0 text-mahogany" />
-                  <span>030-9561 4848</span>
-                </a>
-                <a
-                  href="mailto:ristorante@bonfini.de"
-                  className="flex items-center gap-3 transition-colors hover:text-mahogany"
-                >
-                  <Mail className="h-5 w-5 shrink-0 text-mahogany" />
-                  <span>ristorante@bonfini.de</span>
+                  <span>{companyInfo.phoneDisplay}</span>
                 </a>
               </div>
-            </LegalSection>
-
-            <LegalSection title="Registereintrag">
-              <p>
-                Eintragung im Handelsregister.
-                <br />
-                Registergericht: Amtsgericht Berlin-Charlottenburg
-                <br />
-                Registernummer: HRB 269245 B
-              </p>
-            </LegalSection>
-
-            <LegalSection title="Umsatzsteuer">
-              <p>
-                Umsatzsteuer-Identifikationsnummer gemäß §27 a Umsatzsteuergesetz:
-                DE442437978
-              </p>
             </LegalSection>
 
             <LegalSection title="Streitschlichtung">
@@ -113,7 +89,7 @@ export default function ImpressumPage() {
                 >
                   https://ec.europa.eu/consumers/odr
                 </a>
-                . Unsere E-Mail-Adresse finden Sie oben im Impressum.
+                . Unsere Kontaktdaten finden Sie oben im Impressum.
               </p>
               <p>
                 Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor

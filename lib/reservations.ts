@@ -36,10 +36,12 @@ function parseDateInput(date: string) {
   return parsed
 }
 
-function getReservationTimeSlotsForHours(hours: {
+type ServicePeriod = {
   opensAt: string
   closesAt: string
-}) {
+}
+
+function getReservationTimeSlotsForPeriod(hours: ServicePeriod) {
   const slots: string[] = []
   const opensAt = timeToMinutes(hours.opensAt)
   let closesAt = timeToMinutes(hours.closesAt)
@@ -58,6 +60,20 @@ function getReservationTimeSlotsForHours(hours: {
   }
 
   return slots
+}
+
+function getReservationTimeSlotsForHours(hours: {
+  opensAt: string
+  closesAt: string
+  servicePeriods?: ServicePeriod[]
+  isClosed?: boolean
+}) {
+  if (hours.isClosed) return []
+  const periods = hours.servicePeriods?.length
+    ? hours.servicePeriods
+    : [{ opensAt: hours.opensAt, closesAt: hours.closesAt }]
+
+  return periods.flatMap((period) => getReservationTimeSlotsForPeriod(period))
 }
 
 export const reservationTimeSlots = Array.from(

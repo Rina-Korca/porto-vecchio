@@ -22,8 +22,8 @@ export function CuisineSection() {
           >
             <div className="relative aspect-[4/5] rounded-lg overflow-hidden shadow-2xl">
               <Image
-                src="/images/food/BonfiniRestaurant_AnnaNesterenko-14.jpg"
-                alt="Gegrillter Wolfsbarsch mit mediterranem Gemüse - sorgfältig angerichtetes Gericht aus der Bonfini Kueche"
+                src="/images/porto/gallery-04.jpg"
+                alt="Italienisch-mediterrane Küche im Porto Vecchio"
                 fill
                 className="object-cover"
               />
@@ -49,16 +49,13 @@ export function CuisineSection() {
             </h2>
             <div className="thin-divider w-16 mb-8" />
             <p className="text-muted-foreground text-lg leading-relaxed mb-6">
-              Unsere Küche verbindet die zeitlosen Rezepte der italienischen
-              Tradition mit modernen Kochtechniken. Jede Zutat wird sorgfältig
-              ausgewählt, von handgemachter Pasta bis hin zu frischen Kräutern
-              aus unserem eigenen Garten.
+              Unsere Küche steht für Holzofen-Pizza, Pasta, mediterrane
+              Klassiker sowie Fleisch- und Fischgerichte. Neben der
+              Speisekarte bieten wir täglich wechselnde Tagesessen an.
             </p>
             <p className="text-muted-foreground text-lg leading-relaxed mb-8">
-              Küchenchef Marco Bonfini legt besonderen Wert auf Saisonalität und
-              Regionalität. Olivenöl aus der Toskana, Trüffel aus dem Piemont
-              und Mozzarella di Bufala aus Kampanien sind nur einige der
-              Premium-Zutaten, die unsere Gerichte unvergesslich machen.
+              Fragen Sie gerne unser Team nach den aktuellen Empfehlungen oder
+              achten Sie auf die ausgezeichneten Tafeln im Restaurant.
             </p>
             <a
               href="#speisekarte"

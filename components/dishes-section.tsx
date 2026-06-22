@@ -6,31 +6,31 @@ import Image from "next/image";
 
 const dishes = [
   {
-    name: "Tagliatelle al Tartufo",
+    name: "Holzofen-Pizza",
     description:
-      "Hausgemachte Bandnudeln mit frischem schwarzem Trüffel und Parmigiano Reggiano",
-    price: "38",
-    image: "/images/food/BonfiniRestaurant_AnnaNesterenko-12.jpg",
+      "Knusprig gebacken und klassisch italienisch belegt",
+    price: "",
+    image: "/images/porto/gallery-04.jpg",
   },
   {
-    name: "Branzino alla Griglia",
+    name: "Pasta-Gerichte",
     description:
-      "Gegrillter Wolfsbarsch mit mediterranem Gemüse und Zitronenöl",
-    price: "42",
-    image: "/images/food/BonfiniRestaurant_AnnaNesterenko-14.jpg",
+      "Mediterrane Klassiker und wechselnde Empfehlungen aus der Küche",
+    price: "",
+    image: "/images/porto/gallery-06.jpg",
   },
   {
-    name: "Filetto di Manzo",
+    name: "Fleisch & Fisch",
     description:
-      "Rinderfilet mit Barolo-Reduktion, Trüffelkartoffeln und Spinat",
-    price: "52",
-    image: "/images/food/BonfiniRestaurant_AnnaNesterenko-18.jpg",
+      "Vorzügliche Variationen für Mittagessen, Abendessen und Feiern",
+    price: "",
+    image: "/images/porto/gallery-11.jpg",
   },
   {
-    name: "Risotto ai Funghi Porcini",
-    description: "Cremiges Risotto mit Steinpilzen und frischen Kräutern",
-    price: "32",
-    image: "/images/food/BonfiniRestaurant_AnnaNesterenko-7.jpg",
+    name: "Tagesessen",
+    description: "Täglich wechselnde Angebote auf unseren Tafeln im Restaurant",
+    price: "",
+    image: "/images/porto/gallery-12.jpg",
   },
 ];
 
@@ -60,7 +60,7 @@ export function DishesSection() {
                 : "opacity-0 translate-y-8",
             )}
           >
-            Unsere <span className="text-mahogany">Signature Dishes</span>
+            Unsere <span className="text-mahogany">Empfehlungen</span>
           </h2>
           <div className="thin-divider w-24 mx-auto" />
         </div>
@@ -92,9 +92,11 @@ export function DishesSection() {
                     <h3 className="font-serif text-2xl text-carbon group-hover:text-mahogany transition-colors">
                       {dish.name}
                     </h3>
-                    <span className="text-mahogany font-serif text-xl">
-                      {dish.price}
-                    </span>
+                    {dish.price ? (
+                      <span className="text-mahogany font-serif text-xl">
+                        {dish.price}
+                      </span>
+                    ) : null}
                   </div>
                   <p className="text-muted-foreground leading-relaxed">
                     {dish.description}

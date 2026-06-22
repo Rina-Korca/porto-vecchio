@@ -1,8 +1,11 @@
 "use client"
 
+import type { ReactNode } from "react"
+import type { LucideIcon } from "lucide-react"
+import { Clock, ExternalLink, MapPin, Navigation, Phone, Car } from "lucide-react"
 import { useInView } from "@/hooks/use-in-view"
-import { Phone, Mail, MapPin, Clock, Navigation, ExternalLink } from "lucide-react"
 import { companyInfo, openingHours } from "@/lib/company-info"
+import { BrandWordmark } from "@/components/brand-wordmark"
 
 export function HoursContactSection() {
   const { ref: sectionRef, isInView } = useInView({ threshold: 0.1 })
@@ -11,284 +14,173 @@ export function HoursContactSection() {
     <section
       ref={sectionRef as React.RefObject<HTMLElement>}
       id="kontakt"
-      className="relative py-32 overflow-hidden"
-      style={{ backgroundColor: "#f5f3f4" }}
+      className="relative overflow-hidden bg-smoke py-32"
     >
-      {/* Subtle background texture */}
-      <div 
-        className="absolute inset-0 opacity-30"
-        style={{
-          backgroundImage: `radial-gradient(circle at 25% 25%, rgba(128, 128, 128, 0.03) 0%, transparent 50%),
-                           radial-gradient(circle at 75% 75%, rgba(128, 128, 128, 0.03) 0%, transparent 50%),
-                           url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23722f37' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-        }}
-      />
+      <div className="absolute inset-0 opacity-30">
+        <div
+          className="h-full w-full"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 25% 25%, rgba(0, 100, 102, 0.05) 0%, transparent 45%), radial-gradient(circle at 75% 75%, rgba(77, 25, 77, 0.05) 0%, transparent 45%)",
+          }}
+        />
+      </div>
 
-      <div className="container mx-auto px-6 relative z-10">
-        {/* Section Header */}
-        <div className="text-center mb-20">
+      <div className="container relative z-10 mx-auto px-6">
+        <div className="mb-20 text-center">
           <span
-            className={`inline-block text-sm tracking-[0.3em] uppercase mb-4 transition-all duration-700 ${
-              isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            className={`mb-4 inline-block text-sm uppercase tracking-[0.3em] text-mahogany transition-all duration-700 ${
+              isInView ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
             }`}
-            style={{ color: "#722f37" }}
           >
             Besuchen Sie uns
           </span>
           <h2
-            className={`font-serif text-4xl md:text-5xl lg:text-6xl mb-6 transition-all duration-700 delay-100 ${
-              isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            className={`font-serif text-4xl text-carbon transition-all delay-100 duration-700 md:text-5xl lg:text-6xl ${
+              isInView ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
             }`}
-            style={{ color: "#1a1a1a" }}
           >
             Öffnungszeiten & Kontakt
           </h2>
           <div
-            className={`w-24 h-0.5 mx-auto transition-all duration-700 delay-200 ${
-              isInView ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
+            className={`mx-auto mt-6 h-0.5 w-24 bg-mahogany transition-all delay-200 duration-700 ${
+              isInView ? "scale-x-100 opacity-100" : "scale-x-0 opacity-0"
             }`}
-            style={{ backgroundColor: "#722f37" }}
           />
         </div>
 
-        {/* Cards Grid */}
-        <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          
-          {/* Opening Hours Card */}
-          <div
-            className={`relative bg-white rounded-sm p-10 shadow-lg transition-all duration-700 delay-200 ${
-              isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-            style={{ borderTop: "3px solid #722f37" }}
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-3">
+          <InfoCard
+            delay="delay-200"
+            isInView={isInView}
+            icon={Clock}
+            title="Öffnungszeiten"
           >
-            {/* Decorative corner */}
-            <div 
-              className="absolute top-4 right-4 w-8 h-8 border-t border-r opacity-20"
-              style={{ borderColor: "#722f37" }}
-            />
-            
-            <div className="flex items-center gap-4 mb-8">
-              <div 
-                className="w-14 h-14 rounded-full flex items-center justify-center"
-                style={{ backgroundColor: "rgba(114, 47, 55, 0.1)" }}
-              >
-                <Clock className="w-6 h-6" style={{ color: "#722f37" }} />
-              </div>
-              <h3 className="font-serif text-2xl" style={{ color: "#1a1a1a" }}>
-                Öffnungszeiten
-              </h3>
-            </div>
-
-            <div className="space-y-6">
-              {/* Weekdays */}
-              <div>
-                <p className="text-sm tracking-wider uppercase mb-2" style={{ color: "#722f37" }}>
-                  Heute und die Woche
-                </p>
-                <div className="space-y-3">
-                  {openingHours.map((item) => (
-                    <div
-                      key={item.day}
-                      className="flex justify-between gap-5 border-b pb-2 last:border-0 last:pb-0"
-                      style={{ borderColor: "rgba(114, 47, 55, 0.14)" }}
-                    >
-                      <span className="font-medium" style={{ color: "#1a1a1a" }}>
-                        {item.day}
-                      </span>
-                      <span className="text-right" style={{ color: "#666" }}>
-                        {item.hours}
-                      </span>
-                    </div>
-                  ))}
+            <p className="mb-4 text-sm uppercase tracking-wider text-mahogany">
+              Heute und die Woche
+            </p>
+            <div className="space-y-3">
+              {openingHours.map((item) => (
+                <div
+                  key={item.day}
+                  className="flex justify-between gap-5 border-b border-dust pb-2 last:border-0 last:pb-0"
+                >
+                  <span className="font-medium text-carbon">{item.day}</span>
+                  <span className="text-right text-muted-foreground">
+                    {item.hours}
+                  </span>
                 </div>
-              </div>
+              ))}
             </div>
+          </InfoCard>
 
-            {/* Decorative bottom corner */}
-            <div 
-              className="absolute bottom-4 left-4 w-8 h-8 border-b border-l opacity-20"
-              style={{ borderColor: "#722f37" }}
-            />
-          </div>
-
-          {/* Address Card */}
-          <div
-            className={`relative bg-white rounded-sm p-10 shadow-lg transition-all duration-700 delay-300 ${
-              isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-            style={{ borderTop: "3px solid #722f37" }}
+          <InfoCard
+            delay="delay-300"
+            isInView={isInView}
+            icon={MapPin}
+            title="Adresse"
           >
-            {/* Decorative corner */}
-            <div 
-              className="absolute top-4 right-4 w-8 h-8 border-t border-r opacity-20"
-              style={{ borderColor: "#722f37" }}
-            />
-
-            <div className="flex items-center gap-4 mb-8">
-              <div 
-                className="w-14 h-14 rounded-full flex items-center justify-center"
-                style={{ backgroundColor: "rgba(114, 47, 55, 0.1)" }}
-              >
-                <MapPin className="w-6 h-6" style={{ color: "#722f37" }} />
-              </div>
-              <h3 className="font-serif text-2xl" style={{ color: "#1a1a1a" }}>
-                Adresse
-              </h3>
-            </div>
-
-            <div className="mb-8">
-              <img
-                src="/images/logo/logo-red.png"
-                alt="Bonfini"
-                className="mb-3 h-auto w-36 object-contain"
-                loading="lazy"
-                decoding="async"
-              />
-              <a
-                href={companyInfo.mapsHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-base leading-relaxed transition-colors hover:opacity-80"
-                style={{ color: "#666" }}
-              >
-                {companyInfo.addressLine1}<br />
-                {companyInfo.addressLine2}<br />
-                {companyInfo.country}
-              </a>
-            </div>
-
-            {/* Divider */}
-            <div className="w-full h-px mb-8" style={{ backgroundColor: "rgba(114, 47, 55, 0.2)" }} />
-
-            {/* Route Button */}
+            <BrandWordmark className="mb-5 text-carbon" />
             <a
               href={companyInfo.mapsHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-6 py-3 rounded-sm text-white text-sm tracking-wider uppercase transition-all duration-300 hover:shadow-lg group"
-              style={{ backgroundColor: "#722f37" }}
+              className="block text-base leading-relaxed text-muted-foreground transition hover:text-mahogany"
             >
-              <Navigation className="w-4 h-4" />
-              <span>Route planen</span>
-              <ExternalLink className="w-3 h-3 opacity-60 group-hover:opacity-100 transition-opacity" />
+              {companyInfo.addressLine1}
+              <br />
+              {companyInfo.addressLine2}
+              <br />
+              {companyInfo.country}
             </a>
+            <div className="mt-6 flex gap-3 rounded-sm bg-smoke p-4 text-sm leading-6 text-muted-foreground">
+              <Car className="mt-0.5 h-4 w-4 shrink-0 text-mahogany" />
+              <p>{companyInfo.parkingNote}</p>
+            </div>
+            <a
+              href={companyInfo.mapsDirectionsHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-8 inline-flex items-center gap-3 rounded-sm bg-mahogany px-6 py-3 text-sm uppercase tracking-wider text-white transition hover:bg-garnet"
+            >
+              <Navigation className="h-4 w-4" />
+              <span>Route planen</span>
+              <ExternalLink className="h-3 w-3 opacity-70" />
+            </a>
+          </InfoCard>
 
-            {/* Decorative bottom corner */}
-            <div 
-              className="absolute bottom-4 left-4 w-8 h-8 border-b border-l opacity-20"
-              style={{ borderColor: "#722f37" }}
-            />
-          </div>
-
-          {/* Contact Card */}
-          <div
-            className={`relative bg-white rounded-sm p-10 shadow-lg transition-all duration-700 delay-400 ${
-              isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-            style={{ borderTop: "3px solid #722f37" }}
+          <InfoCard
+            delay="delay-400"
+            isInView={isInView}
+            icon={Phone}
+            title="Reservierung"
           >
-            {/* Decorative corner */}
-            <div 
-              className="absolute top-4 right-4 w-8 h-8 border-t border-r opacity-20"
-              style={{ borderColor: "#722f37" }}
-            />
-
-            <div className="flex items-center gap-4 mb-8">
-              <div 
-                className="w-14 h-14 rounded-full flex items-center justify-center"
-                style={{ backgroundColor: "rgba(114, 47, 55, 0.1)" }}
-              >
-                <Phone className="w-6 h-6" style={{ color: "#722f37" }} />
-              </div>
-              <h3 className="font-serif text-2xl" style={{ color: "#1a1a1a" }}>
-                Kontakt
-              </h3>
-            </div>
-
-            <div className="space-y-6 mb-8">
-              {/* Phone */}
-              <div>
-                <p className="text-sm tracking-wider uppercase mb-2" style={{ color: "#722f37" }}>
-                  Telefon
-                </p>
-                <a 
-                  href={companyInfo.phoneHref}
-                  className="font-serif text-xl transition-colors hover:opacity-70"
-                  style={{ color: "#1a1a1a" }}
-                >
-                  {companyInfo.phoneDisplay}
-                </a>
-              </div>
-
-              {/* Divider */}
-              <div className="w-full h-px" style={{ backgroundColor: "rgba(114, 47, 55, 0.2)" }} />
-
-              {/* Email */}
-              <div>
-                <p className="text-sm tracking-wider uppercase mb-2" style={{ color: "#722f37" }}>
-                  E-Mail
-                </p>
-                <a 
-                  href={`mailto:${companyInfo.email}`}
-                  className="font-serif text-lg transition-colors hover:opacity-70 break-all"
-                  style={{ color: "#1a1a1a" }}
-                >
-                  {companyInfo.email}
-                </a>
-              </div>
-            </div>
-
-            {/* Divider */}
-            <div className="w-full h-px mb-8" style={{ backgroundColor: "rgba(114, 47, 55, 0.2)" }} />
-
-            {/* Contact Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3">
-              <a
-                href={companyInfo.phoneHref}
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-sm text-white text-sm tracking-wider uppercase transition-all duration-300 hover:shadow-lg"
-                style={{ backgroundColor: "#722f37" }}
-              >
-                <Phone className="w-4 h-4" />
-                <span>Anrufen</span>
-              </a>
-              <a
-                href={`mailto:${companyInfo.email}`}
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-sm text-sm tracking-wider uppercase transition-all duration-300 hover:shadow-md border"
-                style={{ 
-                  color: "#722f37",
-                  borderColor: "#722f37",
-                  backgroundColor: "transparent"
-                }}
-              >
-                <Mail className="w-4 h-4" />
-                <span>E-Mail</span>
-              </a>
-            </div>
-
-            {/* Decorative bottom corner */}
-            <div 
-              className="absolute bottom-4 left-4 w-8 h-8 border-b border-l opacity-20"
-              style={{ borderColor: "#722f37" }}
-            />
-          </div>
+            <p className="mb-2 text-sm uppercase tracking-wider text-mahogany">
+              Telefon
+            </p>
+            <a
+              href={companyInfo.phoneHref}
+              className="font-serif text-2xl text-carbon transition hover:text-mahogany"
+            >
+              {companyInfo.phoneDisplay}
+            </a>
+            <p className="mt-6 text-sm leading-6 text-muted-foreground">
+              Reservierungen sind ausschließlich telefonisch möglich. Auf der
+              Terrasse können keine Tische reserviert werden.
+            </p>
+            <a
+              href={companyInfo.phoneHref}
+              className="mt-8 inline-flex items-center justify-center gap-2 rounded-sm bg-mahogany px-5 py-3 text-sm uppercase tracking-wider text-white transition hover:bg-garnet"
+            >
+              <Phone className="h-4 w-4" />
+              <span>Anrufen</span>
+            </a>
+          </InfoCard>
         </div>
 
-        {/* Bottom decorative element */}
-        <div 
-          className={`flex items-center justify-center gap-4 mt-16 transition-all duration-700 delay-500 ${
+        <div
+          className={`mt-16 flex items-center justify-center gap-4 transition-all delay-500 duration-700 ${
             isInView ? "opacity-100" : "opacity-0"
           }`}
         >
-          <div className="w-16 h-px" style={{ backgroundColor: "rgba(114, 47, 55, 0.3)" }} />
-          <span 
-            className="font-serif text-sm italic"
-            style={{ color: "#722f37" }}
-          >
+          <div className="h-px w-16 bg-mahogany/30" />
+          <span className="font-serif text-sm italic text-mahogany">
             Wir freuen uns auf Sie
           </span>
-          <div className="w-16 h-px" style={{ backgroundColor: "rgba(114, 47, 55, 0.3)" }} />
+          <div className="h-px w-16 bg-mahogany/30" />
         </div>
       </div>
     </section>
+  )
+}
+
+function InfoCard({
+  children,
+  delay,
+  icon: Icon,
+  isInView,
+  title,
+}: {
+  children: ReactNode
+  delay: string
+  icon: LucideIcon
+  isInView: boolean
+  title: string
+}) {
+  return (
+    <div
+      className={`relative rounded-sm bg-white p-8 shadow-lg transition-all duration-700 ${delay} ${
+        isInView ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+      }`}
+    >
+      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-mahogany to-garnet" />
+      <div className="mb-8 flex items-center gap-4">
+        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-mahogany/10 text-mahogany">
+          <Icon className="h-6 w-6" />
+        </div>
+        <h3 className="font-serif text-2xl text-carbon">{title}</h3>
+      </div>
+      {children}
+    </div>
   )
 }

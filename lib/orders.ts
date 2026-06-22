@@ -37,10 +37,12 @@ function parseDateInput(date: string) {
   return parsed
 }
 
-function getOrderTimeSlotsForHours(hours: {
+type ServicePeriod = {
   opensAt: string
   closesAt: string
-}) {
+}
+
+function getOrderTimeSlotsForPeriod(hours: ServicePeriod) {
   const slots: string[] = []
   const opensAt = timeToMinutes(hours.opensAt)
   let closesAt = timeToMinutes(hours.closesAt)
@@ -59,6 +61,20 @@ function getOrderTimeSlotsForHours(hours: {
   }
 
   return slots
+}
+
+function getOrderTimeSlotsForHours(hours: {
+  opensAt: string
+  closesAt: string
+  servicePeriods?: ServicePeriod[]
+  isClosed?: boolean
+}) {
+  if (hours.isClosed) return []
+  const periods = hours.servicePeriods?.length
+    ? hours.servicePeriods
+    : [{ opensAt: hours.opensAt, closesAt: hours.closesAt }]
+
+  return periods.flatMap((period) => getOrderTimeSlotsForPeriod(period))
 }
 
 export function getOrderTimeSlotsForDate(date: string) {

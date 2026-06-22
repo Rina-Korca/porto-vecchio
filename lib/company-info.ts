@@ -1,35 +1,114 @@
 export const companyInfo = {
-  name: "Ristorante Bonfini",
-  addressLine1: "Chausseestraße 15",
-  addressLine2: "10115 Berlin",
+  name: "Porto Vecchio",
+  legalName: "Porto Vecchio",
+  owner: "Arsim Konxheli",
+  addressLine1: "Im Hafenbecken 11",
+  addressLine2: "67346 Speyer",
   country: "Germany",
-  addressDisplay: "Chausseestraße 15, 10115 Berlin, Germany",
-  phoneDisplay: "+49 30 95614848",
-  phoneHref: "tel:+493095614848",
-  email: "reservierung@ristorante-bonfini.de",
-  mapsHref: "https://maps.app.goo.gl/VetrUvZnVC17T6XB6",
-  googleProfileHref: "https://maps.app.goo.gl/VetrUvZnVC17T6XB6",
+  addressDisplay: "Im Hafenbecken 11, 67346 Speyer",
+  phoneDisplay: "06232 - 62 01 01",
+  phoneHref: "tel:+496232620101",
+  websiteHref: "https://www.portovecchio.de",
+  email: "",
+  mapsHref:
+    "https://www.google.com/maps/search/?api=1&query=Porto%20Vecchio%20Im%20Hafenbecken%2011%2067346%20Speyer",
+  googleProfileHref:
+    "https://www.google.com/maps/search/?api=1&query=Porto%20Vecchio%20Im%20Hafenbecken%2011%2067346%20Speyer",
   mapsDirectionsHref:
-    "https://www.google.com/maps/place/Ristorante+Bonfini/@52.529594,13.3820263,17z/data=!3m1!4b1!4m6!3m5!1s0x416523d127fc1e87:0x92e6d7ad9dd86823!8m2!3d52.5295908!4d13.3846012!16s%2Fg%2F1tfrft10?entry=ttu&g_ep=EgoyMDI2MDYwMy4xIKXMDSoASAFQAw%3D%3D",
+    "https://www.google.com/maps/dir/?api=1&destination=Porto%20Vecchio%20Im%20Hafenbecken%2011%2067346%20Speyer",
   menuHref: "/menu",
   menuPdfHref: "/menu/speisekarte.pdf",
-  orderHref: "/bestellen",
-  instagramHref: "https://www.instagram.com/ristorantebonfini/",
-  facebookHref: "https://de-de.facebook.com/ristorantebonfini",
-  tripadvisorHref:
-    "https://www.tripadvisor.de/Restaurant_Review-g187323-d1347856-Reviews-Ristorante_Bonfini-Berlin.html",
-  yelpHref: "https://www.yelp.de/biz/bonfini-berlin-2",
+  instagramHref: "https://www.instagram.com/porto_vecchio_speyer/",
+  facebookHref: "https://www.facebook.com/Porto-Vecchio-641488872591668",
   priceRange: "€20–30 pro Person",
+  reservationNote: "Reservierungen ausschließlich telefonisch",
+  parkingNote:
+    "Unmittelbar vor dem Restaurant finden Sie zwei gebührenpflichtige Parkplätze des Yacht-Hafens sowie Parkbuchten am Straßenrand.",
 }
 
 export const openingSchedule = [
-  { day: "Monday", dayIndex: 1, opensAt: "11:30", closesAt: "23:00", hours: "11:30 AM – 11:00 PM" },
-  { day: "Tuesday", dayIndex: 2, opensAt: "11:30", closesAt: "23:00", hours: "11:30 AM – 11:00 PM" },
-  { day: "Wednesday", dayIndex: 3, opensAt: "11:30", closesAt: "23:00", hours: "11:30 AM – 11:00 PM" },
-  { day: "Thursday", dayIndex: 4, opensAt: "11:30", closesAt: "23:00", hours: "11:30 AM – 11:00 PM" },
-  { day: "Friday", dayIndex: 5, opensAt: "11:30", closesAt: "24:00", hours: "11:30 AM – 12:00 AM" },
-  { day: "Saturday", dayIndex: 6, opensAt: "12:00", closesAt: "24:00", hours: "12:00 PM – 12:00 AM" },
-  { day: "Sunday", dayIndex: 0, opensAt: "12:00", closesAt: "23:00", hours: "12:00 PM – 11:00 PM" },
+  {
+    day: "Monday",
+    label: "Montag",
+    dayIndex: 1,
+    opensAt: "12:00",
+    closesAt: "22:00",
+    servicePeriods: [
+      { opensAt: "12:00", closesAt: "14:30" },
+      { opensAt: "17:00", closesAt: "22:00" },
+    ],
+    hours: "12:00 bis 14:30 Uhr und 17:00 bis 22:00 Uhr",
+  },
+  {
+    day: "Tuesday",
+    label: "Dienstag",
+    dayIndex: 2,
+    opensAt: "00:00",
+    closesAt: "00:00",
+    servicePeriods: [],
+    isClosed: true,
+    hours: "Ruhetag",
+  },
+  {
+    day: "Wednesday",
+    label: "Mittwoch",
+    dayIndex: 3,
+    opensAt: "12:00",
+    closesAt: "22:00",
+    servicePeriods: [
+      { opensAt: "12:00", closesAt: "14:30" },
+      { opensAt: "17:00", closesAt: "22:00" },
+    ],
+    hours: "12:00 bis 14:30 Uhr und 17:00 bis 22:00 Uhr",
+  },
+  {
+    day: "Thursday",
+    label: "Donnerstag",
+    dayIndex: 4,
+    opensAt: "12:00",
+    closesAt: "22:00",
+    servicePeriods: [
+      { opensAt: "12:00", closesAt: "14:30" },
+      { opensAt: "17:00", closesAt: "22:00" },
+    ],
+    hours: "12:00 bis 14:30 Uhr und 17:00 bis 22:00 Uhr",
+  },
+  {
+    day: "Friday",
+    label: "Freitag",
+    dayIndex: 5,
+    opensAt: "12:00",
+    closesAt: "22:00",
+    servicePeriods: [
+      { opensAt: "12:00", closesAt: "14:30" },
+      { opensAt: "17:00", closesAt: "22:00" },
+    ],
+    hours: "12:00 bis 14:30 Uhr und 17:00 bis 22:00 Uhr",
+  },
+  {
+    day: "Saturday",
+    label: "Samstag",
+    dayIndex: 6,
+    opensAt: "12:00",
+    closesAt: "22:00",
+    servicePeriods: [
+      { opensAt: "12:00", closesAt: "14:30" },
+      { opensAt: "17:00", closesAt: "22:00" },
+    ],
+    hours: "12:00 bis 14:30 Uhr und 17:00 bis 22:00 Uhr",
+  },
+  {
+    day: "Sunday",
+    label: "Sonntag",
+    dayIndex: 0,
+    opensAt: "12:00",
+    closesAt: "22:00",
+    servicePeriods: [
+      { opensAt: "12:00", closesAt: "14:30" },
+      { opensAt: "17:00", closesAt: "22:00" },
+    ],
+    hours: "12:00 bis 14:30 Uhr und 17:00 bis 22:00 Uhr",
+  },
 ]
 
-export const openingHours = openingSchedule.map(({ day, hours }) => ({ day, hours }))
+export const openingHours = openingSchedule.map(({ label, hours }) => ({ day: label, hours }))

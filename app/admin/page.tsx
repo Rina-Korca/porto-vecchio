@@ -182,7 +182,7 @@ export default function AdminPage() {
             <p className="mt-2 text-sm text-muted-foreground">
               {authState === "newPassword"
                 ? "Bitte wählen Sie ein neues Passwort"
-                : "Ristorante Bonfini"}
+                : "Porto Vecchio"}
             </p>
           </div>
           {loginError && (
@@ -400,7 +400,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
         <div className="mx-auto flex max-w-7xl flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h1 className="font-serif text-2xl text-carbon">Admin</h1>
-            <p className="text-sm text-muted-foreground">Ristorante Bonfini – Admin</p>
+            <p className="text-sm text-muted-foreground">Porto Vecchio – Admin</p>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <div className="flex flex-wrap rounded-lg border border-dust bg-smoke p-1">

@@ -11,8 +11,8 @@ import {
 
 const features = [
   {
-    title: "Italienische Seele",
-    description: "Authentische Rezepte aus den Regionen Italiens",
+    title: "Holzofen-Pizza",
+    description: "Knusprig gebacken und direkt aus dem Ofen serviert",
     icon: (
       <svg
         className="w-5 h-5"
@@ -30,8 +30,8 @@ const features = [
     ),
   },
   {
-    title: "Frische Produkte",
-    description: "Täglich ausgewählte Zutaten höchster Qualität",
+    title: "Pasta & Klassiker",
+    description: "Mediterrane Gerichte für Mittag und Abend",
     icon: (
       <svg
         className="w-5 h-5"
@@ -49,8 +49,8 @@ const features = [
     ),
   },
   {
-    title: "Kunst & Erfahrung",
-    description: "Jahrzehnte kulinarischer Meisterschaft",
+    title: "Fleisch & Fisch",
+    description: "Vorzügliche Variationen mit italienischem Flair",
     icon: (
       <svg
         className="w-5 h-5"
@@ -68,8 +68,8 @@ const features = [
     ),
   },
   {
-    title: "Raffinierte Umsetzung",
-    description: "Perfektion in jedem Detail",
+    title: "Tagesessen",
+    description: "Wechselnde Empfehlungen von unseren Tafeln",
     icon: (
       <svg
         className="w-5 h-5"
@@ -107,8 +107,8 @@ export function KitchenSection() {
                 <ScrollReveal direction="left" delay={0}>
                   <div className="relative aspect-[4/5] overflow-hidden shadow-premium-lg">
                     <ScrollImage
-                      src="/images/food/BonfiniRestaurant_AnnaNesterenko-14.jpg"
-                      alt="Gegrillter Wolfsbarsch mit mediterranem Gemüse - Premium Gericht aus der Bonfini Kueche"
+                      src="/images/porto/dining-terrace.jpg"
+                      alt="Holzofen-Pizza im Porto Vecchio"
                       className="object-cover"
                       containerClassName="w-full h-full"
                       zoomAmount={1.15}
@@ -128,10 +128,10 @@ export function KitchenSection() {
                 <ScrollReveal direction="up" delay={500}>
                   <div className="absolute -bottom-6 -left-6 bg-white p-5 shadow-premium z-10">
                     <p className="text-mahogany font-serif text-lg italic">
-                      &ldquo;La cucina è arte&rdquo;
+                      &ldquo;Cucina mediterranea&rdquo;
                     </p>
                     <p className="text-carbon/60 text-sm mt-1">
-                      Die Küche ist Kunst
+                      Italienisch-mediterrane Küche
                     </p>
                   </div>
                 </ScrollReveal>
@@ -146,7 +146,7 @@ export function KitchenSection() {
               <div className="flex items-center gap-4 mb-8">
                 <div className="decorative-line" />
                 <span className="text-mahogany text-xs tracking-[0.2em] uppercase font-medium">
-                  Kulinarische Exzellenz
+                  Unsere Küche
                 </span>
               </div>
             </ScrollReveal>
@@ -163,7 +163,7 @@ export function KitchenSection() {
             {/* Italian Subtitle */}
             <ScrollReveal direction="up" delay={200}>
               <p className="font-serif text-xl md:text-2xl text-mahogany italic mb-8">
-                l&apos;anima della nostra ospitalità
+                  Holzofen, Pasta und mediterrane Klassiker
               </p>
             </ScrollReveal>
 
@@ -171,15 +171,15 @@ export function KitchenSection() {
             <ScrollReveal direction="up" delay={300}>
               <div className="space-y-5 mb-12">
                 <p className="text-carbon/70 text-base md:text-lg leading-relaxed font-light">
-                  Die Seele unserer Gastfreundschaft. Ursprung eines
-                  leidenschaftlichen Schaffensprozesses, der{" "}
-                  <span className="text-mahogany">Kunst</span> und{" "}
-                  <span className="text-mahogany">Erfahrung</span> verbindet.
-                  Zwei Begrifflichkeiten, die sofort aufhorchen lassen und in
-                  Bonfini&apos;s Küche raffiniert umgesetzt werden.
+                  Wir verwöhnen Sie mit knusprigen Holzofen-Pizzen,
+                  schmackhaften Pasta-Gerichten, vorzüglichen{" "}
+                  <span className="text-mahogany">Fleisch-</span> und{" "}
+                  <span className="text-mahogany">Fischvariationen</span> sowie
+                  weiteren Leckereien der italienisch-mediterranen Küche.
                 </p>
                 <p className="text-carbon text-lg md:text-xl font-medium">
-                  Unser Anspruch: dass Sie mehr bekommen, als Sie erwarten.
+                  Achten Sie auf unsere ausgezeichneten Tafeln oder fragen Sie
+                  gerne unser Personal nach den Tagesessen.
                 </p>
               </div>
             </ScrollReveal>

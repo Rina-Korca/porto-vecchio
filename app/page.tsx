@@ -3,7 +3,6 @@ import { JsonLd } from "@/components/json-ld"
 import { Navigation } from "@/components/navigation"
 import { HeroSection } from "@/components/hero-section"
 import { StorytellingSection } from "@/components/storytelling-section"
-import { TripadvisorSection } from "@/components/tripadvisor-section"
 import { KitchenSection } from "@/components/kitchen-section"
 import { RestaurantSection } from "@/components/restaurant-section"
 import { RecommendationsSection } from "@/components/recommendations-section"
@@ -31,7 +30,6 @@ export default function Home() {
       <Navigation />
       <HeroSection />
       <StorytellingSection />
-      <TripadvisorSection />
       <KitchenSection />
       <RestaurantSection />
       <RecommendationsSection />
