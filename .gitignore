@@ -19,10 +19,6 @@ yarn-error.log*
 # env files
 .env*
 
-# amplify
-amplify_outputs.json
-.amplify/
-
 # vercel
 .vercel
 
