@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { X, Phone, MapPin } from "lucide-react"
+import { Phone, MapPin } from "lucide-react"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { companyInfo } from "@/lib/company-info"
@@ -54,9 +54,11 @@ export function Navigation() {
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
-        isScrolled
-          ? "bg-white/95 backdrop-blur-md shadow-sm py-2.5"
-          : "bg-gradient-to-b from-carbon/60 via-carbon/20 to-transparent py-5"
+        isMobileMenuOpen
+          ? "bg-transparent py-5"
+          : isScrolled
+            ? "bg-white/95 backdrop-blur-md shadow-sm py-2.5"
+            : "bg-gradient-to-b from-carbon/60 via-carbon/20 to-transparent py-5"
       )}
     >
       <nav className="container mx-auto px-6 lg:px-10 flex items-center justify-between min-h-[70px]">
@@ -125,10 +127,12 @@ export function Navigation() {
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           className={cn(
-            "lg:hidden p-2 rounded-full transition-colors duration-300",
-            isScrolled
-              ? "text-carbon hover:bg-smoke"
-              : "text-white hover:bg-white/10"
+            "lg:hidden relative z-50 p-2 rounded-full transition-colors duration-300",
+            isMobileMenuOpen
+              ? "text-white hover:bg-white/10"
+              : isScrolled
+                ? "text-carbon hover:bg-smoke"
+                : "text-white hover:bg-white/10"
           )}
           aria-label="Menü öffnen"
           aria-expanded={isMobileMenuOpen}
@@ -137,21 +141,21 @@ export function Navigation() {
             <span
               className={cn(
                 "absolute w-5 h-[1.5px] rounded-full transition-all duration-300",
-                isScrolled ? "bg-carbon" : "bg-white",
+                isMobileMenuOpen ? "bg-white" : isScrolled ? "bg-carbon" : "bg-white",
                 isMobileMenuOpen ? "rotate-45" : "-translate-y-[5px]"
               )}
             />
             <span
               className={cn(
                 "absolute w-5 h-[1.5px] rounded-full transition-all duration-300",
-                isScrolled ? "bg-carbon" : "bg-white",
+                isMobileMenuOpen ? "bg-white" : isScrolled ? "bg-carbon" : "bg-white",
                 isMobileMenuOpen ? "opacity-0 scale-0" : "opacity-100"
               )}
             />
             <span
               className={cn(
                 "absolute w-5 h-[1.5px] rounded-full transition-all duration-300",
-                isScrolled ? "bg-carbon" : "bg-white",
+                isMobileMenuOpen ? "bg-white" : isScrolled ? "bg-carbon" : "bg-white",
                 isMobileMenuOpen ? "-rotate-45" : "translate-y-[5px]"
               )}
             />
@@ -168,15 +172,6 @@ export function Navigation() {
             : "opacity-0 pointer-events-none"
         )}
       >
-        <div className="absolute top-5 right-6">
-          <button
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="p-2 text-white/60 hover:text-white transition-colors"
-            aria-label="Menü schließen"
-          >
-            <X size={24} />
-          </button>
-        </div>
 
         <div className="flex flex-col items-center justify-center h-full px-8">
           <Image
