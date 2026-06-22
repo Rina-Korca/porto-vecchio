@@ -12,7 +12,6 @@ import {
 
 import { useInView } from "@/hooks/use-in-view";
 import { MENU_PAGE_IMAGES, MENU_PDF_HREF } from "@/lib/menu";
-import { BrandWordmark } from "@/components/brand-wordmark";
 
 const MENU_PAGES = MENU_PAGE_IMAGES;
 const FLIP_DURATION = 720;
@@ -453,7 +452,7 @@ export function MenuPdfSection() {
             isInView ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
           }`}
         >
-          <BrandWordmark className="mb-5 text-carbon" />
+          <span className="block mb-5 font-serif text-xl text-carbon">Porto Vecchio</span>
           <div className="mb-4 flex items-center justify-center gap-4">
             <span className="h-px w-12 bg-mahogany/45" />
             <span className="h-1.5 w-1.5 rotate-45 bg-mahogany" />

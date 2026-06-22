@@ -3,7 +3,6 @@
 import { useInView } from "@/hooks/use-in-view"
 import { cn } from "@/lib/utils"
 import { companyInfo } from "@/lib/company-info"
-import { BrandWordmark } from "@/components/brand-wordmark"
 
 export function MapSection() {
   const { ref, isInView } = useInView({ threshold: 0.1 })
@@ -29,7 +28,7 @@ export function MapSection() {
       </div>
       {/* Overlay with info */}
       <div className="absolute left-6 md:left-12 top-1/2 -translate-y-1/2 bg-white rounded-xl p-6 md:p-8 shadow-2xl max-w-sm z-10">
-        <BrandWordmark className="mb-4 text-carbon" />
+        <span className="block mb-4 font-serif text-xl text-carbon">Porto Vecchio</span>
         <p className="text-muted-foreground mb-4">
           {companyInfo.addressLine1}
           <br />

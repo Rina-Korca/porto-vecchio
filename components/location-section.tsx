@@ -3,7 +3,6 @@
 import { useInView } from "@/hooks/use-in-view"
 import { MapPin, Navigation, Phone, Clock } from "lucide-react"
 import { companyInfo, openingHours } from "@/lib/company-info"
-import { BrandWordmark } from "@/components/brand-wordmark"
 
 export function LocationSection() {
   const { ref: sectionRef, isInView } = useInView({ threshold: 0.1 })
@@ -46,7 +45,7 @@ export function LocationSection() {
             <div className="absolute bottom-4 left-4 w-8 h-8 border-b border-l border-[var(--garnet)]/30" />
 
             {/* Heading */}
-            <BrandWordmark className="mb-5 text-[var(--onyx)]" />
+            <span className="block mb-5 font-serif text-xl text-[var(--onyx)]">Porto Vecchio</span>
             <p className="text-[var(--garnet)] text-sm tracking-[0.2em] uppercase mb-2">
               Direkt an der Rheinpromenade
             </p>

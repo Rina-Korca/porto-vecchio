@@ -5,7 +5,6 @@ import type { LucideIcon } from "lucide-react"
 import { Clock, ExternalLink, MapPin, Navigation, Phone, Car } from "lucide-react"
 import { useInView } from "@/hooks/use-in-view"
 import { companyInfo, openingHours } from "@/lib/company-info"
-import { BrandWordmark } from "@/components/brand-wordmark"
 
 export function HoursContactSection() {
   const { ref: sectionRef, isInView } = useInView({ threshold: 0.1 })
@@ -80,7 +79,7 @@ export function HoursContactSection() {
             icon={MapPin}
             title="Adresse"
           >
-            <BrandWordmark className="mb-5 text-carbon" />
+            <span className="block mb-5 font-serif text-xl text-carbon">Porto Vecchio</span>
             <a
               href={companyInfo.mapsHref}
               target="_blank"

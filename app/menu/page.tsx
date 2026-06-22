@@ -3,7 +3,6 @@ import { CalendarCheck, Download } from "lucide-react"
 import { JsonLd } from "@/components/json-ld"
 import { MENU_PAGE_IMAGES, MENU_PDF_HREF } from "@/lib/menu"
 import { createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo"
-import { BrandWordmark } from "@/components/brand-wordmark"
 
 export const metadata: Metadata = createPageMetadata({
   title: "Speisekarte",
@@ -24,7 +23,7 @@ export default function MenuPage() {
       <header className="border-b border-mahogany/15 bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-5">
           <a href="/" className="transition hover:opacity-80" aria-label="Porto Vecchio Startseite">
-            <BrandWordmark className="text-carbon" />
+            <span className="font-serif text-xl text-carbon">Porto Vecchio</span>
           </a>
           <div className="flex items-center gap-3">
             <a

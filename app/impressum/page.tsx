@@ -3,7 +3,6 @@ import type { ReactNode } from "react"
 import { Phone } from "lucide-react"
 import { JsonLd } from "@/components/json-ld"
 import { createBreadcrumbJsonLd, createPageMetadata } from "@/lib/seo"
-import { BrandWordmark } from "@/components/brand-wordmark"
 import { companyInfo } from "@/lib/company-info"
 
 export const metadata: Metadata = createPageMetadata({
@@ -39,7 +38,7 @@ export default function ImpressumPage() {
       <section className="mx-auto max-w-4xl">
         <div className="mb-12">
           <a href="/" aria-label="Porto Vecchio Startseite" className="mb-8 inline-block">
-            <BrandWordmark className="text-carbon" />
+            <span className="font-serif text-xl text-carbon">Porto Vecchio</span>
           </a>
           <p className="mb-3 text-sm uppercase tracking-[0.28em] text-mahogany">
             Rechtliche Angaben

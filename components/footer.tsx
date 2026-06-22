@@ -2,7 +2,6 @@
 
 import { Instagram, Facebook, MapPin, Phone, Clock } from "lucide-react"
 import { companyInfo, openingHours } from "@/lib/company-info"
-import { BrandWordmark } from "@/components/brand-wordmark"
 
 const navigationLinks = [
   { href: "#willkommen", label: "Start" },
@@ -52,7 +51,7 @@ export function Footer() {
             {/* Logo */}
             <div className="mb-8">
               <a href="/" className="inline-block group" aria-label="Porto Vecchio Startseite">
-                <BrandWordmark className="text-white transition-opacity duration-300 group-hover:opacity-85" />
+                <span className="font-serif text-xl text-white transition-opacity duration-300 group-hover:opacity-85">Porto Vecchio</span>
                 <div className="mt-3 h-px w-0 bg-garnet transition-all duration-500 group-hover:w-full" />
               </a>
             </div>
