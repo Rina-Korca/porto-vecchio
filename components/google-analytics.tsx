@@ -1,10 +1,22 @@
+"use client"
+
+import { useEffect, useState } from "react"
 import Script from "next/script"
 import { seoConfig } from "@/lib/seo"
+import { hasAnalyticsConsent } from "@/components/cookie-consent"
 
 export function GoogleAnalytics() {
   const gaId = seoConfig.googleAnalyticsId
+  const [consented, setConsented] = useState(false)
 
-  if (process.env.NODE_ENV !== "production" || !gaId) {
+  useEffect(() => {
+    setConsented(hasAnalyticsConsent())
+    const handler = () => setConsented(hasAnalyticsConsent())
+    window.addEventListener("cookie-consent-updated", handler)
+    return () => window.removeEventListener("cookie-consent-updated", handler)
+  }, [])
+
+  if (process.env.NODE_ENV !== "production" || !gaId || !consented) {
     return null
   }
 

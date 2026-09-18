@@ -2,6 +2,7 @@
 
 import { Instagram, Facebook, MapPin, Phone, Clock } from "lucide-react"
 import { companyInfo, openingHours } from "@/lib/company-info"
+import { openCookiePreferences } from "@/components/cookie-consent"
 
 const navigationLinks = [
   { href: "#willkommen", label: "Start" },
@@ -172,6 +173,18 @@ export function Footer() {
             >
               Clearline Tech
             </a>
+          </p>
+          <p className="flex items-center justify-center gap-3 text-smoke/40 text-xs mt-2">
+            <a href="/cookies" className="hover:text-strawberry transition-colors">
+              Cookie-Richtlinie
+            </a>
+            <button
+              type="button"
+              onClick={openCookiePreferences}
+              className="hover:text-strawberry transition-colors"
+            >
+              Cookie-Einstellungen
+            </button>
           </p>
         </div>
       </div>

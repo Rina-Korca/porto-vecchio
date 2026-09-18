@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Lato } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { GoogleAnalytics } from "@/components/google-analytics";
+import CookieConsent from "@/components/cookie-consent";
 import { JsonLd } from "@/components/json-ld";
 import {
   createRestaurantJsonLd,
@@ -126,6 +127,7 @@ export default function RootLayout({
         <JsonLd data={[createWebsiteJsonLd(), createRestaurantJsonLd()]} />
         {children}
         <GoogleAnalytics />
+        <CookieConsent />
         {process.env.NODE_ENV === "production" && <Analytics />}
       </body>
     </html>
